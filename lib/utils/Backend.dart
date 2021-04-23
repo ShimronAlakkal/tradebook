@@ -48,15 +48,15 @@ class Helper {
     return await db.execute('''
       CREATE TABLE IF NOT EXISTS $table(
         $id integer PRIMARY KEY AUTOINCREMENT,
-        $symbol TEXT,
-        $enterPrice  NUMERIC ,
-        $dateEntered DATE ,
-        $position  INTEGER ,
-        $qty NUMERIC ,
-        $target NUMERIC ,
-        $exitDate DATE,
-        $currentPriceOnDayEnd NUMERIC,
-        $exitPrice NUMERIC
+        $symbol TEXT NOT NULL,
+        $enterPrice  NUMERIC NOT NULL,
+        $dateEntered DATE NOT NULL,
+        $position  INTEGER NOT NULL ,
+        $qty NUMERIC NOT NULL ,
+        $target NUMERIC NULL,
+        $exitDate DATE NULL,
+        $currentPriceOnDayEnd NUMERIC NULL,
+          $exitPrice NUMERIC NULL
       )
       ''');
   }

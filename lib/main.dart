@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:appa/Views/infopage.dart';
+import 'package:appa/Views/InfoPage.dart';
 
 void main() {
   runApp(
