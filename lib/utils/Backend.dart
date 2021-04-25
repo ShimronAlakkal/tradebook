@@ -6,15 +6,13 @@ import 'dart:io';
 class Helper {
   static final String db = 'info.db';
   static final String table = 'infoTable';
+
   static final String id = 'id';
   static final String symbol = 'symbol';
   static final String qty = 'Qty';
   static final String enterPrice = 'Enter';
-  static final String exitPrice = 'exit';
   static final String dateEntered = 'dateOfEntering';
-  static final String exitDate = 'ExitDate';
   static final String currentPriceOnDayEnd = 'DayEndPrice';
-  static final String target = 'targetPrice';
   static final String position = 'position';
 
   Helper._private();
@@ -50,13 +48,9 @@ class Helper {
         $id integer PRIMARY KEY AUTOINCREMENT,
         $symbol TEXT NOT NULL,
         $enterPrice  NUMERIC NOT NULL,
-        $dateEntered DATE NOT NULL,
         $position  INTEGER NOT NULL ,
         $qty NUMERIC NOT NULL ,
-        $target NUMERIC NULL,
-        $exitDate DATE NULL,
-        $currentPriceOnDayEnd NUMERIC NULL,
-          $exitPrice NUMERIC NULL
+        $currentPriceOnDayEnd NUMERIC NULL
       )
       ''');
   }

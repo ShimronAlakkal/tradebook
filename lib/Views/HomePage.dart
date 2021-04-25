@@ -1,3 +1,4 @@
+import 'package:appa/Views/FieldPage.dart';
 import 'package:flutter/material.dart';
 import 'package:appa/utils/Backend.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,7 @@ class _InfoPageState extends State<InfoPage> {
   List<Map<String, dynamic>> rows;
   Helper instance;
   PageController pageController =
-      PageController(viewportFraction: 0, initialPage: 0);
+      PageController(viewportFraction: 0.98, initialPage: 0);
 
   @override
   void initState() {
@@ -19,7 +20,7 @@ class _InfoPageState extends State<InfoPage> {
     setState(() {
       instance = Helper.dbInstance;
     });
-    _getPageData(instance);
+    _refreshView(instance);
   }
 
   @override
@@ -184,6 +185,7 @@ class _InfoPageState extends State<InfoPage> {
                   pageSnapping: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
+                      width: MediaQuery.of(context).size.width * 0.08,
                       margin: EdgeInsets.only(
                         left: 10,
                         right: 10,
@@ -213,14 +215,45 @@ class _InfoPageState extends State<InfoPage> {
             borderRadius: BorderRadius.circular(5),
           ),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return FieldPage();
+              },
+            ),
+          );
+          if (result) {
+            _refreshView(instance);
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Alert'),
+                  content: Text(
+                      'Try inputting the index again as it was not added to the db'),
+                  actions: [
+                    ElevatedButton(
+                      child: Text('Close'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        },
         icon: Icon(Icons.add),
         label: Text('Add'),
       ),
     );
   }
 
-  _getPageData(Helper instance) async {
+  _refreshView(Helper instance) async {
     var x = await instance.select();
     setState(() {
       this.rows = x;
