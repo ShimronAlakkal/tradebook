@@ -19,8 +19,8 @@ class _InfoPageState extends State<InfoPage> {
     super.initState();
     setState(() {
       instance = Helper.dbInstance;
+      _refreshView(instance);
     });
-    _refreshView(instance);
   }
 
   @override
@@ -58,7 +58,7 @@ class _InfoPageState extends State<InfoPage> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white70,
+                    color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(5)),
                 height: MediaQuery.of(context).size.height * 0.1,
                 margin: EdgeInsets.symmetric(
@@ -155,15 +155,23 @@ class _InfoPageState extends State<InfoPage> {
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.2,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.grey[100],
                         borderRadius: BorderRadius.circular(5)),
                     margin: EdgeInsets.only(top: 10, left: 10, right: 25),
                   ),
-                  Text(
-                    'POSITIONS',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'POSITIONS',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -194,12 +202,38 @@ class _InfoPageState extends State<InfoPage> {
                         color: Colors.white70,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(child: Text('$index')),
+                      child: this.rows.length != null
+                          ? Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Text(
+                                          'Symbol : ${this.rows[index]['symbol']}'),
+                                      IconButton(
+                                        icon:
+                                            Icon(Icons.vertical_split_outlined),
+
+                                        //  go to edit from here
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                  Text('Total QTY : ${this.rows[index]['Qty']}')
+                                ],
+                              ),
+                            )
+                          : Center(child: Text('ENTER A VALUE TO VIEW HERE')),
                     );
                   },
                   scrollDirection: Axis.horizontal,
                   controller: pageController,
-                  itemCount: 5,
+                  itemCount: this.rows.length != null ? this.rows.length : 1,
                 ),
               ),
             ],
@@ -208,7 +242,6 @@ class _InfoPageState extends State<InfoPage> {
       ),
 
       //
-      backgroundColor: Colors.white70,
       floatingActionButton: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

@@ -47,96 +47,129 @@ class _FieldPageState extends State<FieldPage> {
         key: formKey,
         child: ListView(
           children: [
-            Column(
-              children: [
-                // Symbol input text field
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(5)),
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    showCursor: true,
-                    maxLines: 1,
-                    keyboardAppearance: Brightness.dark,
-                    // ignore: missing_return
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Symbol of stock required (e.g. RIL, APPL)';
-                      } else {
-                        this.symbolController.text = value;
-                      }
-                    },
-                    autocorrect: true,
-                    controller: symbolController,
-                    enabled: true,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintText: 'Symbol (required)',
-                      labelText: 'Symbol',
-                      labelStyle: TextStyle(
-                        color: Colors.black87,
-                        letterSpacing: 1.2,
-                        fontSize: 15,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      border: InputBorder.none,
-                    ),
+            // Symbol input text field
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              // Symbol of the stock which is important.
+              child: TextFormField(
+                textInputAction: TextInputAction.done,
+                textDirection: TextDirection.ltr,
+                showCursor: true,
+                maxLines: 1,
+                keyboardAppearance: Brightness.dark,
+                // ignore: missing_return
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Symbol of stock required (e.g. RIL, APPL)';
+                  } else {
+                    this.symbolController.text = value;
+                  }
+                },
+                autocorrect: true,
+                controller: symbolController,
+                enabled: true,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  hintText: 'Symbol (required)',
+                  hintStyle: TextStyle(fontWeight: FontWeight.w200),
+                  labelText: 'Symbol',
+                  labelStyle: TextStyle(
+                    color: Colors.black87,
+                    letterSpacing: 1.2,
+                    fontStyle: FontStyle.normal,
                   ),
+                  border: InputBorder.none,
                 ),
+              ),
+            ),
 
-                //Quantity entered
+            //Quantity entered
 
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    autocorrect: true,
-                    controller: qtyController,
-                    enabled: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextFormField(
+                showCursor: true,
+                maxLines: 1,
+                // ignore: missing_return
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Enter a valid quantity';
+                  } else {
+                    this.qtyController.text = value;
+                  }
+                },
+                keyboardAppearance: Brightness.dark,
+                keyboardType: TextInputType.phone,
+                controller: qtyController,
+                enabled: true,
+                decoration: InputDecoration(
+                  hintText: 'bought or sold (required)',
+                  hintStyle: TextStyle(fontWeight: FontWeight.w200),
+                  labelText: 'Qty',
+                  labelStyle: TextStyle(
+                    color: Colors.black87,
+                    letterSpacing: 1.2,
+                    fontStyle: FontStyle.normal,
                   ),
+                  border: InputBorder.none,
                 ),
+              ),
+            ),
 
-                // enter price text field
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    // ignore: missing_return
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter Price';
-                      } else {
-                        this.enterPriceController.text = value;
-                      }
-                    },
-                    autocorrect: true,
-                    controller: enterPriceController,
-                    enabled: true,
+            // enter price text field
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextFormField(
+                // ignore: missing_return
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Enter Price';
+                  } else {
+                    this.enterPriceController.text = value;
+                  }
+                },
 
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintText: 'Enter',
-                      labelText: 'Enter',
-                      labelStyle: TextStyle(
-                        color: Colors.black87,
-                        letterSpacing: 1.2,
-                        fontSize: 15,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      border: InputBorder.none,
-                    ),
+                controller: enterPriceController,
+                keyboardType: TextInputType.phone,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  hintText: 'Enter the price entered',
+                  labelText: 'Enter',
+                  labelStyle: TextStyle(
+                    color: Colors.black87,
+                    letterSpacing: 1.2,
+                    fontStyle: FontStyle.normal,
                   ),
+                  border: InputBorder.none,
                 ),
-                // Dropdown fro choosing the type of order
+              ),
+            ),
 
-                Container(
-                  child: DropdownButton(
+// Row for getting the oppsitoin entered
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.only(left: 15, right: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(dfltPosition),
+                  DropdownButton(
                     icon: Icon(Icons.arrow_drop_down),
                     items: position.map((String position) {
                       return DropdownMenuItem(
@@ -150,57 +183,104 @@ class _FieldPageState extends State<FieldPage> {
                       });
                     },
                   ),
-                ),
+                ],
+              ),
+            ),
 
-                // current day end
-                //
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    // ignore: missing_return
+            // current day end
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextFormField(
+                // ignore: missing_return
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Enter a CDE';
+                  } else {
+                    this.currentDayEndController.text = value;
+                  }
+                },
 
-                    autocorrect: true,
-                    controller: currentDayEndController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                      labelText: 'Title',
-                      border: InputBorder.none,
-                    ),
+                controller: currentDayEndController,
+                keyboardType: TextInputType.number,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  hintText: 'price per stock at the end of the day',
+                  labelText: 'CDE price',
+                  labelStyle: TextStyle(
+                    color: Colors.black87,
+                    letterSpacing: 1.2,
+                    fontStyle: FontStyle.normal,
                   ),
+                  border: InputBorder.none,
                 ),
+              ),
+            ),
 
 // Button for adding the data to the database from the UI
 
-                ElevatedButton.icon(
-                  onPressed: () {
-                    try {
-                      _addItem();
-                    } catch (e) {
-                      debugPrint(
-                          '$e is the goddamn error here bithccccc ***************************************************');
-                    }
-                  },
-                  icon: Icon(Icons.add_box),
-                  label: Text('Add'),
-                )
-              ],
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  try {
+                    _addItem(context);
+                  } catch (e) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            actions: [
+                              ElevatedButton(
+                                child: Text('close'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                            title: Text('Error'),
+                            content: Text(e),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                          );
+                        });
+                  }
+                },
+                icon: Icon(Icons.add_box),
+                label: Text('Add'),
+              ),
             ),
+
+            Container(
+              color: Colors.grey[50],
+              child: Center(
+                child: Text('AD space'),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-  _addItem() async {
+  _addItem(context) async {
     if (formKey.currentState.validate()) {
       _helper.insert({
         'symbol': symbolController.text,
         'Enter': enterPriceController.text,
-        'position': position,
+        'position': dfltPosition,
         'Qty': qtyController.text,
         'DayEndPrice': currentDayEndController.text
       });
+      _backToMain(context);
     }
+  }
+
+  _backToMain(context) {
+    Navigator.pop(context, true);
   }
 }
