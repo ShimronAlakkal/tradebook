@@ -20,7 +20,7 @@ class _FieldPageState extends State<FieldPage> {
   var formKey = GlobalKey<FormState>();
 
   String dfltPosition = 'BUY';
-  String dfltTypeOfOrder = 'Delivery';
+  String dfltPositionType = 'Delivery';
 
   TextEditingController symbolController = TextEditingController();
   TextEditingController enterPriceController = TextEditingController();
@@ -28,7 +28,9 @@ class _FieldPageState extends State<FieldPage> {
   TextEditingController currentDayEndController = TextEditingController();
 
   List<String> position = ['BUY', "SELL"];
-  List<String> typeOfOrder = ['Delivery', 'Intraday'];
+  List<String> positionType = ['Delivery', "Intraday"];
+
+  _FieldPageState();
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +172,7 @@ class _FieldPageState extends State<FieldPage> {
                 children: [
                   Text(dfltPosition),
                   DropdownButton(
+                    value: dfltPosition,
                     icon: Icon(Icons.arrow_drop_down),
                     items: position.map((String position) {
                       return DropdownMenuItem(
@@ -180,6 +183,22 @@ class _FieldPageState extends State<FieldPage> {
                     onChanged: (newPosition) {
                       setState(() {
                         this.dfltPosition = newPosition;
+                      });
+                    },
+                  ),
+                  Text(dfltPositionType),
+                  DropdownButton(
+                    value: dfltPositionType,
+                    icon: Icon(Icons.arrow_drop_down),
+                    items: positionType.map((String positionType) {
+                      return DropdownMenuItem(
+                        child: Text(positionType),
+                        value: positionType,
+                      );
+                    }).toList(),
+                    onChanged: (newPositionType) {
+                      setState(() {
+                        this.dfltPositionType = newPositionType;
                       });
                     },
                   ),
@@ -273,6 +292,7 @@ class _FieldPageState extends State<FieldPage> {
         'symbol': symbolController.text,
         'Enter': enterPriceController.text,
         'position': dfltPosition,
+        'positionType': dfltPositionType,
         'Qty': qtyController.text,
         'DayEndPrice': currentDayEndController.text
       });

@@ -39,8 +39,10 @@ class _InfoPageState extends State<InfoPage> {
               onPressed: () {},
             ),
             Text(
-              'AUM',
+              'QAUM',
               style: TextStyle(
+                fontFamily: 'Quicksand',
+                fontWeight: FontWeight.bold,
                 color: Colors.green[700],
               ),
             ),
@@ -80,7 +82,7 @@ class _InfoPageState extends State<InfoPage> {
                         color: Colors.black,
                       ),
                     ),
-                    Text('630'),
+                    Text(''),
                   ],
                 ),
               ),
@@ -109,7 +111,7 @@ class _InfoPageState extends State<InfoPage> {
                         color: Colors.black,
                       ),
                     ),
-                    Text('630.00'),
+                    Text(''),
                   ],
                 ),
               ),
@@ -138,8 +140,8 @@ class _InfoPageState extends State<InfoPage> {
                         color: Colors.black,
                       ),
                     ),
-                    Text('19.29'),
-                    Text('3.59 %'),
+                    Text(''),
+                    Text(''),
                   ],
                 ),
               ),
@@ -214,17 +216,79 @@ class _InfoPageState extends State<InfoPage> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                          'Symbol : ${this.rows[index]['symbol']}'),
+                                        'Symbol : ${this.rows[index]['symbol']}',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 1.2,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                       IconButton(
-                                        icon:
-                                            Icon(Icons.vertical_split_outlined),
+                                        icon: Icon(Icons.delete),
 
                                         //  go to edit from here
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text('Delete ?'),
+                                                content: Text(
+                                                    'Are you sure that you want to delete this post ???'),
+                                                actions: [
+                                                  ElevatedButton(
+                                                    child: Text('Delete'),
+                                                    onPressed: () {
+                                                      _delItemFromCard(instance,
+                                                          this.rows, index);
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
-                                  Text('Total QTY : ${this.rows[index]['Qty']}')
+                                  Text(
+                                    'Total QTY purchased : ${this.rows[index]['Qty']}',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.2,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Enter : ${this.rows[index]['Enter']}',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.2,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Amount used : ${this.rows[index]['Qty'] * this.rows[index]['Enter']}',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.2,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    'PNL: ${this.rows[index]['Qty'] * this.rows[index]['Enter'] - this.rows[index]['DayEndPrice'] * this.rows[index]['Qty']}',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.2,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ],
                               ),
                             )
@@ -291,5 +355,11 @@ class _InfoPageState extends State<InfoPage> {
     setState(() {
       this.rows = x;
     });
+    print(rows);
+  }
+
+  _delItemFromCard(Helper instance, List<Map<String, dynamic>> rows, index) {
+    instance.delete(this.rows[index]['id']);
+    _refreshView(instance);
   }
 }
