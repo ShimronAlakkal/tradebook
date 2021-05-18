@@ -56,14 +56,6 @@ class Helper {
       )
       ''');
   }
-  // static final String id = 'id';
-  // static final String symbol = 'symbol';
-  // static final String qty = 'Qty';
-  // static final String enterPrice = 'Enter';
-  // static final String dateEntered = 'dateOfEntering';
-  // static final String currentPriceOnDayEnd = 'DayEndPrice';
-  // static final String position = 'position';
-  // static final String type = 'positionType';
 
   Future insert(Map<String, dynamic> row) async {
     Database db = await dbInstance.initDatabase;
