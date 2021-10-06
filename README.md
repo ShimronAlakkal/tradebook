@@ -7,13 +7,17 @@
 2. Started developing the UI
 3. checking for more features
 ```
-Wireframe : 
-
-![Dashboard](https://github.com/ShimronAlakkal/tradebook/blob/main/s3.png)
-
-![Calculators](https://github.com/ShimronAlakkal/tradebook/blob/main/s2.png)
-
-![Edit](https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png)
-
-
+Wireframe :
+<table>
+  <tr>
+    <td>Dashboard</td>
+     <td>Calculators</td>
+     <td>Edit</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s3.png" width=270 height=480></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s2.png" width=270 height=480></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png" width=270 height=480></td>
+  </tr>
+ </table>
 
