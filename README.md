@@ -7,8 +7,13 @@
 2. Started developing the UI
 3. checking for more features
 ```
+Wireframe : 
 
+![Dashboard](https://github.com/ShimronAlakkal/tradebook/blob/main/s3.png)
 
+![Calculators](https://github.com/ShimronAlakkal/tradebook/blob/main/s2.png)
+
+![Edit](https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png)
 
 
 
