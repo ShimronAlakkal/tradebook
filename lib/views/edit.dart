@@ -13,9 +13,18 @@ class _EditState extends State<Edit> {
     return Scaffold(
       // Deposit or Withdraw button
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Color(0xffAB9AFF),
         onPressed: () {},
-        label: Text('deposit / withdraw'),
-        icon: Icon(Icons.add),
+        label: Text(
+          'deposit / withdraw',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 19, color: Colors.white),
+        ),
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 25,
+        ),
       ),
 
       // ListView builder here

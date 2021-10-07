@@ -17,6 +17,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffE5E5E5),
       body: screens[index],
 // Drawer
       drawer: Drawer(
@@ -44,7 +45,7 @@ class HomeState extends State<Home> {
         data: NavigationBarThemeData(
           height: MediaQuery.of(context).size.height * 0.07,
           // labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          indicatorColor: Colors.green.shade300,
+          indicatorColor: Color(0xff9b77da),
         ),
         child: NavigationBar(
           selectedIndex: this.index,

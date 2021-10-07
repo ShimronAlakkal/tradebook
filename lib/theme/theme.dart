@@ -2,8 +2,22 @@ import 'package:flutter/material.dart';
 
 class Palette {
   static final lightTheme = ThemeData(
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xffE5E5E5),
     primaryColor: Color(0xff474A2C),
+    colorScheme: ColorScheme.light(),
+    iconTheme: IconThemeData(
+      color: Colors.white,
+      size: 25,
+    ),
+  );
+
+  static final darkTheme = ThemeData(
+    backgroundColor: Colors.grey.shade900,
+    colorScheme: ColorScheme.dark(),
+    iconTheme: IconThemeData(
+      color: Colors.white,
+      size: 25,
+    ),
   );
 }
 
@@ -23,3 +37,10 @@ class Palette {
 // accent color #9b77da
 // primary #4e6b9f
 //  grey for touches #6fa5b1
+
+
+// AB9AFF buttons
+// cards 6C61B8
+// trade symobl 00C89B (green)
+// bg E5E5E5
+// Button accent CDC7EE

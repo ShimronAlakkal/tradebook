@@ -14,11 +14,25 @@ class _DashboardState extends State<Dashboard> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      // Add button
+
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Text('add'),
-        icon: Icon(Icons.add),
+        backgroundColor: Color(0xffAB9AFF),
+        onPressed: () {
+          debugPrint('Height = $height ,  width =  $width');
+        },
+        label: Text(
+          'add',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 19, color: Colors.white),
+        ),
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 25,
+        ),
       ),
+
       body: Column(
         children: [
           //  Ad banner
@@ -43,6 +57,26 @@ class _DashboardState extends State<Dashboard> {
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
+//  The icon indicating the position trend
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10, left: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.cyan.shade300,
+                    ),
+                    height: height * 0.08,
+                    child: Center(
+                      child: Icon(
+                        Icons.show_chart,
+                        size: 30,
+                        color: Colors.green.shade800,
+                      ),
+                    ),
+                  ),
+                ),
+
                 // The text of position and the amoutn in red or green
                 Expanded(
                   flex: 3,
@@ -74,26 +108,6 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 ),
-
-                //  The icon indicating the position trend
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.cyan.shade300,
-                    ),
-                    height: height * 0.08,
-                    child: Center(
-                      child: Icon(
-                        Icons.show_chart,
-                        size: 30,
-                        color: Colors.green.shade800,
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           ),
@@ -115,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
                   margin: EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
-                    color: Colors.amber.shade300,
+                    color: Color(0xff6C61B8),
                   ),
                   height: height * 0.3,
                   width: width,

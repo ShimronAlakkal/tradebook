@@ -11,102 +11,134 @@ class _CalculatorsState extends State<Calculators> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Column(
-          children: [
-            // Label for the PS
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Position Sizing Calculators',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      resizeToAvoidBottomInset: true,
+      body: ListView(
+        children: [
+          Column(
+            children: [
+              // Ad Unit
+
+              Container(
+                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    color: Colors.amber.shade500),
+                height: MediaQuery.of(context).size.height * 0.08,
+                width: MediaQuery.of(context).size.width,
               ),
-            ),
 
-            // PS for the stoccs
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('stocks'),
-                leading: Icon(Icons.business_outlined),
+              // Label for the PS
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Text(
+                    'Position Sizing Calculators',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
 
-            // PS for the forex guys
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('forex'),
-                leading: Icon(Icons.monetization_on_outlined),
+              // PS for the stoccs
+
+              tileItem(
+                  'stocks',
+                  Icon(Icons.business_outlined, color: Colors.white),
+                  Colors.amber.shade400,
+                  0),
+
+              // PS for the forex guys
+
+              tileItem(
+                  'forex',
+                  Icon(Icons.monetization_on_outlined, color: Colors.white),
+                  Colors.green.shade300,
+                  1),
+
+              // PS for the futures buddies
+              tileItem(
+                  'futures',
+                  Icon(Icons.query_stats_outlined, color: Colors.white),
+                  Colors.indigo.shade300,
+                  2),
+
+              // Label for the TA tools
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Text(
+                    'Technical analysis tools',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
 
-            // PS for the futures buddies
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('futures'),
-                leading: Icon(Icons.query_stats_outlined),
-              ),
-            ),
+              // Standard PP
+              tileItem(
+                  'standard Pivot Points',
+                  Icon(Icons.line_style_rounded, color: Colors.white),
+                  Colors.lime.shade300,
+                  3),
 
-            // Label for the TA tools
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Technical analysis tools',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
+              // Fibonacci retracement tool
+              tileItem(
+                  'Fibo Pivot Points',
+                  Icon(Icons.line_weight_rounded, color: Colors.white),
+                  Colors.orange.shade300,
+                  4),
 
-            // Standard PP
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('Standard Pivot Points'),
-                leading: Icon(Icons.line_style_rounded),
-              ),
-            ),
+              // CPP tool
+              tileItem(
+                  'Camarilla Pivot Points',
+                  Icon(Icons.straighten_rounded, color: Colors.white),
+                  Colors.pink.shade300,
+                  5),
 
-            // Fibonacci retracement tool
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('Fibonacci Pivot Points'),
-                leading: Icon(Icons.line_weight_rounded),
-              ),
-            ),
+              // Denmark PP
+              tileItem(
+                  'Denmark Pivot Points',
+                  Icon(Icons.add, color: Colors.white),
+                  Colors.purple.shade300,
+                  6),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-            // CPP tool
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('Camarilla Pivot Points'),
-                leading: Icon(Icons.straighten_rounded),
-              ),
-            ),
-
-            // Denmark PP
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text('Denmark Pivot Points'),
-                leading: Icon(Icons.add),
-              ),
-            ),
-
-            // Ad Unit
-
-            Container(
-              margin: const EdgeInsets.only(
-                  left: 10, right: 10, top: 5, bottom: 10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  color: Colors.amber.shade500),
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width,
-            ),
-          ],
-        ));
+  Widget tileItem(String title, Icon icon, Color bgc, int pageIndex) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        onTap: () {
+// // Go to the calculation page
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) {
+// // Check The selection
+//               },
+//             ),
+//           );
+        },
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        leading: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: bgc,
+          ),
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.15,
+          child: icon,
+        ),
+      ),
+    );
   }
 }
