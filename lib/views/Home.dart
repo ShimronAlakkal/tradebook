@@ -19,13 +19,17 @@ class HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       body: screens[index],
+
 // Drawer
       drawer: Drawer(
-        child: Text('drawer'),
+        child: Column(
+          children: [
+            Container(),
+          ],
+        ),
       ),
 
-// appbar
-
+      // appbar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 1,
@@ -40,7 +44,6 @@ class HomeState extends State<Home> {
       ),
 
       //    Bottom nav bar location here
-
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           height: MediaQuery.of(context).size.height * 0.07,
