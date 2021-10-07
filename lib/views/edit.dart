@@ -24,11 +24,15 @@ class _EditState extends State<Edit> {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.amber.shade50,
-              title: Text('Deposit'),
-              trailing: Text('123442'),
-              subtitle: Text('12/4/1999'),
+            child: Card(
+              color: Colors.white24,
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text('Despoition type'),
+                  Text('Deposit'),
+                ],
+              ),
             ),
           );
         },
