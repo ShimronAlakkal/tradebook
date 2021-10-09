@@ -3,7 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DBMS {
+class Dbase {
   static final db = 'db1.db';
   static final version = 1;
 
@@ -17,11 +17,12 @@ class DBMS {
   static final ls = 'longorshort'; // if 1 long elif 0 short
 
 // make the class a singleton class
-  DBMS._private();
-  static final DBMS instance = DBMS._private();
+  Dbase._privateConstructor();
+  static final Dbase instance = Dbase._privateConstructor();
 
   Database _database;
-  Future<Database> get database async {
+  Future get database async {
+    // ignore: unnecessary_null_comparison
     if (_database != null) {
       return _database;
     } else {
