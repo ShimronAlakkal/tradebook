@@ -4,7 +4,7 @@ import 'package:pron/views/edit.dart';
 import 'calculators.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({Key key}) : super(key: key);
 
   @override
   HomeState createState() => HomeState();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Edit extends StatefulWidget {
-  const Edit({Key? key}) : super(key: key);
+  const Edit({Key key}) : super(key: key);
 
   @override
   _EditState createState() => _EditState();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pron/tools/positionSize.dart';
+import 'package:pron/tools/technicalAnalysis.dart';
 
 class Calculators extends StatefulWidget {
-  const Calculators({Key? key}) : super(key: key);
+  const Calculators({Key key}) : super(key: key);
 
   @override
   _CalculatorsState createState() => _CalculatorsState();
@@ -115,15 +117,28 @@ class _CalculatorsState extends State<Calculators> {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         onTap: () {
-// // Go to the calculation page
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) {
-// // Check The selection
-//               },
-//             ),
-//           );
+          if (pageIndex == 0) {
+            // Stock PS
+            moveToPage(PositionSizer(index: 0));
+          } else if (pageIndex == 1) {
+            // Forex PS
+            moveToPage(PositionSizer(index: 1));
+          } else if (pageIndex == 2) {
+            // Futures PS
+            moveToPage(PositionSizer(index: 2));
+          } else if (pageIndex == 3) {
+            // standard Pivot points
+            moveToPage(TechnicalAnalysis(index: 0));
+          } else if (pageIndex == 4) {
+            // Fibo PP
+            moveToPage(TechnicalAnalysis(index: 1));
+          } else if (pageIndex == 5) {
+            // Camarilla PP
+            moveToPage(TechnicalAnalysis(index: 2));
+          } else {
+            // Denmark PP
+            moveToPage(TechnicalAnalysis(index: 3));
+          }
         },
         title: Text(
           title,
@@ -138,6 +153,17 @@ class _CalculatorsState extends State<Calculators> {
           width: MediaQuery.of(context).size.width * 0.15,
           child: icon,
         ),
+      ),
+    );
+  }
+
+  moveToPage(page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return page;
+        },
       ),
     );
   }
