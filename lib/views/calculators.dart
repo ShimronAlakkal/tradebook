@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pron/tools/futuresPS.dart';
 import 'package:pron/tools/stockPS.dart';
-import 'package:pron/tools/technicalAnalysis.dart';
+import 'package:pron/tools/PivotPoints.dart';
 
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);
@@ -80,7 +80,7 @@ class _CalculatorsState extends State<Calculators> {
 
               // Fibonacci retracement tool
               tileItem(
-                  'Fibo Pivot Points',
+                  'Fibonacci Pivot Points',
                   Icon(Icons.line_weight_rounded, color: Colors.white),
                   Colors.orange.shade300,
                   3),
@@ -125,18 +125,33 @@ class _CalculatorsState extends State<Calculators> {
             moveToPage(FuturesPS());
           } else if (pageIndex == 2) {
             // standard Pivot points
-            moveToPage(TechnicalAnalysis(index: 2));
+            moveToPage(PivotPoints(
+              index: 2,
+              title: 'Standard Pivot Points',
+            ));
           } else if (pageIndex == 3) {
             // Fibo PP
-            moveToPage(TechnicalAnalysis(index: 3));
+            moveToPage(PivotPoints(
+              index: 3,
+              title: 'Fibonacci Pivot Points',
+            ));
           } else if (pageIndex == 4) {
             // Camarilla PP
-            moveToPage(TechnicalAnalysis(index: 4));
+            moveToPage(PivotPoints(
+              index: 4,
+              title: 'Camarilla Pivot Points',
+            ));
           } else if (pageIndex == 5) {
             // Denmark PP
-            moveToPage(TechnicalAnalysis(index: 5));
+            moveToPage(PivotPoints(
+              index: 5,
+              title: 'Denmark\'s Pivot Point',
+            ));
           } else {
-            moveToPage(TechnicalAnalysis(index: 6));
+            moveToPage(PivotPoints(
+              index: 6,
+              title: 'Woodie\'s Pivot Points',
+            ));
           }
         },
         title: Text(

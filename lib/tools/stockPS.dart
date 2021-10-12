@@ -8,8 +8,6 @@ class StockPS extends StatefulWidget {
 }
 
 class _StockPSState extends State<StockPS> {
-  int ps;
-  String ratio;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController capitalContorller = TextEditingController();
   TextEditingController riskController = TextEditingController();
@@ -40,7 +38,7 @@ class _StockPSState extends State<StockPS> {
           ),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -153,12 +151,15 @@ class _StockPSState extends State<StockPS> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'This field cannot be empty';
+                      } else if (double.parse(value) >
+                          double.parse(capitalContorller.text)) {
+                        return 'Entry Price cannot be over capital';
                       }
                     },
                     maxLines: 1,
                     cursorWidth: 3,
                     decoration: InputDecoration(
-                      hintText: ' Entry',
+                      hintText: ' Entry Price',
                       hintStyle: TextStyle(
                         letterSpacing: 1.4,
                       ),
@@ -175,6 +176,7 @@ class _StockPSState extends State<StockPS> {
                   SizedBox(
                     height: 20,
                   ),
+
                   // SL
                   TextFormField(
                     // ignore: missing_return
@@ -206,6 +208,7 @@ class _StockPSState extends State<StockPS> {
                   SizedBox(
                     height: 20,
                   ),
+
                   // Target
                   TextFormField(
                     // ignore: missing_return
@@ -232,7 +235,7 @@ class _StockPSState extends State<StockPS> {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
 
-                  //  Elevated button
+                  //  fa button
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: FloatingActionButton.extended(
@@ -240,49 +243,82 @@ class _StockPSState extends State<StockPS> {
                       elevation: 1,
                       onPressed: () {
                         if (formKey.currentState.validate()) {
+                          // Total capital leveraged leverage
                           double leverageBasedCapital =
                               double.parse(leverageController.text) *
                                   double.parse(capitalContorller.text);
 
                           print('$leverageBasedCapital lbc');
 
-                          double accountRisk =
-                              (double.parse(riskController.text) / 100.00) *
-                                  leverageBasedCapital;
+                          // Total money risking per trade AKA account risk
 
-                          print('$accountRisk , acr');
+                          double accountRisk = double.parse(
+                              ((double.parse(riskController.text) / 100.00) *
+                                      leverageBasedCapital)
+                                  .toStringAsFixed(2));
 
-                          double tradeRisk = 100 -
-                              (double.parse(slController.text) * 100) /
-                                  double.parse(entryController.text);
+// trade risk calc in percentage =   % difference in the entry and sl
 
-                          print('$tradeRisk trade risk');
+                          double tradeRisk = double.parse(
+                              (double.parse(entryController.text) -
+                                      double.parse(slController.text))
+                                  .toStringAsFixed(2));
 
-                          int ns = (accountRisk / tradeRisk).round();
-                          double totalRisk = ns * tradeRisk;
+// Position Size in number of shares
 
-                          double reward = (double.parse(targetController.text) -
-                                  double.parse(entryController.text)) *
-                              ns;
+                          int numberOfShares =
+                              (accountRisk / tradeRisk).round();
 
-                          setState(
-                            () {
-                              this.ps = ns;
-                              this.ratio =
-                                  '${totalRisk / totalRisk} : ${reward / totalRisk}';
-                            },
-                          );
+// Total risk with capital
+                          double totalRisk = numberOfShares *
+                              (double.parse(
+                                  (double.parse(entryController.text) -
+                                          double.parse(slController.text))
+                                      .toStringAsFixed(2)));
+
+// Total profit to be made
+                          double targetProfit = numberOfShares *
+                              (double.parse(
+                                  (double.parse(targetController.text) -
+                                          double.parse(entryController.text))
+                                      .toStringAsFixed(2)));
+
+//
+
                           showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Calculations'),
-                                content: Column(
-                                  children: [
-                                    Text('Number of Shares : ${this.ps}'),
-                                    Text(
-                                        'Risk To Reward ratio : ${this.ratio}'),
-                                  ],
+                                title: Center(child: Text('Calculations')),
+                                content: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Text(
+                                          'Leveraged Capital : $leverageBasedCapital'),
+                                      Text(
+                                          'Number of shares : $numberOfShares'),
+                                      Text('Total Risk Involved : $totalRisk'),
+                                      Text(
+                                          'Risk per Share : ${totalRisk / numberOfShares}'),
+                                      Text('Target profit :  $targetProfit'),
+                                      Text(
+                                          'risk to reward ratio : ${totalRisk / totalRisk} : ${targetProfit / totalRisk} ')
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -297,6 +333,17 @@ class _StockPSState extends State<StockPS> {
                             color: Colors.white),
                       ),
                     ),
+                  ),
+
+                  // Ad Unit
+
+                  Container(
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.amber.shade500),
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ],
               ),
