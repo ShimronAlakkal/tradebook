@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pron/tools/positionSize.dart';
+import 'package:pron/tools/futuresPS.dart';
+import 'package:pron/tools/stockPS.dart';
 import 'package:pron/tools/technicalAnalysis.dart';
 
 class Calculators extends StatefulWidget {
@@ -50,20 +51,12 @@ class _CalculatorsState extends State<Calculators> {
                   Colors.amber.shade400,
                   0),
 
-              // PS for the forex guys
-
-              tileItem(
-                  'forex',
-                  Icon(Icons.monetization_on_outlined, color: Colors.white),
-                  Colors.green.shade300,
-                  1),
-
               // PS for the futures buddies
               tileItem(
                   'futures',
                   Icon(Icons.query_stats_outlined, color: Colors.white),
                   Colors.indigo.shade300,
-                  2),
+                  1),
 
               // Label for the TA tools
               Align(
@@ -83,27 +76,34 @@ class _CalculatorsState extends State<Calculators> {
                   'standard Pivot Points',
                   Icon(Icons.line_style_rounded, color: Colors.white),
                   Colors.lime.shade300,
-                  3),
+                  2),
 
               // Fibonacci retracement tool
               tileItem(
                   'Fibo Pivot Points',
                   Icon(Icons.line_weight_rounded, color: Colors.white),
                   Colors.orange.shade300,
-                  4),
+                  3),
 
               // CPP tool
               tileItem(
                   'Camarilla Pivot Points',
                   Icon(Icons.straighten_rounded, color: Colors.white),
                   Colors.pink.shade300,
-                  5),
+                  4),
 
               // Denmark PP
               tileItem(
-                  'Denmark Pivot Points',
+                  'Denmark\'s Pivot Points',
                   Icon(Icons.add, color: Colors.white),
                   Colors.purple.shade300,
+                  5),
+
+              // Woodies PP
+              tileItem(
+                  'Woodie\'s Pivot Points',
+                  Icon(Icons.waterfall_chart_rounded, color: Colors.white),
+                  Colors.green.shade300,
                   6),
             ],
           ),
@@ -119,25 +119,24 @@ class _CalculatorsState extends State<Calculators> {
         onTap: () {
           if (pageIndex == 0) {
             // Stock PS
-            moveToPage(PositionSizer(index: 0));
+            moveToPage(StockPS());
           } else if (pageIndex == 1) {
-            // Forex PS
-            moveToPage(PositionSizer(index: 1));
-          } else if (pageIndex == 2) {
             // Futures PS
-            moveToPage(PositionSizer(index: 2));
-          } else if (pageIndex == 3) {
+            moveToPage(FuturesPS());
+          } else if (pageIndex == 2) {
             // standard Pivot points
-            moveToPage(TechnicalAnalysis(index: 0));
-          } else if (pageIndex == 4) {
-            // Fibo PP
-            moveToPage(TechnicalAnalysis(index: 1));
-          } else if (pageIndex == 5) {
-            // Camarilla PP
             moveToPage(TechnicalAnalysis(index: 2));
-          } else {
-            // Denmark PP
+          } else if (pageIndex == 3) {
+            // Fibo PP
             moveToPage(TechnicalAnalysis(index: 3));
+          } else if (pageIndex == 4) {
+            // Camarilla PP
+            moveToPage(TechnicalAnalysis(index: 4));
+          } else if (pageIndex == 5) {
+            // Denmark PP
+            moveToPage(TechnicalAnalysis(index: 5));
+          } else {
+            moveToPage(TechnicalAnalysis(index: 6));
           }
         },
         title: Text(
