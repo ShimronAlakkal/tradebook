@@ -1,5 +1,5 @@
 # AUM
-> a simple app to keep track of your assets and liabilities 
+> a simple app to keep track of your assets and liabilities and to use somr technical tools that might help you to take a profitable trade.
 
 ### Present Situation
 ```
