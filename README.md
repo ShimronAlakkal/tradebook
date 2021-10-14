@@ -3,9 +3,10 @@
 
 ### Present Situation
 ```
-1. checking out the math formulas needed
-2. Started developing the UI
-3. checking for more features
+1. changing the UI
+2. over with the cacl page
+3. models are set to be used 
+4. trade entry page is yet to be made.
 ```
 Wireframe :
 <table>
