@@ -283,17 +283,28 @@ class _StockPSState extends State<StockPS> {
                                           double.parse(entryController.text))
                                       .toStringAsFixed(2)));
 
-//
+// Rewars per share
+                          double rewardPerShare = double.parse(
+                              (double.parse(targetController.text) -
+                                      double.parse(entryController.text))
+                                  .toStringAsFixed(2));
 
                           showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Center(child: Text('Calculations')),
-                                content: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
+                                title: ListTile(
+                                  tileColor: Colors.deepPurple,
+                                  title: Center(
+                                    child: Text(
+                                      'Calculations',
+                                      style: TextStyle(
+                                          fontSize: 22, color: Colors.white),
+                                    ),
                                   ),
+                                ),
+                                content: Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.3,
                                   width:
@@ -311,15 +322,31 @@ class _StockPSState extends State<StockPS> {
                                           'Leveraged Capital : $leverageBasedCapital'),
                                       Text(
                                           'Number of shares : $numberOfShares'),
-                                      Text('Total Risk Involved : $totalRisk'),
+                                      Text(
+                                          'Total Risk Involved : ${totalRisk.toStringAsFixed(2)}'),
                                       Text(
                                           'Risk per Share : ${totalRisk / numberOfShares}'),
+                                      Text(
+                                          'Reward per Share : $rewardPerShare'),
                                       Text('Target profit :  $targetProfit'),
                                       Text(
-                                          'risk to reward ratio : ${totalRisk / totalRisk} : ${targetProfit / totalRisk} ')
+                                          'risk to reward ratio : ${totalRisk / totalRisk} : ${(targetProfit / totalRisk).toStringAsFixed(2)} ')
                                     ],
                                   ),
                                 ),
+                                actions: [
+                                  TextButton(
+                                    child: Text(
+                                      'Close',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
                               );
                             },
                           );
