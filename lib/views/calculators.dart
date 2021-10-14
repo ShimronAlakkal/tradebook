@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pron/tools/futuresPS.dart';
 import 'package:pron/tools/stockPS.dart';
 import 'package:pron/tools/PivotPoints.dart';
 
@@ -120,9 +119,6 @@ class _CalculatorsState extends State<Calculators> {
           if (pageIndex == 0) {
             // Stock PS
             moveToPage(StockPS());
-          } else if (pageIndex == 1) {
-            // Futures PS
-            moveToPage(FuturesPS());
           } else if (pageIndex == 2) {
             // standard Pivot points
             moveToPage(PivotPoints(

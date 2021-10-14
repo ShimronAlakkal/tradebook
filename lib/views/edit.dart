@@ -10,6 +10,9 @@ class Edit extends StatefulWidget {
 class _EditState extends State<Edit> {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       // Deposit or Withdraw button
       floatingActionButton: FloatingActionButton.extended(
@@ -31,16 +34,21 @@ class _EditState extends State<Edit> {
       body: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Colors.white24,
-              margin: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Text('Despoition type'),
-                  Text('Deposit'),
-                ],
+          return Container(
+            height: height * 0.1,
+            width: width,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            child: ListTile(
+              title: Text('Deposit'),
+              subtitle: Text('12/3/2222'),
+              trailing: Text('2132a'),
+              leading: Icon(
+                Icons.money_rounded,
               ),
             ),
           );

@@ -336,10 +336,16 @@ class _StockPSState extends State<StockPS> {
                                 ),
                                 actions: [
                                   TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.deepPurple.shade400),
+                                    ),
                                     child: Text(
                                       'Close',
                                       style: TextStyle(
                                         fontSize: 18,
+                                        color: Colors.white,
                                       ),
                                     ),
                                     onPressed: () {

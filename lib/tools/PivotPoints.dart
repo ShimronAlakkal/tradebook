@@ -169,19 +169,24 @@ class _PivotPointsState extends State<PivotPoints> {
 
                       Map<String, double> result =
                           _pivotpoints(index, high, low, close, open);
-                      debugPrint('okay til here');
-                      debugPrint('$result is the results ');
 
                       showDialog(
                         context: context,
+                        barrierDismissible: false,
+                        barrierColor: Colors.deepPurple.shade200,
                         builder: (context) {
                           return AlertDialog(
                             actions: [
                               TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.deepPurple.shade400),
+                                ),
                                 child: Text(
                                   'Close',
                                   style: TextStyle(
                                     fontSize: 18,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 onPressed: () {
@@ -200,17 +205,11 @@ class _PivotPointsState extends State<PivotPoints> {
                               ),
                             ),
                             content: Container(
-                              height: MediaQuery.of(context).size.height * 0.3,
+                              height: MediaQuery.of(context).size.height * 0.5,
                               width: MediaQuery.of(context).size.width * 0.8,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
-                              child: Column(
-                                children: [
-                                  Text('$result'),
-                                ],
-                              ),
+                              child: _formatDialog(result, index),
                             ),
                           );
                         },
@@ -293,6 +292,7 @@ class _PivotPointsState extends State<PivotPoints> {
       // woodies
       var p = (high + low + 2 * close) / 4;
       return {
+        'p': p,
         'r1': (2 * p) - low,
         'r2': p + high - low,
         'r3': high + 2 * (p - low),
@@ -334,6 +334,441 @@ class _PivotPointsState extends State<PivotPoints> {
         height: 0,
         width: 0,
       );
+    }
+  }
+
+  _formatDialog(Map<String, double> result, int index) {
+    switch (index) {
+      case 2:
+        //  results for spp
+        return ListView(
+          children: [
+            // p r1 r2 s1 s2
+            ListTile(
+              leading: Text(
+                'Resistance 2  : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Pivot Point : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['p']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        );
+        break;
+      case 3:
+// result for fibo pp
+        return ListView(
+          children: [
+            // p r1 r2 s1 s2
+            ListTile(
+              leading: Text(
+                'Resistance 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Pivot Point : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['p']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        );
+        break;
+      case 4:
+        // Camarilla pp
+        return ListView(
+          children: [
+            ListTile(
+              leading: Text(
+                'Resistance 4 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r4']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 4 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s4']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        );
+        break;
+      case 5:
+        // denmark pp
+        return ListView(
+          children: [
+            // p r1 r2 s1 s2
+            ListTile(
+              leading: Text(
+                'Resistance 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Pivot Point : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['p']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        );
+        break;
+
+      case 6:
+        // woodies pp
+        return ListView(
+          children: [
+            // p r1 r2 s1 s2
+            ListTile(
+              leading: Text(
+                'Resistance 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Resistance 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['r1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Pivot Point : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['p']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 1 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s1']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 2 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s2']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Support 3 : ',
+                style: TextStyle(fontSize: 20),
+              ),
+              title: Text(
+                '${result['s3']}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ],
+        );
+        break;
     }
   }
 }

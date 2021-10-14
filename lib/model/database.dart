@@ -7,14 +7,20 @@ class Dbase {
   static final db = 'db1.db';
   static final version = 1;
 
-// The table parts
-  static final tableName = 'tradebook';
+// The table for trades
+  static final tradesTable = 'tradebook';
   static final id = 'id';
   static final scrip = 'scrip';
   static final entry = 'entry';
   static final qty = 'qty';
   static final bs = 'buyorsell'; //if 1 buy elif 0 sell
   static final ls = 'longorshort'; // if 1 long elif 0 short
+
+  // The table for
+  static final transactionTable = 'transactions';
+  static final date = 'date';
+  static final amount = 'amount';
+  static final type = 'type'; // 1 = deposit  , 0 = withdraw
 
 // make the class a singleton class
   Dbase._privateConstructor();
@@ -38,8 +44,9 @@ class Dbase {
   }
 
   Future _populateDB(Database db, int version) async {
+    // Creating a database for the main notes
     db.query('''
-    CREATE TABLE $tableName (
+    CREATE TABLE $tradesTable (
       $id INTEGER AUTO_INCREMENT PRIMARY KEY ,
       $entry DOUBLE NOT NULL,
       $scrip TEXT NOT NULL,
@@ -47,26 +54,35 @@ class Dbase {
       $bs INTEGER NOT NULL,
       $ls INTEGER NOT NULL )
     ''');
+
+    // Ceating the table for money transatcionc
+    db.query('''
+      CREATE TABLE $tradesTable (
+        $id  INTEGER AUTO_INCREMENT PRIMARY KEY ,
+        $amount DOUBLE NOT NULL,
+        $date DATE NOT NULL,
+        $type INTEGER NOT NULL,
+      )
+      ''');
   }
 
-  Future<int> insert(Map<String, dynamic> row) async {
+  Future<int> insert(Map<String, dynamic> row, String table) async {
     Database db = instance._database;
-    return await db.insert(tableName, row);
+    return await db.insert(table, row);
   }
 
-  Future<List<Map<String, dynamic>>> fetch() async {
+  Future<List<Map<String, dynamic>>> fetch(String table) async {
     Database db = instance._database;
-    return await db.query(tableName);
+    return await db.query(table);
   }
 
-  Future<int> update(Map<String, dynamic> row) async {
+  Future<int> update(Map<String, dynamic> row, String table, int id) async {
     Database db = instance._database;
-    return await db
-        .update(tableName, row, where: '$id = ?', whereArgs: [row[id]]);
+    return await db.update(table, row, where: '$id = ?', whereArgs: [row[id]]);
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete(int id, String table) async {
     Database db = instance._database;
-    return await db.delete(tableName, where: '$id = ?', whereArgs: [id]);
+    return await db.delete(table, where: '$id = ?', whereArgs: [id]);
   }
 }
