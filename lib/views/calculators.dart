@@ -21,7 +21,8 @@ class _CalculatorsState extends State<Calculators> {
               // Ad Unit
 
               Container(
-                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                margin: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 10, top: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
                     color: Colors.amber.shade500),

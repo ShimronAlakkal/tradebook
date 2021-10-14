@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pron/views/tradeEntry.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -19,7 +20,14 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color(0xffAB9AFF),
         onPressed: () {
-          debugPrint('Height = $height ,  width =  $width');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return TradeEntry();
+              },
+            ),
+          );
         },
         label: Text(
           'add',
