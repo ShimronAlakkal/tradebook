@@ -52,13 +52,16 @@ class _PivotPointsState extends State<PivotPoints> {
             children: [
               // High Field
               TextFormField(
+                textInputAction: TextInputAction.next,
+
                 // ignore: missing_return
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'This field cannot be empty';
                   }
                 },
-                maxLines: 1,
+                maxLines: 1, autofocus: true,
+
                 cursorWidth: 3,
                 decoration: InputDecoration(
                   hintText: ' High Price',
@@ -82,6 +85,8 @@ class _PivotPointsState extends State<PivotPoints> {
 
               // Low Field
               TextFormField(
+                textInputAction: TextInputAction.next,
+
                 // ignore: missing_return
                 validator: (value) {
                   if (value.isEmpty) {
@@ -92,7 +97,8 @@ class _PivotPointsState extends State<PivotPoints> {
                   }
                 },
                 maxLines: 1,
-                cursorWidth: 3,
+                cursorWidth: 3, autofocus: true,
+
                 decoration: InputDecoration(
                   hintText: ' Low Price',
                   hintStyle: TextStyle(
@@ -115,6 +121,11 @@ class _PivotPointsState extends State<PivotPoints> {
 
               // Close field
               TextFormField(
+                textInputAction: this.index == 5
+                    ? TextInputAction.next
+                    : TextInputAction.done,
+
+                autofocus: true,
                 // ignore: missing_return
                 validator: (value) {
                   if (value.isEmpty) {
@@ -306,6 +317,8 @@ class _PivotPointsState extends State<PivotPoints> {
   Widget _isDenmark(int index) {
     if (index == 5) {
       return TextFormField(
+        autofocus: true,
+        textInputAction: TextInputAction.done,
         // ignore: missing_return
         validator: (value) {
           if (value.isEmpty) {

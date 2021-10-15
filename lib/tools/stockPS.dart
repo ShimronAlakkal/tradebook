@@ -59,6 +59,8 @@ class _StockPSState extends State<StockPS> {
                 children: [
                   // Capital Field
                   TextFormField(
+                    autofocus: true,
+
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -78,6 +80,7 @@ class _StockPSState extends State<StockPS> {
                     ),
                     controller: capitalContorller,
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -89,6 +92,8 @@ class _StockPSState extends State<StockPS> {
 
                   // Leverage on capital
                   TextFormField(
+                    autofocus: true,
+
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -109,7 +114,7 @@ class _StockPSState extends State<StockPS> {
                     controller: leverageController,
                     keyboardType: TextInputType.number,
                     cursorColor: Colors.deepPurple.shade300,
-                    cursorHeight: 28,
+                    cursorHeight: 28, textInputAction: TextInputAction.next,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
@@ -118,6 +123,8 @@ class _StockPSState extends State<StockPS> {
 
                   // Risk Field
                   TextFormField(
+                    autofocus: true,
+
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -140,6 +147,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textInputAction: TextInputAction.next,
                   ),
                   SizedBox(
                     height: 20,
@@ -156,7 +164,8 @@ class _StockPSState extends State<StockPS> {
                         return 'Entry Price cannot be over capital';
                       }
                     },
-                    maxLines: 1,
+                    maxLines: 1, autofocus: true,
+
                     cursorWidth: 3,
                     decoration: InputDecoration(
                       hintText: ' Entry Price',
@@ -172,6 +181,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textInputAction: TextInputAction.next,
                   ),
                   SizedBox(
                     height: 20,
@@ -179,6 +189,9 @@ class _StockPSState extends State<StockPS> {
 
                   // SL
                   TextFormField(
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
+
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -211,6 +224,8 @@ class _StockPSState extends State<StockPS> {
 
                   // Target
                   TextFormField(
+                    textInputAction: TextInputAction.done,
+                    autofocus: true,
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
