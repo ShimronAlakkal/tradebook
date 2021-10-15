@@ -1,4 +1,4 @@
-# AUM
+# Fraction ( free version about to be in open-beta-release by the next two weeks ) 
 > a simple app to keep track of your assets and liabilities and to use somr technical tools that might help you to take a profitable trade.
 
 ### Present Situation
@@ -6,7 +6,11 @@
 1. changing the UI
 2. over with the cacl page
 3. models are set to be used 
-4. trade entry page is yet to be made.
+4. trade entry page is mostly done
+5. Linking local db remain
+6. Major UI tweeks comin up
+7. Drawer needs to be done 
+8. "Export and Import notes" are to be decided for the first version
 ```
 Wireframe :
 <table>
