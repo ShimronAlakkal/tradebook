@@ -108,128 +108,134 @@ class _TradeEntryState extends State<TradeEntry> {
           ),
 
           // Main UI
-          Stepper(
-            currentStep: step,
-            controlsBuilder: (context, details) {
-              return Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Colors.deepPurple.shade400),
-                      ),
-                      onPressed: () {
-                        // ignore: unnecessary_statements
-                        details.onStepContinue();
+          Theme(
+            data: ThemeData(
+              colorScheme:
+                  Theme.of(context).colorScheme.copyWith(primary: Colors.amber),
+            ),
+            child: Stepper(
+              currentStep: step,
+              controlsBuilder: (context, details) {
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.deepPurple.shade400),
+                        ),
+                        onPressed: () {
+                          // ignore: unnecessary_statements
+                          details.onStepContinue();
 
-                        //
-//
-// ************************************************   The main function that links the database to the UI goes here
-//  the funcrion is likelt to be db.insert()
-//
-                        //
-                      },
-                      child: Text(
-                        this.step == _getSteps(height, width).length - 1
-                            ? '       SAVE       '
-                            : '       Next       ',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
+                          //
+                          //
+                          // ************************************************   The main function that links the database to the UI goes here
+                          //  the funcrion is likelt to be db.insert(a)
+                          //
+                          //
+                        },
+                        child: Text(
+                          this.step == _getSteps(height, width).length - 1
+                              ? '       SAVE       '
+                              : '       Next       ',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  OutlinedButton(
-                    style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.cyan.shade50),
-                    ),
-                    onPressed: () {
-                      details.onStepCancel();
-                    },
-                    child: Text(
-                      this.step == _getSteps(height, width).length - 1
-                          ? '       Edit       '
-                          : '       Back       ',
-                      style: TextStyle(
-                        color: Colors.grey.shade900,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
+                    OutlinedButton(
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.cyan.shade50),
+                      ),
+                      onPressed: () {
+                        details.onStepCancel();
+                      },
+                      child: Text(
+                        this.step == _getSteps(height, width).length - 1
+                            ? '       Edit       '
+                            : '       Back       ',
+                        style: TextStyle(
+                          color: Colors.grey.shade900,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-            onStepTapped: (nstep) {
-              setState(
-                () {
-                  step = nstep;
-                },
-              );
-            },
+                  ],
+                );
+              },
+              onStepTapped: (nstep) {
+                setState(
+                  () {
+                    step = nstep;
+                  },
+                );
+              },
 
-            onStepCancel: step == 0
-                ? null
-                : () => setState(
-                      () {
-                        step--;
-                      },
-                    ),
+              onStepCancel: step == 0
+                  ? null
+                  : () => setState(
+                        () {
+                          step--;
+                        },
+                      ),
 
-            onStepContinue: () {
-              if (this.step != _getSteps(height, width).length - 1) {
-                // The first page
-                if (this.step == 0) {
-                  // IS the stock name input by the user?
-                  if (scripController.text.isNotEmpty && this.date != null) {
+              onStepContinue: () {
+                if (this.step != _getSteps(height, width).length - 1) {
+                  // The first page
+                  if (this.step == 0) {
+                    // IS the stock name input by the user?
+                    if (scripController.text.isNotEmpty && this.date != null) {
+                      setState(() {
+                        step++;
+                      });
+                    } else if (scripController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 3),
+                          content: Text('Please complete the above field'),
+                        ),
+                      );
+                    } else if (this.date == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 3),
+                          content: Text('Please set a date'),
+                        ),
+                      );
+                    }
+
+                    // The third page
+                  } else if (this.step == 2) {
+                    if (entryController.text.isNotEmpty &&
+                        qtyController.text.isNotEmpty &&
+                        slController.text.isNotEmpty) {
+                      _logicOfEntrySL(context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 3),
+                          content: Text('Please complete the above fields'),
+                        ),
+                      );
+                    }
+                  } else {
                     setState(() {
                       step++;
                     });
-                  } else if (scripController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        duration: Duration(seconds: 3),
-                        content: Text('Please complete the above field'),
-                      ),
-                    );
-                  } else if (this.date == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        duration: Duration(seconds: 3),
-                        content: Text('Please set a date'),
-                      ),
-                    );
                   }
-
-                  // The third page
-                } else if (this.step == 2) {
-                  if (entryController.text.isNotEmpty &&
-                      qtyController.text.isNotEmpty &&
-                      slController.text.isNotEmpty) {
-                    _logicOfEntrySL(context);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        duration: Duration(seconds: 3),
-                        content: Text('Please complete the above fields'),
-                      ),
-                    );
-                  }
-                } else {
-                  setState(() {
-                    step++;
-                  });
                 }
-              }
-            },
+              },
 
-            // Steps
-            steps: _getSteps(height, width),
+              // Steps
+              steps: _getSteps(height, width),
+            ),
           ),
         ],
       ),
@@ -255,7 +261,8 @@ class _TradeEntryState extends State<TradeEntry> {
               TextFormField(
                 controller: scripController,
                 // ignore: missing_return
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
+                autofocus: false,
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
