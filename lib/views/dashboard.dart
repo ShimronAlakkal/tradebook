@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pron/model/database.dart';
 import 'package:pron/views/tradeEntry.dart';
 
 class Dashboard extends StatefulWidget {
@@ -9,6 +10,17 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  List<Map<String, dynamic>> items = [];
+  Dbase _helper;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _helper = Dbase.instance;
+    });
+    _refreshStorageData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -20,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color(0xffAB9AFF),
         onPressed: () {
-          Navigator.push(
+          var res = Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
@@ -28,6 +40,10 @@ class _DashboardState extends State<Dashboard> {
               },
             ),
           );
+
+          if (res == true) {
+            _refreshStorageData();
+          }
         },
         label: Text(
           'add',
@@ -128,25 +144,29 @@ class _DashboardState extends State<Dashboard> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
             ),
-            child: PageView.builder(
-              pageSnapping: true,
-              physics: BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Color(0xff6C61B8),
+            child: this.items.length == 0
+                ? Center(
+                    child: Text('Add your first trade'),
+                  )
+                : PageView.builder(
+                    pageSnapping: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: this.items.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          color: Color(0xff6C61B8),
+                        ),
+                        height: height * 0.3,
+                        width: width,
+                        child: Center(
+                          child: Text('$index'),
+                        ),
+                      );
+                    },
                   ),
-                  height: height * 0.3,
-                  width: width,
-                  child: Center(
-                    child: Text('$index'),
-                  ),
-                );
-              },
-            ),
           ),
         ],
       ),
@@ -181,5 +201,12 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
     );
+  }
+
+  _refreshStorageData() async {
+    List<Map<String, dynamic>> item = await _helper.fetch(Dbase.tradesTable);
+    setState(() {
+      this.items = item;
+    });
   }
 }

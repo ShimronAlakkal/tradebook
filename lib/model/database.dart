@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -13,8 +15,9 @@ class Dbase {
   static final scrip = 'scrip';
   static final entry = 'entry';
   static final qty = 'qty';
+  static final sl = 'sl';
   static final bs = 'buyorsell'; //if 1 buy elif 0 sell
-  static final ls = 'longorshort'; // if 1 long elif 0 short
+  static final ls = 'longorshort'; // 0 = intraday , 1 = swing , 2 = delivery
 
   // The table for
   static final transactionTable = 'transactions';
@@ -33,6 +36,7 @@ class Dbase {
       return _database;
     } else {
       _database = await _initDB();
+      return _database;
     }
   }
 
@@ -45,10 +49,12 @@ class Dbase {
 
   Future _populateDB(Database db, int version) async {
     // Creating a database for the main notes
-    db.query('''
+    db.execute('''
     CREATE TABLE $tradesTable (
-      $id INTEGER AUTO_INCREMENT PRIMARY KEY ,
+      $id INTEGER AUTOINCREMENT PRIMARY KEY ,
       $entry DOUBLE NOT NULL,
+      $date DATE NOT NULL,
+      $sl DOUBLE NOT NULL,
       $scrip TEXT NOT NULL,
       $qty DOUBLE NOT NULL,
       $bs INTEGER NOT NULL,
@@ -56,8 +62,8 @@ class Dbase {
     ''');
 
     // Ceating the table for money transatcionc
-    db.query('''
-      CREATE TABLE $tradesTable (
+    db.execute('''
+      CREATE TABLE $transactionTable (
         $id  INTEGER AUTO_INCREMENT PRIMARY KEY ,
         $amount DOUBLE NOT NULL,
         $date DATE NOT NULL,
@@ -66,7 +72,7 @@ class Dbase {
       ''');
   }
 
-  Future<int> insert(Map<String, dynamic> row, String table) async {
+  Future<int> insertToTable(Map<String, dynamic> row, String table) async {
     Database db = instance._database;
     return await db.insert(table, row);
   }
@@ -76,12 +82,13 @@ class Dbase {
     return await db.query(table);
   }
 
-  Future<int> update(Map<String, dynamic> row, String table, int id) async {
+  Future<int> updateTable(
+      Map<String, dynamic> row, String table, int id) async {
     Database db = instance._database;
     return await db.update(table, row, where: '$id = ?', whereArgs: [row[id]]);
   }
 
-  Future<int> delete(int id, String table) async {
+  Future<int> deleteFromTable(int id, String table) async {
     Database db = instance._database;
     return await db.delete(table, where: '$id = ?', whereArgs: [id]);
   }

@@ -1,6 +1,4 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:flutter/cupertino.dart';
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 
@@ -13,16 +11,16 @@ class TradeEntry extends StatefulWidget {
   // this.scrip,
   // this.qty,
   // this.sl,
-  // this.type});
+  // // this.type});
 
-  bool newTrade;
-  String scrip;
-  String date;
-  int type; // Buy or sell => 0 or 1
-  int positoin; // Intraday or delivery or swing = > 0 or 1 or 2
-  double entry;
-  double sl;
-  int qty;
+  // bool newTrade;
+  // String scrip;
+  // String date;
+  // int type; // Buy or sell => 0 or 1
+  // int positoin; // Intraday or delivery or swing = > 0 or 1 or 2
+  // double entry;
+  // double sl;
+  // int qty;
 
   @override
   _TradeEntryState createState() => _TradeEntryState(
@@ -69,11 +67,13 @@ class _TradeEntryState extends State<TradeEntry> {
   List<bool> isSelectedForBS = [true, false];
   List<bool> isSelectedForPosition = [true, false, false];
 
+  Dbase _helper;
   @override
   void initState() {
-    Dbase db;
-
     super.initState();
+    setState(() {
+      _helper = Dbase.instance;
+    });
   }
 
   @override
@@ -110,8 +110,9 @@ class _TradeEntryState extends State<TradeEntry> {
           // Main UI
           Theme(
             data: ThemeData(
-              colorScheme:
-                  Theme.of(context).colorScheme.copyWith(primary: Colors.amber),
+              colorScheme: Theme.of(context)
+                  .colorScheme
+                  .copyWith(primary: Colors.amber, secondary: Colors.red),
             ),
             child: Stepper(
               currentStep: step,
@@ -125,16 +126,8 @@ class _TradeEntryState extends State<TradeEntry> {
                           backgroundColor: MaterialStateProperty.all(
                               Colors.deepPurple.shade400),
                         ),
-                        onPressed: () {
-                          // ignore: unnecessary_statements
+                        onPressed: () async {
                           details.onStepContinue();
-
-                          //
-                          //
-                          // ************************************************   The main function that links the database to the UI goes here
-                          //  the funcrion is likelt to be db.insert(a)
-                          //
-                          //
                         },
                         child: Text(
                           this.step == _getSteps(height, width).length - 1
@@ -230,6 +223,9 @@ class _TradeEntryState extends State<TradeEntry> {
                       step++;
                     });
                   }
+                } else if (this.step == _getSteps(height, width).length - 1) {
+                  _addToDB();
+                  Navigator.pop(context, true);
                 }
               },
 
@@ -262,7 +258,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 controller: scripController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.done,
-                autofocus: false,
+                autofocus: false, showCursor: false,
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
@@ -594,5 +590,24 @@ class _TradeEntryState extends State<TradeEntry> {
         this.step++;
       });
     }
+  }
+
+  _addToDB() async {
+    await _helper.insertToTable({
+      Dbase.entry:
+          double.parse(double.parse(entryController.text).toStringAsFixed(2)),
+      Dbase.date: '${this.date.year}/${this.date.month}/${this.date.day}',
+      Dbase.sl:
+          double.parse(double.parse(slController.text).toStringAsFixed(2)),
+      Dbase.scrip: scripController.text,
+      Dbase.qty:
+          double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+      Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+      Dbase.ls: isSelectedForPosition[0]
+          ? 0
+          : isSelectedForPosition[1]
+              ? 1
+              : 2,
+    }, Dbase.tradesTable);
   }
 }
