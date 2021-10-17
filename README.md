@@ -18,6 +18,7 @@ Wireframe :
     <td>Dashboard</td>
      <td>Calculators</td>
      <td>Edit</td>
+    <td>Trade Log</td>
   </tr>
   <tr>
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png" width=270 height=480></td>
