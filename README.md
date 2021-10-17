@@ -23,6 +23,7 @@ Wireframe :
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png" width=270 height=480></td>
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s2.png" width=270 height=480></td>
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s3.png" width=270 height=480></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s4.png" width=270 height=480></td>
   </tr>
  </table>
 
