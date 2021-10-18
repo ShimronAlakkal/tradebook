@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pron/theme/theme.dart';
-import 'package:pron/views/Home.dart';
+import 'package:pron/views/home.dart';
 
 void main() {
   runApp(
@@ -9,7 +9,7 @@ void main() {
       theme: Palette.lightTheme,
       darkTheme: Palette.darkTheme,
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: const Home(),
     ),
   );
 }

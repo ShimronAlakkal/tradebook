@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Transactions extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
   const Transactions();
 
   @override
@@ -10,6 +11,6 @@ class Transactions extends StatefulWidget {
 class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

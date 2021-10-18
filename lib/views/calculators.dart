@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pron/tools/stockPS.dart';
-import 'package:pron/tools/PivotPoints.dart';
+import 'package:pron/tools/stockps.dart';
+import 'package:pron/tools/pivot_points.dart';
 
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);
@@ -31,11 +31,10 @@ class _CalculatorsState extends State<Calculators> {
               ),
 
               // Label for the PS
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Text(
                     'Position Sizing Calculators',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -47,7 +46,7 @@ class _CalculatorsState extends State<Calculators> {
 
               tileItem(
                   'stocks',
-                  Icon(Icons.business_outlined, color: Colors.white),
+                  const Icon(Icons.business_outlined, color: Colors.white),
                   Colors.amber.shade400,
                   0),
 
@@ -59,11 +58,10 @@ class _CalculatorsState extends State<Calculators> {
               //     1),
 
               // Label for the TA tools
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Text(
                     'Technical analysis tools',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -74,35 +72,36 @@ class _CalculatorsState extends State<Calculators> {
               // Standard PP
               tileItem(
                   'standard Pivot Points',
-                  Icon(Icons.line_style_rounded, color: Colors.white),
+                  const Icon(Icons.line_style_rounded, color: Colors.white),
                   Colors.lime.shade300,
                   2),
 
               // Fibonacci retracement tool
               tileItem(
                   'Fibonacci Pivot Points',
-                  Icon(Icons.line_weight_rounded, color: Colors.white),
+                  const Icon(Icons.line_weight_rounded, color: Colors.white),
                   Colors.orange.shade300,
                   3),
 
               // CPP tool
               tileItem(
                   'Camarilla Pivot Points',
-                  Icon(Icons.straighten_rounded, color: Colors.white),
+                  const Icon(Icons.straighten_rounded, color: Colors.white),
                   Colors.pink.shade300,
                   4),
 
               // Denmark PP
               tileItem(
                   'Denmark\'s Pivot Points',
-                  Icon(Icons.add, color: Colors.white),
+                  const Icon(Icons.add, color: Colors.white),
                   Colors.purple.shade300,
                   5),
 
               // Woodies PP
               tileItem(
                   'Woodie\'s Pivot Points',
-                  Icon(Icons.waterfall_chart_rounded, color: Colors.white),
+                  const Icon(Icons.waterfall_chart_rounded,
+                      color: Colors.white),
                   Colors.green.shade300,
                   6),
             ],
@@ -119,33 +118,33 @@ class _CalculatorsState extends State<Calculators> {
         onTap: () {
           if (pageIndex == 0) {
             // Stock PS
-            moveToPage(StockPS());
+            moveToPage(const StockPS());
           } else if (pageIndex == 2) {
             // standard Pivot points
-            moveToPage(PivotPoints(
+            moveToPage(const PivotPoints(
               index: 2,
               title: 'Standard Pivot Points',
             ));
           } else if (pageIndex == 3) {
             // Fibo PP
-            moveToPage(PivotPoints(
+            moveToPage(const PivotPoints(
               index: 3,
               title: 'Fibonacci Pivot Points',
             ));
           } else if (pageIndex == 4) {
             // Camarilla PP
-            moveToPage(PivotPoints(
+            moveToPage(const PivotPoints(
               index: 4,
               title: 'Camarilla Pivot Points',
             ));
           } else if (pageIndex == 5) {
             // Denmark PP
-            moveToPage(PivotPoints(
+            moveToPage(const PivotPoints(
               index: 5,
               title: 'Denmark\'s Pivot Point',
             ));
           } else {
-            moveToPage(PivotPoints(
+            moveToPage(const PivotPoints(
               index: 6,
               title: 'Woodie\'s Pivot Points',
             ));
@@ -153,7 +152,7 @@ class _CalculatorsState extends State<Calculators> {
         },
         title: Text(
           title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
         leading: Container(
           decoration: BoxDecoration(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class Palette {
   static final lightTheme = ThemeData(
-    backgroundColor: Color(0xffE5E5E5),
-    primaryColor: Color(0xff474A2C),
-    colorScheme: ColorScheme.light(),
-    iconTheme: IconThemeData(
+    backgroundColor: const Color(0xffE5E5E5),
+    primaryColor: const Color(0xff474A2C),
+    colorScheme: const ColorScheme.light(),
+    iconTheme: const IconThemeData(
       color: Colors.white,
       size: 25,
     ),
@@ -13,8 +13,8 @@ class Palette {
 
   static final darkTheme = ThemeData(
     backgroundColor: Colors.grey.shade900,
-    colorScheme: ColorScheme.dark(),
-    iconTheme: IconThemeData(
+    colorScheme: const ColorScheme.dark(),
+    iconTheme: const IconThemeData(
       color: Colors.white,
       size: 25,
     ),

@@ -1,5 +1,6 @@
 // @dart=2.9
 
+// ignore_for_file: prefer_const_declarations
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';

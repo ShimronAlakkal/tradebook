@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
-import 'package:pron/views/tradeEntry.dart';
+import 'package:pron/views/trade_entry.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -30,13 +30,13 @@ class _DashboardState extends State<Dashboard> {
       // Add button
 
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xffAB9AFF),
+        backgroundColor: const Color(0xffAB9AFF),
         onPressed: () {
           var res = Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
-                return TradeEntry();
+                return const TradeEntry();
               },
             ),
           );
@@ -45,12 +45,12 @@ class _DashboardState extends State<Dashboard> {
             _refreshStorageData();
           }
         },
-        label: Text(
+        label: const Text(
           'add',
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 19, color: Colors.white),
         ),
-        icon: Icon(
+        icon: const Icon(
           Icons.add,
           color: Colors.white,
           size: 25,
@@ -64,28 +64,29 @@ class _DashboardState extends State<Dashboard> {
           Container(
             height: height * 0.1,
             width: width,
-            margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 4),
-            color: Color(0xff4E60FF),
+            margin:
+                const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 4),
+            color: const Color(0xff4E60FF),
           ),
 
           //  Total investment
-          dashLists(height * 0.09, width, Color(0xff223A32),
+          dashLists(height * 0.09, width, const Color(0xff223A32),
               'Account balance  - ', '\$234'),
 
           //  Total asset under management
-          dashLists(height * 0.09, width, Color(0xff223A32), 'Total Investment',
-              '\$232'),
+          dashLists(height * 0.09, width, const Color(0xff223A32),
+              'Total Investment', '\$232'),
 
           // Position final
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
 //  The icon indicating the position trend
                 Expanded(
                   flex: 1,
                   child: Container(
-                    margin: EdgeInsets.only(right: 10, left: 10),
+                    margin: const EdgeInsets.only(right: 10, left: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.cyan.shade300,
@@ -106,9 +107,10 @@ class _DashboardState extends State<Dashboard> {
                   flex: 3,
                   child: Container(
                     height: height * 0.08,
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    padding:
-                        EdgeInsets.only(left: 15, right: 25, top: 5, bottom: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 25, top: 5, bottom: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.grey.shade200,
@@ -116,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
-                      children: [
+                      children: const [
                         Text(
                           'Position',
                           style: TextStyle(color: Colors.black87, fontSize: 22),
@@ -140,24 +142,25 @@ class _DashboardState extends State<Dashboard> {
           Container(
             height: height * 0.3,
             width: width,
-            margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 8),
+            margin:
+                const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
             ),
-            child: this.items.length == 0
-                ? Center(
+            child: items.isEmpty
+                ? const Center(
                     child: Text('Add your first trade'),
                   )
                 : PageView.builder(
                     pageSnapping: true,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: this.items.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: items.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
-                          color: Color(0xff6C61B8),
+                          color: const Color(0xff6C61B8),
                         ),
                         height: height * 0.3,
                         width: width,
@@ -177,8 +180,8 @@ class _DashboardState extends State<Dashboard> {
     return Container(
       height: height,
       width: width,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      padding: EdgeInsets.only(left: 15, right: 25, top: 5, bottom: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.only(left: 15, right: 25, top: 5, bottom: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: color,
@@ -189,11 +192,11 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Text(
             t1,
-            style: TextStyle(color: Colors.white, fontSize: 22),
+            style: const TextStyle(color: Colors.white, fontSize: 22),
           ),
           Text(
             t2,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               color: Colors.lightGreenAccent,
             ),
@@ -206,7 +209,7 @@ class _DashboardState extends State<Dashboard> {
   _refreshStorageData() async {
     List<Map<String, dynamic>> item = await _helper.fetch(Dbase.tradesTable);
     setState(() {
-      this.items = item;
+      items = item;
     });
   }
 }

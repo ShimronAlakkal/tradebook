@@ -16,14 +16,14 @@ class _EditState extends State<Edit> {
     return Scaffold(
       // Deposit or Withdraw button
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xffAB9AFF),
+        backgroundColor: const Color(0xffAB9AFF),
         onPressed: () {},
-        label: Text(
+        label: const Text(
           'deposit / withdraw',
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 19, color: Colors.white),
         ),
-        icon: Icon(
+        icon: const Icon(
           Icons.add,
           color: Colors.white,
           size: 25,
@@ -43,7 +43,7 @@ class _EditState extends State<Edit> {
             ),
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
-            child: ListTile(
+            child: const ListTile(
               title: Text('Deposit'),
               subtitle: Text('12/3/2222'),
               trailing: Text('2132a'),
