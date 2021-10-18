@@ -30,12 +30,12 @@ class Dbase {
   Dbase._privateConstructor();
   static final Dbase instance = Dbase._privateConstructor();
 
-  Database _database;
+  Database _database = new Database();
   Future get database async {
     // ignore: unnecessary_null_comparison
     if (_database != null) {
       return _database;
-    } else {
+    } else if(_database == new Database() ) {
       _database = await _initDB();
       return _database;
     }
