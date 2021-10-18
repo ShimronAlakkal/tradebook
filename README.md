@@ -1,4 +1,4 @@
-# Fraction ( free version about to be in open-beta-release by the next two weeks ) 
+# Fraction (test branch)
 > a simple app to keep track of your assets and liabilities and to use somr technical tools that might help you to take a profitable trade.
 
 ### Present Situation
