@@ -14,28 +14,24 @@ class Dbase {
   static final tradesTable = 'tradebook';
   static final id = 'id';
   static final scrip = 'scrip';
+  static const date = 'date';
+
   static final entry = 'entry';
   static final qty = 'qty';
   static final sl = 'sl';
   static final bs = 'buyorsell'; //if 1 buy elif 0 sell
   static final ls = 'longorshort'; // 0 = intraday , 1 = swing , 2 = delivery
 
-  // The table for
-  static final transactionTable = 'transactions';
-  static final date = 'date';
-  static final amount = 'amount';
-  static final type = 'type'; // 1 = deposit  , 0 = withdraw
-
 // make the class a singleton class
   Dbase._privateConstructor();
   static final Dbase instance = Dbase._privateConstructor();
 
-  Database _database = new Database();
+  Database _database;
   Future get database async {
     // ignore: unnecessary_null_comparison
     if (_database != null) {
       return _database;
-    } else if(_database == new Database() ) {
+    } else {
       _database = await _initDB();
       return _database;
     }
@@ -50,9 +46,9 @@ class Dbase {
 
   Future _populateDB(Database db, int version) async {
     // Creating a database for the main notes
-    db.execute('''
+    return await db.execute('''
     CREATE TABLE $tradesTable (
-      $id INTEGER AUTOINCREMENT PRIMARY KEY ,
+      $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
       $date DATE NOT NULL,
       $sl DOUBLE NOT NULL,
@@ -61,36 +57,27 @@ class Dbase {
       $bs INTEGER NOT NULL,
       $ls INTEGER NOT NULL )
     ''');
-
-    // Ceating the table for money transatcionc
-    db.execute('''
-      CREATE TABLE $transactionTable (
-        $id  INTEGER AUTO_INCREMENT PRIMARY KEY ,
-        $amount DOUBLE NOT NULL,
-        $date DATE NOT NULL,
-        $type INTEGER NOT NULL,
-      )
-      ''');
   }
 
-  Future<int> insertToTable(Map<String, dynamic> row, String table) async {
-    Database db = instance._database;
-    return await db.insert(table, row);
+  Future<int> insertToTrades(Map<String, dynamic> row) async {
+    Database db = await database;
+
+    return await db.insert(tradesTable, row);
   }
 
-  Future<List<Map<String, dynamic>>> fetch(String table) async {
-    Database db = instance._database;
-    return await db.query(table);
+  Future<List<Map<String, dynamic>>> fetchTrades() async {
+    Database db = await database;
+    return await db.query(tradesTable);
   }
 
-  Future<int> updateTable(
-      Map<String, dynamic> row, String table, int id) async {
-    Database db = instance._database;
-    return await db.update(table, row, where: '$id = ?', whereArgs: [row[id]]);
+  Future<int> updateTable(Map<String, dynamic> row, int id) async {
+    Database db = await database;
+    return await db
+        .update(tradesTable, row, where: '$id = ?', whereArgs: [row[id]]);
   }
 
-  Future<int> deleteFromTable(int id, String table) async {
-    Database db = instance._database;
-    return await db.delete(table, where: '$id = ?', whereArgs: [id]);
+  Future<int> deleteFromTable(int id) async {
+    Database db = await database;
+    return await db.delete(tradesTable, where: '$id = ?', whereArgs: [id]);
   }
 }

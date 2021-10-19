@@ -31,8 +31,8 @@ class _DashboardState extends State<Dashboard> {
 
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color(0xffAB9AFF),
-        onPressed: () {
-          var res = Navigator.push(
+        onPressed: () async {
+          bool res = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
@@ -41,7 +41,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           );
 
-          if (res == true) {
+          if (res) {
             _refreshStorageData();
           }
         },
@@ -165,7 +165,7 @@ class _DashboardState extends State<Dashboard> {
                         height: height * 0.3,
                         width: width,
                         child: Center(
-                          child: Text('$index'),
+                          child: Text('${items[index]}'),
                         ),
                       );
                     },
@@ -207,7 +207,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   _refreshStorageData() async {
-    List<Map<String, dynamic>> item = await _helper.fetch(Dbase.tradesTable);
+    List<Map<String, dynamic>> item = await _helper.fetchTrades();
     setState(() {
       items = item;
     });

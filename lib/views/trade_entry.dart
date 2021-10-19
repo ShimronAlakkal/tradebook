@@ -4,58 +4,13 @@ import 'package:pron/model/database.dart';
 
 class TradeEntry extends StatefulWidget {
   const TradeEntry({Key key}) : super(key: key);
-  // {this.newTrade,
-  // this.entry,
-  // this.date,
-  // this.positoin,
-  // this.scrip,
-  // this.qty,
-  // this.sl,
-  // // this.type});
-
-  // bool newTrade;
-  // String scrip;
-  // String date;
-  // int type; // Buy or sell => 0 or 1
-  // int positoin; // Intraday or delivery or swing = > 0 or 1 or 2
-  // double entry;
-  // double sl;
-  // int qty;
 
   @override
-  _TradeEntryState createState() => _TradeEntryState(
-      // date: this.date,
-      // sl: this.sl,
-      // type: this.type,
-      // scrip: this.scrip,
-      // qty: this.qty,
-      // positoin: this.positoin,
-      // newTrade: this.newTrade,
-      // entry: this.entry,
-      );
+  _TradeEntryState createState() => _TradeEntryState();
 }
 
 class _TradeEntryState extends State<TradeEntry> {
   _TradeEntryState();
-  // {this.newTrade,
-  // this.entry,
-  // this.date,
-  // this.positoin,
-  // this.scrip,
-  // this.qty,
-  // this.sl,
-  // this.type});
-
-// The fields that has to be here
-
-  // bool newTrade;
-  // String scrip;
-  // String date;
-  // int type; // Buy or sell => 0 or 1
-  // int positoin; // Intraday or delivery or swing = > 0 or 1 or 2
-  // double entry;
-  // double sl;
-  // int qty;
 
   TextEditingController scripController = TextEditingController();
   TextEditingController entryController = TextEditingController();
@@ -64,8 +19,8 @@ class _TradeEntryState extends State<TradeEntry> {
 
   int step = 0;
   DateTime date;
-  List<bool> isSelectedForBS = [true, false];
-  List<bool> isSelectedForPosition = [true, false, false];
+  List<bool> isSelectedForBS = [true, false]; // [BUY,SELL]
+  List<bool> isSelectedForPosition = [true, false, false]; // [In,Sw,Dl]
 
   Dbase _helper;
   @override
@@ -576,12 +531,12 @@ class _TradeEntryState extends State<TradeEntry> {
 
   _logicOfEntrySL(BuildContext context) {
     if (isSelectedForBS[0] &&
-        double.parse(entryController.text) < double.parse(slController.text)) {
+        double.parse(entryController.text) <= double.parse(slController.text)) {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           duration: Duration(seconds: 3),
           content: Text('Entry should be greater than SL for BUY')));
     } else if (isSelectedForBS[1] &&
-        double.parse(entryController.text) > double.parse(slController.text)) {
+        double.parse(entryController.text) >= double.parse(slController.text)) {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           duration: Duration(seconds: 3),
           content: Text('Entry should be smaller than SL for SELL')));
@@ -593,21 +548,23 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _addToDB() async {
-    await _helper.insertToTable({
-      Dbase.entry:
-          double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-      Dbase.date: '${date.year}/${date.month}/${date.day}',
-      Dbase.sl:
-          double.parse(double.parse(slController.text).toStringAsFixed(2)),
-      Dbase.scrip: scripController.text,
-      Dbase.qty:
-          double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
-      Dbase.bs: isSelectedForBS[0] ? 1 : 0,
-      Dbase.ls: isSelectedForPosition[0]
-          ? 0
-          : isSelectedForPosition[1]
-              ? 1
-              : 2,
-    }, Dbase.tradesTable);
+    await _helper.insertToTrades(
+      {
+        Dbase.entry:
+            double.parse(double.parse(entryController.text).toStringAsFixed(2)),
+        Dbase.date: '${date.year}/${date.month}/${date.day}',
+        Dbase.sl:
+            double.parse(double.parse(slController.text).toStringAsFixed(2)),
+        Dbase.scrip: scripController.text,
+        Dbase.qty:
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+        Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+        Dbase.ls: isSelectedForPosition[0]
+            ? 0
+            : isSelectedForPosition[1]
+                ? 1
+                : 2,
+      },
+    );
   }
 }
