@@ -70,14 +70,23 @@ class Dbase {
     return await db.query(tradesTable);
   }
 
-  Future<int> updateTable(Map<String, dynamic> row, int id) async {
+  Future<int> updateTrade(Map<String, dynamic> row, int cid) async {
     Database db = await database;
-    return await db
-        .update(tradesTable, row, where: '$id = ?', whereArgs: [row[id]]);
+    return await db.rawUpdate(''' 
+        UPDATE $tradesTable SET 
+        entry = ${row['entry']} ,
+        date = ${row['date']},
+        scrip = "${row['scrip']}",
+        qty = ${row['qty']},
+        buyorsell = ${row['buyorsell']},
+        longorshort = ${row['longorshort']},
+        sl = ${row['sl']}
+        WHERE $id = $cid 
+        ''');
   }
 
-  Future<int> deleteFromTable(int id) async {
+  Future<int> deleteTrade(int id) async {
     Database db = await database;
-    return await db.delete(tradesTable, where: '$id = ?', whereArgs: [id]);
+    return await db.rawDelete('DELETE FROM $tradesTable WHERE id = $id');
   }
 }
