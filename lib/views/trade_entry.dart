@@ -241,8 +241,7 @@ class _TradeEntryState extends State<TradeEntry> {
                   // The third page
                 } else if (step == 2) {
                   if (entryController.text.isNotEmpty &&
-                      qtyController.text.isNotEmpty &&
-                      slController.text.isNotEmpty) {
+                      qtyController.text.isNotEmpty) {
                     _logicOfEntrySL(context);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -518,7 +517,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
-                  hintText: ' Stop Loss',
+                  hintText: ' Stop Loss (Optional)',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -606,16 +605,24 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _logicOfEntrySL(BuildContext context) {
-    if (isSelectedForBS[0] &&
-        double.parse(entryController.text) <= double.parse(slController.text)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text('Entry should be greater than SL for BUY')));
-    } else if (isSelectedForBS[1] &&
-        double.parse(entryController.text) >= double.parse(slController.text)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text('Entry should be smaller than SL for SELL')));
+    if (slController.text.isNotEmpty) {
+      if (isSelectedForBS[0] &&
+          double.parse(entryController.text) <=
+              double.parse(slController.text)) {
+        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(seconds: 3),
+            content: Text('Entry should be greater than SL for BUY')));
+      } else if (isSelectedForBS[1] &&
+          double.parse(entryController.text) >=
+              double.parse(slController.text)) {
+        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(seconds: 3),
+            content: Text('Entry should be smaller than SL for SELL')));
+      } else {
+        setState(() {
+          step++;
+        });
+      }
     } else {
       setState(() {
         step++;
@@ -629,8 +636,9 @@ class _TradeEntryState extends State<TradeEntry> {
         Dbase.entry:
             double.parse(double.parse(entryController.text).toStringAsFixed(2)),
         Dbase.date: '${date.year}/${date.month}/${date.day}',
-        Dbase.sl:
-            double.parse(double.parse(slController.text).toStringAsFixed(2)),
+        Dbase.sl: slController.text.isNotEmpty
+            ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+            : null,
         Dbase.scrip: scripController.text,
         Dbase.qty:
             double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
@@ -649,8 +657,9 @@ class _TradeEntryState extends State<TradeEntry> {
       Dbase.entry:
           double.parse(double.parse(entryController.text).toStringAsFixed(2)),
       Dbase.date: '${date.year}/${date.month}/${date.day}',
-      Dbase.sl:
-          double.parse(double.parse(slController.text).toStringAsFixed(2)),
+      Dbase.sl: slController.text.isNotEmpty
+          ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+          : null,
       Dbase.scrip: scripController.text,
       Dbase.qty:
           double.parse(double.parse(qtyController.text).toStringAsFixed(2)),

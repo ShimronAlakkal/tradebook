@@ -51,7 +51,7 @@ class Dbase {
       $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
       $date DATE NOT NULL,
-      $sl DOUBLE NOT NULL,
+      $sl DOUBLE NULL,
       $scrip TEXT NOT NULL,
       $qty DOUBLE NOT NULL,
       $bs INTEGER NOT NULL,
