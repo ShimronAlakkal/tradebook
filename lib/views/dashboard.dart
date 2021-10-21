@@ -10,7 +10,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<Map<String, dynamic>> items = [];
+  List<Map<String, dynamic>> trades = [];
   Dbase _helper;
   @override
   void initState() {
@@ -90,7 +90,7 @@ class _DashboardState extends State<Dashboard> {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
-//  The icon indicating the position trend
+                //  The icon indicating the position trend
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -155,7 +155,7 @@ class _DashboardState extends State<Dashboard> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
             ),
-            child: items.isEmpty
+            child: trades.isEmpty
                 ? const Center(
                     child: Text('Add your first trade'),
                   )
@@ -170,7 +170,7 @@ class _DashboardState extends State<Dashboard> {
     return PageView.builder(
       pageSnapping: true,
       physics: const BouncingScrollPhysics(),
-      itemCount: items.length,
+      itemCount: trades.length,
       itemBuilder: (context, index) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -185,8 +185,9 @@ class _DashboardState extends State<Dashboard> {
               _deleteTrade(index);
             },
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // The main scrip and icon button to delete
+                // The  scrip date , positoin and icon button to delete
                 Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -194,8 +195,8 @@ class _DashboardState extends State<Dashboard> {
                         topRight: Radius.circular(12)),
                     color: Colors.black54,
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 20.0),
+                  padding: const EdgeInsets.only(
+                      top: 7, bottom: 7, right: 15.0, left: 30.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
@@ -206,15 +207,15 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${items[index]['scrip']} ',
+                            '${trades[index]['scrip']} ',
                             style: const TextStyle(
-                                fontSize: 22,
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
 
                           const SizedBox(
-                            width: 30,
+                            width: 15,
                           ),
 
                           // The dates panel
@@ -230,7 +231,7 @@ class _DashboardState extends State<Dashboard> {
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: items[index]['buyorsell'] == 1
+                                colors: trades[index]['buyorsell'] == 1
                                     ? [
                                         Colors.green[500],
                                         Colors.lightGreen[500]
@@ -239,10 +240,10 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             child: Text(
-                              '${items[index]['date']}',
+                              '${trades[index]['date']}',
                               style: const TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w900,
                                 color: Colors.white,
                               ),
                             ),
@@ -250,8 +251,7 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
 
-// The edit and delete button dropdown
-
+                      // The edit and delete button dropdown
                       PopupMenuButton(onSelected: (value) {
                         if (value == 1) {
                           _editPage(index);
@@ -270,6 +270,116 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ];
                       }),
+                    ],
+                  ),
+                ),
+
+                // The entry , Qty and SL tab
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //  The entry tab
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Text(
+                            'Entry',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            '${trades[index]['entry']}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        ],
+                      ),
+
+                      // The Qty tab
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Quantity',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            '${trades[index]['qty']}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        ],
+                      ),
+
+                      // The sl tab
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Stop Loss',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            trades[index]['sl'] == null
+                                ? 'NA'
+                                : '${trades[index]['sl']}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                // The total amount used tab
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Approx Trade Worth',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        (trades[index]['qty'] * trades[index]['entry'])
+                            .toStringAsFixed(2),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -314,9 +424,8 @@ class _DashboardState extends State<Dashboard> {
   _refreshStorageData() async {
     List<Map<String, dynamic>> item = await _helper.fetchTrades();
     setState(() {
-      items = item;
+      trades = item;
     });
-    print(items);
   }
 
   _deleteTrade(int index) {
@@ -343,7 +452,7 @@ class _DashboardState extends State<Dashboard> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.deepPurple.shade400)),
               onPressed: () {
-                _helper.deleteTrade(items[index]['id']);
+                _helper.deleteTrade(trades[index]['id']);
                 Navigator.pop(context);
                 _refreshStorageData();
               },
@@ -368,13 +477,13 @@ class _DashboardState extends State<Dashboard> {
         builder: (context) {
           return TradeEntry(
             edit: 1,
-            id: items[index]['id'],
-            scrip: items[index]['scrip'],
-            sl: '${items[index]['sl']}',
-            bs: items[index]['buyorsell'],
-            qty: '${items[index]['qty']}',
-            position: items[index]['longorshort'],
-            entry: '${items[index]['entry']}',
+            id: trades[index]['id'],
+            scrip: trades[index]['scrip'],
+            sl: '${trades[index]['sl']}',
+            bs: trades[index]['buyorsell'],
+            qty: '${trades[index]['qty']}',
+            position: trades[index]['longorshort'],
+            entry: '${trades[index]['entry']}',
           );
         },
       ),
