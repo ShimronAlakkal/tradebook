@@ -107,7 +107,7 @@ class _TradeEntryState extends State<TradeEntry> {
       scripController.text = scrip;
       qtyController.text = qty;
       entryController.text = entry;
-      slController.text = sl;
+      sl == 'null' ? slController.clear() : slController.text = sl;
     });
   }
 
@@ -186,8 +186,8 @@ class _TradeEntryState extends State<TradeEntry> {
                           ? '       Edit       '
                           : '       Back       ',
                       style: TextStyle(
-                        color: Colors.grey.shade900,
                         fontSize: 18,
+                        color: Colors.grey.shade600,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -239,9 +239,13 @@ class _TradeEntryState extends State<TradeEntry> {
                   }
 
                   // The third page
-                } else if (step == 2) {
+                }
+                // The third page
+                else if (step == 2) {
                   if (entryController.text.isNotEmpty &&
-                      qtyController.text.isNotEmpty) {
+                      qtyController.text.isNotEmpty &&
+                      date != null &&
+                      scripController.text.isNotEmpty) {
                     _logicOfEntrySL(context);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -302,16 +306,22 @@ class _TradeEntryState extends State<TradeEntry> {
                   ),
                 ),
 
-                maxLength: 15,
+                maxLength: 7,
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(
                 height: 20,
               ),
               ListTile(
-                title: Text(date == null
-                    ? 'Date'
-                    : 'Selected Date :  ${date.year} - ${date.month} - ${date.day}'),
+                title: Text(
+                  date == null
+                      ? 'Date'
+                      : 'Selected date : ${date.year} - ${date.month} - ${date.day}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 subtitle: Text(date == null
                     ? 'The date on which you tool this trade'
                     : 'Long press to reset date'),
@@ -352,10 +362,9 @@ class _TradeEntryState extends State<TradeEntry> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Buys of sell
-              Text(
+              const Text(
                 'Order type',
                 style: TextStyle(
-                    color: Colors.grey.shade900,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.4),
@@ -377,7 +386,6 @@ class _TradeEntryState extends State<TradeEntry> {
                 },
                 fillColor:
                     isSelectedForBS[0] == true ? Colors.green : Colors.red,
-                color: Colors.black,
                 disabledColor: Colors.grey,
                 selectedColor: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -571,6 +579,7 @@ class _TradeEntryState extends State<TradeEntry> {
       firstDate: DateTime(DateTime.now().year - 50),
       lastDate: DateTime.now(),
     );
+
     setState(
       () {
         date = pickedDate;
@@ -656,7 +665,7 @@ class _TradeEntryState extends State<TradeEntry> {
     await _helper.updateTrade({
       Dbase.entry:
           double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-      Dbase.date: '${date.year}/${date.month}/${date.day}',
+      Dbase.date: '"${date.year}/${date.month}/${date.day}"',
       Dbase.sl: slController.text.isNotEmpty
           ? double.parse(double.parse(slController.text).toStringAsFixed(2))
           : null,

@@ -50,7 +50,7 @@ class Dbase {
     CREATE TABLE $tradesTable (
       $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
-      $date DATE NOT NULL,
+      $date TEXT NOT NULL,
       $sl DOUBLE NULL,
       $scrip TEXT NOT NULL,
       $qty DOUBLE NOT NULL,

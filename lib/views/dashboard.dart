@@ -188,49 +188,91 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 // The main scrip and icon button to delete
                 Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  height: (height * 0.3) * 0.3,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
+                    color: Colors.black54,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        '${items[index]['scrip']} ',
-                        style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-// Go to the trade log for edit
+                      // The scrip and date panels
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${items[index]['scrip']} ',
+                            style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
 
-                          bool res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return TradeEntry(
-                                  edit: 1,
-                                  id: items[index]['id'],
-                                  scrip: items[index]['scrip'],
-                                  sl: '${items[index]['sl']}',
-                                  bs: items[index]['buyorsell'],
-                                  qty: '${items[index]['qty']}',
-                                  position: items[index]['longorshort'],
-                                  entry: '${items[index]['entry']}',
-                                );
-                              },
+                          const SizedBox(
+                            width: 30,
+                          ),
+
+                          // The dates panel
+                          Container(
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              top: 4,
+                              bottom: 4,
                             ),
-                          );
-                          if (res) {
-                            _refreshStorageData();
-                          }
-                        },
-                        icon: const Icon(Icons.mode_edit_outline_outlined),
-                      )
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: items[index]['buyorsell'] == 1
+                                    ? [
+                                        Colors.green[500],
+                                        Colors.lightGreen[500]
+                                      ]
+                                    : [Colors.pink[500], Colors.red[500]],
+                              ),
+                            ),
+                            child: Text(
+                              '${items[index]['date']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+// The edit and delete button dropdown
+
+                      PopupMenuButton(onSelected: (value) {
+                        if (value == 1) {
+                          _editPage(index);
+                        } else {
+                          _deleteTrade(index);
+                        }
+                      }, itemBuilder: (context) {
+                        return const [
+                          PopupMenuItem(
+                            child: Text('Edit'),
+                            value: 1,
+                          ),
+                          PopupMenuItem(
+                            child: Text('Delete'),
+                            value: 2,
+                          ),
+                        ];
+                      }),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -274,6 +316,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       items = item;
     });
+    print(items);
   }
 
   _deleteTrade(int index) {
@@ -288,12 +331,9 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(
+              child: const Text(
                 'cancel',
-                style: TextStyle(
-                    color: Colors.deepPurple.shade700,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
             ),
 
@@ -309,12 +349,38 @@ class _DashboardState extends State<Dashboard> {
               },
               child: const Text(
                 'Delete',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700),
               ),
             ),
           ],
         );
       },
     );
+  }
+
+  _editPage(int index) async {
+    bool res = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return TradeEntry(
+            edit: 1,
+            id: items[index]['id'],
+            scrip: items[index]['scrip'],
+            sl: '${items[index]['sl']}',
+            bs: items[index]['buyorsell'],
+            qty: '${items[index]['qty']}',
+            position: items[index]['longorshort'],
+            entry: '${items[index]['entry']}',
+          );
+        },
+      ),
+    );
+    if (res) {
+      _refreshStorageData();
+    }
   }
 }
