@@ -3,7 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Dbase {
+class Tdbase {
   static const db = 'transactions.db';
   static const version = 1;
 // 0 = intraday , 1 = swing , 2 = delivery
@@ -16,8 +16,8 @@ class Dbase {
   static const type = 'type'; // 1 = deposit  , 0 = withdraw
 
 // make the class a singleton class
-  Dbase._privateConstructor();
-  static final Dbase instance = Dbase._privateConstructor();
+  Tdbase._privateConstructor();
+  static final Tdbase instance = Tdbase._privateConstructor();
 
   Database _database;
   Future get database async {
@@ -43,8 +43,8 @@ class Dbase {
       CREATE TABLE $transactionTable (
         $id  INTEGER PRIMARY KEY  AUTOINCREMENT ,
         $amount DOUBLE NOT NULL,
-        $date DATE NOT NULL,
-        $type INTEGER NOT NULL,
+        $date TEXT NOT NULL,
+        $type INTEGER NOT NULL
       )
       ''');
   }
@@ -56,7 +56,9 @@ class Dbase {
 
   Future<List<Map<String, dynamic>>> fetchTransactions() async {
     Database db = await database;
-    return await db.query(transactionTable);
+    return await db.rawQuery('''
+    SELECT * FROM $transactionTable
+    ''');
   }
 
   Future<int> updateTransactions(Map<String, dynamic> row, int id) async {

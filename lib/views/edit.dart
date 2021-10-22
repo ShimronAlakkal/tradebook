@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:pron/model/transaction_database.dart';
+import 'package:pron/views/transactions.dart';
 
 class Edit extends StatefulWidget {
   const Edit({Key key}) : super(key: key);
@@ -8,16 +12,37 @@ class Edit extends StatefulWidget {
 }
 
 class _EditState extends State<Edit> {
+  List<Map<String, dynamic>> transacts = [];
+  Tdbase _helper;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _helper = Tdbase.instance;
+    });
+    _refreshTransactions();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       // Deposit or Withdraw button
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color(0xffAB9AFF),
-        onPressed: () {},
+        onPressed: () async {
+          bool res = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const Transactions();
+              },
+            ),
+          );
+          if (res) {
+            _refreshTransactions();
+          }
+        },
         label: const Text(
           'deposit / withdraw',
           style: TextStyle(
@@ -31,29 +56,45 @@ class _EditState extends State<Edit> {
       ),
 
       // ListView builder here
-      body: ListView.builder(
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return Container(
-            height: height * 0.1,
-            width: width,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            child: const ListTile(
-              title: Text('Deposit'),
-              subtitle: Text('12/3/2222'),
-              trailing: Text('2132a'),
-              leading: Icon(
-                Icons.money_rounded,
-              ),
-            ),
-          );
-        },
-      ),
+      body: transacts.isNotEmpty
+          ? ListView.builder(
+              itemCount: transacts.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: const EdgeInsets.all(10),
+                  child: ListTile(
+                    title: Text(
+                      transacts[index]['type'] == 1 ? 'Deposit' : 'Withdrew',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: transacts[index]['type'] == 1
+                            ? Colors.green.shade400
+                            : Colors.red.shade400,
+                      ),
+                    ),
+                    subtitle: Text('${transacts[index]['date']}'),
+                    trailing: Text('${transacts[index]['amount']}'),
+                  ),
+                );
+              },
+            )
+          : const Center(
+              child: Text('Add your first deposit to keep track of trading')),
     );
+  }
+
+  _refreshTransactions() async {
+    List<Map<String, dynamic>> x = await _helper.fetchTransactions();
+    setState(() {
+      transacts = x;
+    });
   }
 }

@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Dbase {
-  static final db = 'db1.db';
+  static final db = 'trades.db';
   static final version = 1;
 
 // The table for trades
@@ -61,7 +61,6 @@ class Dbase {
 
   Future<int> insertToTrades(Map<String, dynamic> row) async {
     Database db = await database;
-
     return await db.insert(tradesTable, row);
   }
 

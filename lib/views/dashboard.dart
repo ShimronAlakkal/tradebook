@@ -171,6 +171,8 @@ class _DashboardState extends State<Dashboard> {
       pageSnapping: true,
       physics: const BouncingScrollPhysics(),
       itemCount: trades.length,
+
+      // The trade cards that are shown in the main screen
       itemBuilder: (context, index) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
