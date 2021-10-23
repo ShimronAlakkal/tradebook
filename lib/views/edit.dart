@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:pron/model/database.dart';
 import 'package:pron/model/transaction_database.dart';
 import 'package:pron/views/transactions.dart';
 
@@ -14,13 +13,13 @@ class Edit extends StatefulWidget {
 class _EditState extends State<Edit> {
   List<Map<String, dynamic>> transacts = [];
   Tdbase _helper;
-
   @override
   void initState() {
     super.initState();
     setState(() {
       _helper = Tdbase.instance;
     });
+
     _refreshTransactions();
   }
 
@@ -70,18 +69,33 @@ class _EditState extends State<Edit> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   padding: const EdgeInsets.all(10),
                   child: ListTile(
+                    onLongPress: () {
+                      // delete the item here
+                    },
+                    leading: transacts[index]['type'] == 1
+                        ? Icon(
+                            Icons.upload_rounded,
+                            color: Colors.green.shade400,
+                            size: 26,
+                          )
+                        : Icon(
+                            Icons.download_rounded,
+                            size: 26,
+                            color: Colors.red.shade400,
+                          ),
                     title: Text(
                       transacts[index]['type'] == 1 ? 'Deposit' : 'Withdrew',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: transacts[index]['type'] == 1
-                            ? Colors.green.shade400
-                            : Colors.red.shade400,
                       ),
                     ),
                     subtitle: Text('${transacts[index]['date']}'),
-                    trailing: Text('${transacts[index]['amount']}'),
+                    trailing: Text(
+                      '${transacts[index]['amount']}',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w700),
+                    ),
                   ),
                 );
               },

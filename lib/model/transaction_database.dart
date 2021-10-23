@@ -42,9 +42,9 @@ class Tdbase {
     return await db.execute('''
       CREATE TABLE $transactionTable (
         $id  INTEGER PRIMARY KEY  AUTOINCREMENT ,
-        $amount DOUBLE NOT NULL,
+        $amount DOUBLE,
         $date TEXT NOT NULL,
-        $type INTEGER NOT NULL
+        $type INTEGER 
       )
       ''');
   }
@@ -58,6 +58,14 @@ class Tdbase {
     Database db = await database;
     return await db.rawQuery('''
     SELECT * FROM $transactionTable
+    ''');
+  }
+
+  Future getAccountBalance() async {
+    Database db = await database;
+    return await db.rawQuery('''
+    SELECT SUM($amount) FROM $transactionTable
+    WHERE $type = 1 or $type = '1'
     ''');
   }
 

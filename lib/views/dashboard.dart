@@ -12,6 +12,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<Map<String, dynamic>> trades = [];
   Dbase _helper;
+  double totalInvestment = 0.0;
+  double accountBalance = 0;
   @override
   void initState() {
     super.initState();
@@ -68,7 +70,6 @@ class _DashboardState extends State<Dashboard> {
       body: Column(
         children: [
           //  Ad banner
-
           Container(
             height: height * 0.1,
             width: width,
@@ -83,7 +84,7 @@ class _DashboardState extends State<Dashboard> {
 
           //  Total asset under management
           dashLists(height * 0.09, width, const Color(0xff223A32),
-              'Total Investment', '\$232'),
+              'Total Investment - ', '$totalInvestment'),
 
           // Position final
           Padding(
@@ -177,7 +178,7 @@ class _DashboardState extends State<Dashboard> {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(12),
             color: const Color(0xff6C61B8),
           ),
           height: height * 0.3,
@@ -359,28 +360,75 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
 
-                // The total amount used tab
+                // The row for intraday and shyt and approx trade worth
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Approx Trade Worth',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+                      //The  product type
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Product',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            trades[index]['longorshort'] == 0
+                                ? 'Intraday'
+                                : trades[index]['longorshort'] == 1
+                                    ? 'Swing'
+                                    : 'Delivery',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                        (trades[index]['qty'] * trades[index]['entry'])
-                            .toStringAsFixed(2),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                        ),
+
+                      // The total amount used tab
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            trades[index]['buyorsell'] == 1
+                                ? 'Approx Trade Worth'
+                                : 'Approx Risk in Trade',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            trades[index]['buyorsell'] == 1
+                                ? (trades[index]['qty'] *
+                                        trades[index]['entry'])
+                                    .toStringAsFixed(2)
+                                : (trades[index]['qty'] *
+                                        (-trades[index]['entry'] +
+                                            trades[index]['sl']))
+                                    .toStringAsFixed(2),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        ],
+                      ),
+
+                      const SizedBox(
+                        width: 8,
                       )
                     ],
                   ),
@@ -425,8 +473,15 @@ class _DashboardState extends State<Dashboard> {
 
   _refreshStorageData() async {
     List<Map<String, dynamic>> item = await _helper.fetchTrades();
+
+    double ti = 0;
+    item.map((v) {
+      v['buyorsell'] == 1 ? ti = ti + v['entry'] * v['qty'] : ti = ti + 0;
+      print(v);
+    });
     setState(() {
       trades = item;
+      totalInvestment = ti;
     });
   }
 

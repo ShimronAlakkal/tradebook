@@ -1,6 +1,9 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:flutter/material.dart';
 import 'package:pron/model/transaction_database.dart';
 
+// ignore: must_be_immutable
 class Transactions extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
   const Transactions();
@@ -10,8 +13,11 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
+  _TransactionsState();
+
   TextEditingController amountController = TextEditingController();
   DateTime _date;
+  // [deposit , withdraw]
   List<bool> dwButtons = [true, false];
 
   Tdbase _helper;

@@ -63,8 +63,8 @@ class HomeState extends State<Home> {
 //  Tradebook Screen
 
             NavigationDestination(
-                selectedIcon: Icon(Icons.book),
-                icon: Icon(Icons.book_outlined),
+                selectedIcon: Icon(Icons.analytics_rounded),
+                icon: Icon(Icons.analytics_outlined),
                 label: 'dashboard'),
 
 // Stats Screen
@@ -77,7 +77,7 @@ class HomeState extends State<Home> {
             NavigationDestination(
               selectedIcon: Icon(Icons.edit),
               icon: Icon(Icons.edit_outlined),
-              label: 'edit',
+              label: 'transact',
             ),
           ],
         ),

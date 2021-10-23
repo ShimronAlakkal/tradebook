@@ -122,7 +122,7 @@ class _TradeEntryState extends State<TradeEntry> {
         title: edit == 0 ? const Text('Add a trade') : const Text('Edit trade'),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -135,7 +135,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
           Container(
             margin:
-                const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
+                const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: Colors.amber.shade500),
@@ -490,13 +490,13 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.3,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          height: height * 0.35,
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
             children: [
               // The entry price
               TextFormField(
+                maxLength: 10,
                 controller: entryController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.next,
@@ -518,6 +518,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
               // The stop loss field
               TextFormField(
+                maxLength: 10,
                 controller: slController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.next,
@@ -540,6 +541,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
               // Qty Field
               TextFormField(
+                maxLength: 8,
                 controller: qtyController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.done,
