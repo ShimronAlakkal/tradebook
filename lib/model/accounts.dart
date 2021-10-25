@@ -27,4 +27,14 @@ class Accounts extends ChangeNotifier {
 
     return totalInvestments;
   }
+
+  getAccountBalance() async {
+    transactions = await _thelper.fetchTransactions();
+
+    transactions.map((i) {
+      i['type'] == 1
+          ? accountBalance = accountBalance + i['amount']
+          : accountBalance = accountBalance - i['amount'];
+    });
+  }
 }
