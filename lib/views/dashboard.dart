@@ -474,14 +474,8 @@ class _DashboardState extends State<Dashboard> {
   _refreshStorageData() async {
     List<Map<String, dynamic>> item = await _helper.fetchTrades();
 
-    double ti = 0;
-    item.map((v) {
-      v['buyorsell'] == 1 ? ti = ti + v['entry'] * v['qty'] : ti = ti + 0;
-      print(v);
-    });
     setState(() {
       trades = item;
-      totalInvestment = ti;
     });
   }
 

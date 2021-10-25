@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pron/model/database.dart';
 import 'package:pron/model/transaction_database.dart';
 import 'package:pron/views/transactions.dart';
 
