@@ -356,7 +356,7 @@ class _TradeEntryState extends State<TradeEntry> {
         content: Container(
           height: height * 0.25,
           padding: const EdgeInsets.symmetric(vertical: 10),
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -445,7 +445,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 },
                 children: const [
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Intraday',
                       style: TextStyle(
@@ -455,7 +455,7 @@ class _TradeEntryState extends State<TradeEntry> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Swing',
                       style: TextStyle(
@@ -465,7 +465,7 @@ class _TradeEntryState extends State<TradeEntry> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Delivery',
                       style: TextStyle(

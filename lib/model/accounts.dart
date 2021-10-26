@@ -24,8 +24,6 @@ class Accounts extends ChangeNotifier {
           ? totalInvestments = totalInvestments + i['entry'] * i['qty']
           : totalInvestments = totalInvestments + 0;
     });
-
-    return totalInvestments;
   }
 
   getAccountBalance() async {

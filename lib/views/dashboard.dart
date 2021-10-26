@@ -411,13 +411,13 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           Text(
                             trades[index]['buyorsell'] == 1
-                                ? (trades[index]['qty'] *
-                                        trades[index]['entry'])
-                                    .toStringAsFixed(2)
+                                ? (trades[index]['entry'] *
+                                        trades[index]['qty'])
+                                    .toString()
                                 : (trades[index]['qty'] *
                                         (-trades[index]['entry'] +
                                             trades[index]['sl']))
-                                    .toStringAsFixed(2),
+                                    .toString(),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 22,
