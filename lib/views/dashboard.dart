@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 import 'package:pron/views/trade_entry.dart';
+import 'package:pron/model/transaction_database.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -12,13 +15,15 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<Map<String, dynamic>> trades = [];
   Dbase _helper;
+  Tdbase _tdbaseHelper;
   double totalInvestment = 0.0;
-  double accountBalance = 0;
+  double accountBalance = 0.0;
   @override
   void initState() {
     super.initState();
     setState(() {
       _helper = Dbase.instance;
+      _tdbaseHelper = Tdbase.instance;
     });
     _refreshStorageData();
   }
@@ -67,100 +72,65 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
 
-      body: Column(
+      body: ListView(
         children: [
-          //  Ad banner
-          Container(
-            height: height * 0.1,
-            width: width,
-            margin:
-                const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 4),
-            color: const Color(0xff4E60FF),
-          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //  Ad banner
+              Container(
+                height: height * 0.1,
+                width: width,
+                margin: const EdgeInsets.only(
+                    left: 10, right: 10, top: 10, bottom: 4),
+                color: const Color(0xff4E60FF),
+              ),
 
-          //  Total investment
-          dashLists(height * 0.09, width, const Color(0xff223A32),
-              'Account balance  - ', '\$234'),
+              //  Total investment
+              dashLists(
+                  height * 0.09,
+                  width,
+                  const Color(0xff223A32),
+                  'Account balance  - ',
+                  accountBalance == null ? '0.0' : '$accountBalance'),
 
-          //  Total asset under management
-          dashLists(height * 0.09, width, const Color(0xff223A32),
-              'Total Investment - ', '$totalInvestment'),
+              //  Total asset under management
+              dashLists(
+                  height * 0.09,
+                  width,
+                  const Color(0xff223A32),
+                  'Total Investment - ',
+                  totalInvestment == null ? '0.0' : '$totalInvestment'),
 
-          // Position final
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                //  The icon indicating the position trend
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10, left: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.cyan.shade300,
-                    ),
-                    height: height * 0.08,
-                    child: Center(
-                      child: Icon(
-                        Icons.show_chart,
-                        size: 30,
-                        color: Colors.green.shade800,
-                      ),
-                    ),
+              // Position final
+              const Padding(
+                padding: EdgeInsets.only(top: 30, left: 20, bottom: 20),
+                child: Text(
+                  'Trades',
+                  style: TextStyle(
+                    letterSpacing: 1.2,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
+              ),
 
-                // The text of position and the amoutn in red or green
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    height: height * 0.08,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    padding: const EdgeInsets.only(
-                        left: 15, right: 25, top: 5, bottom: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: const [
-                        Text(
-                          'Position',
-                          style: TextStyle(color: Colors.black87, fontSize: 22),
-                        ),
-                        Text(
-                          '\$2',
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              // The trades panel
+              Container(
+                height: height * 0.3,
+                width: width,
+                margin: const EdgeInsets.only(
+                    top: 10, left: 10, right: 10, bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
                 ),
-              ],
-            ),
-          ),
-
-          // The trades panel
-          Container(
-            height: height * 0.3,
-            width: width,
-            margin:
-                const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: trades.isEmpty
-                ? const Center(
-                    child: Text('Add your first trade'),
-                  )
-                : _pageview(height, width),
+                child: trades.isEmpty
+                    ? const Center(
+                        child: Text('Add your first trade'),
+                      )
+                    : _pageview(height, width),
+              ),
+            ],
           ),
         ],
       ),
@@ -472,8 +442,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   _refreshStorageData() async {
+    _setAccountDetails();
     List<Map<String, dynamic>> item = await _helper.fetchTrades();
-
     setState(() {
       trades = item;
     });
@@ -542,5 +512,15 @@ class _DashboardState extends State<Dashboard> {
     if (res) {
       _refreshStorageData();
     }
+  }
+
+  _setAccountDetails() async {
+    List ti = await _helper.getTotalInvestment();
+    List ab = await _tdbaseHelper.getAccountBalance();
+
+    setState(() {
+      totalInvestment = ti[0]['SUM(entry*qty)'];
+      accountBalance = ab[0]['SUM(amount)'];
+    });
   }
 }

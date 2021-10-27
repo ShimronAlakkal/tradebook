@@ -61,11 +61,11 @@ class Tdbase {
     ''');
   }
 
-  Future getAccountBalance() async {
+  Future<dynamic> getAccountBalance() async {
     Database db = await database;
     return await db.rawQuery('''
     SELECT SUM($amount) FROM $transactionTable
-    WHERE $type = 1 or $type = '1'
+    WHERE $type = 1 or $type = '1';
     ''');
   }
 
@@ -75,8 +75,9 @@ class Tdbase {
         .update(transactionTable, row, where: '$id = ?', whereArgs: [row[id]]);
   }
 
-  Future<int> deleteTransaction(int id) async {
+  Future<int> deleteTransaction(int tid) async {
     Database db = await database;
-    return await db.delete(transactionTable, where: '$id = ?', whereArgs: [id]);
+    return await db
+        .rawDelete('DELETE FROM $transactionTable WHERE $id = $tid ');
   }
 }

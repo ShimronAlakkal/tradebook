@@ -88,4 +88,16 @@ class Dbase {
     Database db = await database;
     return await db.rawDelete('DELETE FROM $tradesTable WHERE id = $id');
   }
+
+  Future<dynamic> getTotalInvestment() async {
+    Database db = await database;
+    var data = await db.rawQuery('''
+  SELECT SUM(entry*qty) FROM $tradesTable WHERE buyorsell = 1;
+  ''');
+    if (data.isNotEmpty) {
+      return data;
+    } else {
+      return 0;
+    }
+  }
 }

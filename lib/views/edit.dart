@@ -70,6 +70,7 @@ class _EditState extends State<Edit> {
                   child: ListTile(
                     onLongPress: () {
                       // delete the item here
+                      _deleteTransaction(index);
                     },
                     leading: transacts[index]['type'] == 1
                         ? Icon(
@@ -109,5 +110,46 @@ class _EditState extends State<Edit> {
     setState(() {
       transacts = x;
     });
+  }
+
+  _deleteTransaction(int index) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Confirm'),
+            content: const Text('Are you sure you want to delete this?'),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'cancel',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+              ),
+
+              // The cancel button on alert dialog
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.deepPurple.shade400)),
+                onPressed: () {
+                  _helper.deleteTransaction(transacts[index]['id']);
+                  _refreshTransactions();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }
