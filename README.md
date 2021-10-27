@@ -1,4 +1,4 @@
-# Fraction ![Coming soon]<https://github.com/ShimronAlakkal/tradebook/blob/main/fraction%20logo.png width="400" height="790">
+# Fraction ![Coming soon](https://github.com/ShimronAlakkal/tradebook/blob/main/fraction%20logo.png width="400" height="790")
 > a simple app to keep track of your assets and liabilities and to use somr technical tools that might help you to take a profitable trade.
 
 ### Present Situation
