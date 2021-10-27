@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 import 'package:pron/views/trade_entry.dart';
@@ -44,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
             MaterialPageRoute(
               builder: (context) {
                 return TradeEntry(
+                  ab: accountBalance,
                   bs: 1,
                   edit: 0,
                   entry: '',
@@ -87,19 +86,11 @@ class _DashboardState extends State<Dashboard> {
               ),
 
               //  Total investment
-              dashLists(
-                  height * 0.09,
-                  width,
-                  const Color(0xff223A32),
-                  'Account balance  - ',
+              dashLists(height * 0.09, width, 'Account balance  - ',
                   accountBalance == null ? '0.0' : '$accountBalance'),
 
               //  Total asset under management
-              dashLists(
-                  height * 0.09,
-                  width,
-                  const Color(0xff223A32),
-                  'Total Investment - ',
+              dashLists(height * 0.09, width, 'Total Investment - ',
                   totalInvestment == null ? '0.0' : '$totalInvestment'),
 
               // Position final
@@ -122,11 +113,16 @@ class _DashboardState extends State<Dashboard> {
                 margin: const EdgeInsets.only(
                     top: 10, left: 10, right: 10, bottom: 8),
                 decoration: BoxDecoration(
+                  color: const Color(0xff272727),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: trades.isEmpty
                     ? const Center(
-                        child: Text('Add your first trade'),
+                        child: Text(
+                          'Add your first trade',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
                       )
                     : _pageview(height, width),
               ),
@@ -411,7 +407,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget dashLists(height, width, Color color, String t1, String t2) {
+  Widget dashLists(height, width, String t1, String t2) {
     return Container(
       height: height,
       width: width,
@@ -419,21 +415,22 @@ class _DashboardState extends State<Dashboard> {
       padding: const EdgeInsets.only(left: 15, right: 25, top: 5, bottom: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: color,
+        color: const Color(0xff272727),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
         children: [
           Text(
             t1,
-            style: const TextStyle(color: Colors.white, fontSize: 22),
+            style: const TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
           ),
           Text(
             t2,
             style: const TextStyle(
-              fontSize: 22,
-              color: Colors.lightGreenAccent,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
         ],
@@ -497,6 +494,7 @@ class _DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         builder: (context) {
           return TradeEntry(
+            ab: accountBalance,
             edit: 1,
             id: trades[index]['id'],
             scrip: trades[index]['scrip'],
@@ -516,11 +514,12 @@ class _DashboardState extends State<Dashboard> {
 
   _setAccountDetails() async {
     List ti = await _helper.getTotalInvestment();
-    List ab = await _tdbaseHelper.getAccountBalance();
+    List tDeopsit = await _tdbaseHelper.getAccountBalance();
+    // List tWithdraw = await _tdbaseHelper.getTotalWithdrawal();
 
     setState(() {
       totalInvestment = ti[0]['SUM(entry*qty)'];
-      accountBalance = ab[0]['SUM(amount)'];
+      accountBalance = tDeopsit[0]['SUM(amount)'];
     });
   }
 }

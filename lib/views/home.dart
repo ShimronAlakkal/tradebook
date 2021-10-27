@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int index = 0;
-  var screens = [const Dashboard(), const Calculators(), const Edit()];
+  List screens = [const Dashboard(), const Calculators(), const Edit()];
 
   @override
   Widget build(BuildContext context) {

@@ -1,19 +1,20 @@
 // ignore_for_file: no_logic_in_create_state
-
 import 'package:flutter/material.dart';
 import 'package:pron/model/transaction_database.dart';
 
 // ignore: must_be_immutable
 class Transactions extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
-  const Transactions();
+  Transactions({this.accountBalance});
+  double accountBalance;
 
   @override
-  _TransactionsState createState() => _TransactionsState();
+  _TransactionsState createState() =>
+      _TransactionsState(accountBalance: accountBalance);
 }
 
 class _TransactionsState extends State<Transactions> {
-  _TransactionsState();
+  _TransactionsState({this.accountBalance});
 
   TextEditingController amountController = TextEditingController();
   DateTime _date;
@@ -21,7 +22,7 @@ class _TransactionsState extends State<Transactions> {
   List<bool> dwButtons = [true, false];
 
   Tdbase _helper;
-
+  double accountBalance;
   @override
   void initState() {
     super.initState();
@@ -45,10 +46,9 @@ class _TransactionsState extends State<Transactions> {
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        height: MediaQuery.of(context).size.height * 0.34,
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // The amount field
@@ -99,6 +99,18 @@ class _TransactionsState extends State<Transactions> {
               },
             ),
 
+            // The text saying transaction
+            const Padding(
+              padding: EdgeInsets.only(left: 10, top: 20, bottom: 10),
+              child: Text(
+                'Transaction type ',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+
             // The deposit or withdrawal
             ToggleButtons(
               onPressed: (index) {
@@ -119,7 +131,7 @@ class _TransactionsState extends State<Transactions> {
               borderWidth: 3,
               children: const [
                 Padding(
-                  padding: EdgeInsets.all(17.0),
+                  padding: EdgeInsets.symmetric(vertical: 17, horizontal: 40),
                   child: Text(
                     'Deposit',
                     style: TextStyle(
@@ -129,7 +141,7 @@ class _TransactionsState extends State<Transactions> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(17.0),
+                  padding: EdgeInsets.symmetric(vertical: 17, horizontal: 40),
                   child: Text(
                     'withdraw',
                     style: TextStyle(
@@ -143,11 +155,21 @@ class _TransactionsState extends State<Transactions> {
             ),
 
             // The add to db button
-            ElevatedButton(
-              onPressed: () {
-                _validateAndAddToDatabase();
-              },
-              child: Text(dwButtons[0] ? 'make deposit' : 'make withdrawal'),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  _validateAndAddToDatabase(context);
+                },
+                child: Text(
+                  dwButtons[0] ? 'make deposit' : 'make withdrawal',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
             )
           ],
         ),
@@ -155,27 +177,26 @@ class _TransactionsState extends State<Transactions> {
     );
   }
 
-  _validateAndAddToDatabase() async {
+  _validateAndAddToDatabase(context) async {
     if (amountController.text.isNotEmpty && _date != null) {
-      await _helper.insertTransaction(
-        {
-          Tdbase.amount: double.parse(
-              double.parse(amountController.text).toStringAsFixed(2)),
-          Tdbase.date: '${_date.year}/${_date.month}/${_date.day}',
-          Tdbase.type: dwButtons[0] == true ? 1 : 0
-        },
-      );
-      Navigator.pop(context, true);
+      if (dwButtons[1] &&
+          accountBalance <= double.parse(amountController.text)) {
+        _showMsg('Cannot withdraw more than $accountBalance');
+      } else {
+        await _helper.insertTransaction(
+          {
+            Tdbase.amount: double.parse(
+                double.parse(amountController.text).toStringAsFixed(2)),
+            Tdbase.date: '${_date.year}/${_date.month}/${_date.day}',
+            Tdbase.type: dwButtons[0] == true ? 1 : 0
+          },
+        );
+        Navigator.pop(context, true);
+      }
     } else if (amountController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 3),
-        content: Text('Please add an amount'),
-      ));
+      _showMsg('Please add an amount');
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 3),
-        content: Text('Pick a date'),
-      ));
+      _showMsg('Pick a date');
     }
   }
 
@@ -190,5 +211,12 @@ class _TransactionsState extends State<Transactions> {
     setState(() {
       _date = pickedDate;
     });
+  }
+
+  _showMsg(String msg) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text(msg),
+    ));
   }
 }

@@ -12,6 +12,8 @@ class Edit extends StatefulWidget {
 class _EditState extends State<Edit> {
   List<Map<String, dynamic>> transacts = [];
   Tdbase _helper;
+  double ab;
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +35,7 @@ class _EditState extends State<Edit> {
             context,
             MaterialPageRoute(
               builder: (context) {
-                return const Transactions();
+                return Transactions(accountBalance: ab);
               },
             ),
           );
@@ -107,8 +109,12 @@ class _EditState extends State<Edit> {
 
   _refreshTransactions() async {
     List<Map<String, dynamic>> x = await _helper.fetchTransactions();
+    List tDeopsit = await _helper.getAccountBalance();
+    // List tWithdraw = await _helper.getTotalWithdrawal();
+
     setState(() {
       transacts = x;
+      ab = tDeopsit[0]['SUM(amount)'];
     });
   }
 

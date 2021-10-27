@@ -6,6 +6,7 @@ import 'package:pron/model/database.dart';
 class TradeEntry extends StatefulWidget {
   TradeEntry(
       {Key key,
+      @required this.ab,
       this.id,
       this.entry,
       this.sl,
@@ -24,9 +25,11 @@ class TradeEntry extends StatefulWidget {
   int position;
   int edit;
   int id;
+  double ab;
   @override
   // ignore: no_logic_in_create_state
   _TradeEntryState createState() => _TradeEntryState(
+      ab: ab,
       edit: edit,
       id: id,
       bs: bs,
@@ -39,7 +42,8 @@ class TradeEntry extends StatefulWidget {
 
 class _TradeEntryState extends State<TradeEntry> {
   _TradeEntryState(
-      {this.entry,
+      {@required this.ab,
+      this.entry,
       this.id,
       this.sl,
       this.bs,
@@ -55,6 +59,8 @@ class _TradeEntryState extends State<TradeEntry> {
   int bs;
   int position;
   int id;
+
+  double ab;
 
   TextEditingController scripController = TextEditingController();
   TextEditingController entryController = TextEditingController();
@@ -103,7 +109,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
     setState(() {
       _helper = Dbase.instance;
-
+      ab == null ? ab = 0.0 : ab = ab;
       scripController.text = scrip;
       qtyController.text = qty;
       entryController.text = entry;
@@ -262,7 +268,6 @@ class _TradeEntryState extends State<TradeEntry> {
                 }
               } else if (step == _getSteps(height, width).length - 1) {
                 edit == 0 ? _addToDB() : _updateDB();
-                Navigator.pop(context, true);
               }
             },
 
@@ -642,11 +647,46 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _addToDB() async {
-    await _helper.insertToTrades(
-      {
+    if (ab >
+        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
+      //account balance is greater than trade worth
+
+      await _helper.insertToTrades(
+        {
+          Dbase.entry: double.parse(
+              double.parse(entryController.text).toStringAsFixed(2)),
+          Dbase.date: '${date.year}/${date.month}/${date.day}',
+          Dbase.sl: slController.text.isNotEmpty
+              ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+              : null,
+          Dbase.scrip: scripController.text,
+          Dbase.qty:
+              double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+          Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+          Dbase.ls: isSelectedForPosition[0]
+              ? 0
+              : isSelectedForPosition[1]
+                  ? 1
+                  : 2,
+        },
+      );
+      Navigator.pop(context, true);
+    } else {
+      _showMsg('Not enough account balance to execute this trade');
+    }
+  }
+
+  _updateDB() async {
+    if (ab >
+        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
+      //account balance is greater than trade worth
+
+      await _helper.updateTrade({
         Dbase.entry:
             double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-        Dbase.date: '${date.year}/${date.month}/${date.day}',
+        Dbase.date: '"${date.year}/${date.month}/${date.day}"',
         Dbase.sl: slController.text.isNotEmpty
             ? double.parse(double.parse(slController.text).toStringAsFixed(2))
             : null,
@@ -659,27 +699,19 @@ class _TradeEntryState extends State<TradeEntry> {
             : isSelectedForPosition[1]
                 ? 1
                 : 2,
-      },
-    );
+      }, id);
+      Navigator.pop(context, true);
+    } else {
+      _showMsg('Not enough account balance to execute this trade');
+    }
   }
 
-  _updateDB() async {
-    await _helper.updateTrade({
-      Dbase.entry:
-          double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-      Dbase.date: '"${date.year}/${date.month}/${date.day}"',
-      Dbase.sl: slController.text.isNotEmpty
-          ? double.parse(double.parse(slController.text).toStringAsFixed(2))
-          : null,
-      Dbase.scrip: scripController.text,
-      Dbase.qty:
-          double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
-      Dbase.bs: isSelectedForBS[0] ? 1 : 0,
-      Dbase.ls: isSelectedForPosition[0]
-          ? 0
-          : isSelectedForPosition[1]
-              ? 1
-              : 2,
-    }, id);
+  _showMsg(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: Text(msg),
+      ),
+    );
   }
 }
