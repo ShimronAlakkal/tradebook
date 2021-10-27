@@ -3,19 +3,20 @@
 
 ### Present Situation
 ```
-1. changing the UI
-2. over with the cacl page
-3. model 1 is in use 
-4. Integrations done in tradelog. UI changes remain
-5. Linked Local database.
+1. changing the UI.
+2. over with the cacl page.
+3. models are all in use. 
+4. Integrations done in tradelog. UI changes remain.
+5. Linked Local databases.
 6. Major UI tweeks comin up
 7. Drawer needs to be done 
-8. "Export and Import notes" are to be decided for the first version
-9. Transactions' page need to be done.
-10. The total and investment panels are to be done.
+8. "Export and Import notes" are to be decided for the first version (probably not going to be given for the free version)
+9. Transactions' page logic implemented. UI changes on the way.
+10. The total and investment panels are done.
 11. Ads integrations plugin set. (implementation after all clean-up only)
 12. Android/app/build.gradle updated to fit for specific version.
 13. AndroidManifest.xml update incoming
+14. Temp app icon set.
 ```
 Wireframe :
 <table>
