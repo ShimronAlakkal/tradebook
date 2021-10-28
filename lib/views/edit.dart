@@ -72,6 +72,7 @@ class _EditState extends State<Edit> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   padding: const EdgeInsets.all(10),
                   child: ListTile(
+                    isThreeLine: false,
                     onLongPress: () {
                       // delete the item here
                       _deleteTransaction(index);
@@ -96,7 +97,7 @@ class _EditState extends State<Edit> {
                     ),
                     subtitle: Text('${transacts[index]['date']}'),
                     trailing: Text(
-                      '${transacts[index]['amount']}',
+                      kmbGenerator(transacts[index]['amount']),
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w700),
                     ),
@@ -163,5 +164,19 @@ class _EditState extends State<Edit> {
             ],
           );
         });
+  }
+
+  String kmbGenerator(amount) {
+    if (amount > 999 && amount < 99999) {
+      return "${(amount / 1000).toStringAsFixed(1)} K";
+    } else if (amount > 99999 && amount < 999999) {
+      return "${(amount / 1000).toStringAsFixed(0)} K";
+    } else if (amount > 999999 && amount < 999999999) {
+      return "${(amount / 1000000).toStringAsFixed(1)} M";
+    } else if (amount > 999999999) {
+      return "${(amount / 1000000000).toStringAsFixed(1)} B";
+    } else {
+      return amount.toString();
+    }
   }
 }

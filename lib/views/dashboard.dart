@@ -86,12 +86,22 @@ class _DashboardState extends State<Dashboard> {
               ),
 
               //  Total investment
-              dashLists(height * 0.09, width, 'Account balance  - ',
-                  accountBalance == null ? '0.0' : '$accountBalance'),
+              dashLists(
+                  height * 0.09,
+                  width,
+                  'Account balance  - ',
+                  accountBalance == null
+                      ? '0.0'
+                      : kmbGenerator(accountBalance)),
 
               //  Total asset under management
-              dashLists(height * 0.09, width, 'Total Investment - ',
-                  totalInvestment == null ? '0.0' : '$totalInvestment'),
+              dashLists(
+                  height * 0.09,
+                  width,
+                  'Total Investment - ',
+                  totalInvestment == null
+                      ? '0.0'
+                      : kmbGenerator(totalInvestment)),
 
               // Position final
               const Padding(
@@ -519,6 +529,7 @@ class _DashboardState extends State<Dashboard> {
     double twdrw = await _tdbaseHelper.getTotalWithdrawal();
     ti == null ? ti = 0 : ti = ti;
     twdrw == null ? twdrw = 0.0 : twdrw = twdrw;
+    tdep == null ? tdep = 0 : tdep = tdep;
     // debugPrint(
     //     'printing $tdep tdep: in dashboard , $twdrw twdrw in dashboard $ti total inv ');
 
@@ -526,5 +537,19 @@ class _DashboardState extends State<Dashboard> {
       totalInvestment = ti;
       accountBalance = tdep - ti - twdrw;
     });
+  }
+
+  String kmbGenerator(amount) {
+    if (amount > 999 && amount < 99999) {
+      return "${(amount / 1000).toStringAsFixed(1)} K";
+    } else if (amount > 99999 && amount < 999999) {
+      return "${(amount / 1000).toStringAsFixed(0)} K";
+    } else if (amount > 999999 && amount < 999999999) {
+      return "${(amount / 1000000).toStringAsFixed(1)} M";
+    } else if (amount > 999999999) {
+      return "${(amount / 1000000000).toStringAsFixed(1)} B";
+    } else {
+      return amount.toString();
+    }
   }
 }
