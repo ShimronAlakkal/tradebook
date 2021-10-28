@@ -89,15 +89,16 @@ class Dbase {
     return await db.rawDelete('DELETE FROM $tradesTable WHERE id = $id');
   }
 
-  Future<dynamic> getTotalInvestment() async {
+  Future<double> getTotalInvestment() async {
     Database db = await database;
     var data = await db.rawQuery('''
   SELECT SUM(entry*qty) FROM $tradesTable WHERE buyorsell = 1;
   ''');
-    if (data.isNotEmpty) {
-      return data;
+    if (data[0]['SUM(entry*qty)'] != 'null' ||
+        data[0]['SUM(entry*qty)'] != null) {
+      return data[0]['SUM(entry*qty)'];
     } else {
-      return 0;
+      return 0.0;
     }
   }
 }

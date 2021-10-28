@@ -61,14 +61,6 @@ class Tdbase {
     ''');
   }
 
-  Future<dynamic> getAccountBalance() async {
-    Database db = await database;
-    return await db.rawQuery('''
-    SELECT SUM($amount) FROM $transactionTable
-    WHERE $type = 1 or $type = '1';
-    ''');
-  }
-
   Future<int> updateTransactions(Map<String, dynamic> row, int id) async {
     Database db = await database;
     return await db
@@ -80,4 +72,34 @@ class Tdbase {
     return await db
         .rawDelete('DELETE FROM $transactionTable WHERE $id = $tid ');
   }
+
+  Future<dynamic> getTotalDeposit() async {
+    Database db = await database;
+    List tdep = await db.rawQuery('''
+    SELECT SUM($amount) FROM $transactionTable
+    WHERE $type = 1 or $type = '1';
+    ''');
+    return tdep[0]['SUM(amount)'] == 'null' ? 0.0 : tdep[0]['SUM(amount)'];
+  }
+
+  Future<dynamic> getTotalWithdrawal() async {
+    Database db = await database;
+    List twith = await db.rawQuery('''
+    SELECT SUM($amount) FROM $transactionTable
+    WHERE $type = 0 or $type = '0';
+    ''');
+    return twith[0]['SUM(amount)'] == 'null' ? 0.0 : twith[0]['SUM(amount)'];
+  }
+
+  // Future<double> getFormattedDifferenceBetweenDepositAndWithdraw() async {
+  //   dynamic dep = await getTotalDeposit();
+
+  //   dynamic withd = await getTotalWithdrawal();
+  //   print('${dep[0]['SUM(amount)']} and ${withd[0]['SUM(amount)']}');
+  //   return dep[0]['SUM(amount)'] == 'null'
+  //       ? 0.0
+  //       : withd[0]['SUM(amount)'] == 'null'
+  //           ? dep[0]['SUM(amount)']
+  //           : dep[0]['SUM(amount)'] - withd[0]['SUM(amount)'];
+  // }
 }

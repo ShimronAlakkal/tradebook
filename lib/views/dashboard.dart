@@ -142,7 +142,6 @@ class _DashboardState extends State<Dashboard> {
       // The trade cards that are shown in the main screen
       itemBuilder: (context, index) {
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: const Color(0xff6C61B8),
@@ -513,13 +512,12 @@ class _DashboardState extends State<Dashboard> {
   }
 
   _setAccountDetails() async {
-    List ti = await _helper.getTotalInvestment();
-    List tDeopsit = await _tdbaseHelper.getAccountBalance();
-    // List tWithdraw = await _tdbaseHelper.getTotalWithdrawal();
-
+    double ti = await _helper.getTotalInvestment();
+    double tdep = await _tdbaseHelper.getTotalDeposit();
+    double twdrw = await _tdbaseHelper.getTotalWithdrawal();
     setState(() {
-      totalInvestment = ti[0]['SUM(entry*qty)'];
-      accountBalance = tDeopsit[0]['SUM(amount)'];
+      totalInvestment = ti;
+      accountBalance = tdep - twdrw - ti;
     });
   }
 }

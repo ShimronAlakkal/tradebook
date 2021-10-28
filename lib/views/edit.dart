@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pron/model/database.dart';
 import 'package:pron/model/transaction_database.dart';
 import 'package:pron/views/transactions.dart';
 
@@ -13,12 +14,13 @@ class _EditState extends State<Edit> {
   List<Map<String, dynamic>> transacts = [];
   Tdbase _helper;
   double ab;
-
+  Dbase _dbaseHelper;
   @override
   void initState() {
     super.initState();
     setState(() {
       _helper = Tdbase.instance;
+      _dbaseHelper = Dbase.instance;
     });
 
     _refreshTransactions();
@@ -109,12 +111,12 @@ class _EditState extends State<Edit> {
 
   _refreshTransactions() async {
     List<Map<String, dynamic>> x = await _helper.fetchTransactions();
-    List tDeopsit = await _helper.getAccountBalance();
-    // List tWithdraw = await _helper.getTotalWithdrawal();
-
+    double tdep = await _helper.getTotalDeposit();
+    double twdrw = await _helper.getTotalWithdrawal();
+    double ti = await _dbaseHelper.getTotalInvestment();
     setState(() {
       transacts = x;
-      ab = tDeopsit[0]['SUM(amount)'];
+      ab = tdep - twdrw - ti;
     });
   }
 
