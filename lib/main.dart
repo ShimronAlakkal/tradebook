@@ -5,7 +5,7 @@ import 'package:pron/views/home.dart';
 void main() {
   runApp(
     MaterialApp(
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       theme: Palette.lightTheme,
       darkTheme: Palette.darkTheme,
       debugShowCheckedModeBanner: false,

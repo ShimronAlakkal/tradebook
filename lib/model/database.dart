@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Dbase {
-  static final db = 'db1.db';
+  static final db = 'trades.db';
   static final version = 1;
 
 // The table for trades
@@ -50,8 +50,8 @@ class Dbase {
     CREATE TABLE $tradesTable (
       $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
-      $date DATE NOT NULL,
-      $sl DOUBLE NOT NULL,
+      $date TEXT NOT NULL,
+      $sl DOUBLE NULL,
       $scrip TEXT NOT NULL,
       $qty DOUBLE NOT NULL,
       $bs INTEGER NOT NULL,
@@ -61,7 +61,6 @@ class Dbase {
 
   Future<int> insertToTrades(Map<String, dynamic> row) async {
     Database db = await database;
-
     return await db.insert(tradesTable, row);
   }
 
@@ -70,14 +69,31 @@ class Dbase {
     return await db.query(tradesTable);
   }
 
-  Future<int> updateTable(Map<String, dynamic> row, int id) async {
+  Future<int> updateTrade(Map<String, dynamic> row, int cid) async {
     Database db = await database;
-    return await db
-        .update(tradesTable, row, where: '$id = ?', whereArgs: [row[id]]);
+    return await db.rawUpdate(''' 
+        UPDATE $tradesTable SET 
+        entry = ${row['entry']} ,
+        date = ${row['date']},
+        scrip = "${row['scrip']}",
+        qty = ${row['qty']},
+        buyorsell = ${row['buyorsell']},
+        longorshort = ${row['longorshort']},
+        sl = ${row['sl']}
+        WHERE $id = $cid 
+        ''');
   }
 
-  Future<int> deleteFromTable(int id) async {
+  Future<int> deleteTrade(int id) async {
     Database db = await database;
-    return await db.delete(tradesTable, where: '$id = ?', whereArgs: [id]);
+    return await db.rawDelete('DELETE FROM $tradesTable WHERE id = $id');
+  }
+
+  Future<double> getTotalInvestment() async {
+    Database db = await database;
+    var data = await db.rawQuery('''
+  SELECT SUM(entry*qty) FROM $tradesTable WHERE buyorsell = 1;
+  ''');
+    return data[0]['SUM(entry*qty)'];
   }
 }

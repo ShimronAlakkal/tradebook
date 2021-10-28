@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Dbase {
+class Tdbase {
   static const db = 'transactions.db';
   static const version = 1;
 // 0 = intraday , 1 = swing , 2 = delivery
@@ -16,8 +17,8 @@ class Dbase {
   static const type = 'type'; // 1 = deposit  , 0 = withdraw
 
 // make the class a singleton class
-  Dbase._privateConstructor();
-  static final Dbase instance = Dbase._privateConstructor();
+  Tdbase._privateConstructor();
+  static final Tdbase instance = Tdbase._privateConstructor();
 
   Database _database;
   Future get database async {
@@ -42,9 +43,9 @@ class Dbase {
     return await db.execute('''
       CREATE TABLE $transactionTable (
         $id  INTEGER PRIMARY KEY  AUTOINCREMENT ,
-        $amount DOUBLE NOT NULL,
-        $date DATE NOT NULL,
-        $type INTEGER NOT NULL,
+        $amount DOUBLE,
+        $date TEXT NOT NULL,
+        $type INTEGER 
       )
       ''');
   }
@@ -56,7 +57,9 @@ class Dbase {
 
   Future<List<Map<String, dynamic>>> fetchTransactions() async {
     Database db = await database;
-    return await db.query(transactionTable);
+    return await db.rawQuery('''
+    SELECT * FROM $transactionTable
+    ''');
   }
 
   Future<int> updateTransactions(Map<String, dynamic> row, int id) async {
@@ -65,8 +68,30 @@ class Dbase {
         .update(transactionTable, row, where: '$id = ?', whereArgs: [row[id]]);
   }
 
-  Future<int> deleteTransaction(int id) async {
+  Future<int> deleteTransaction(int tid) async {
     Database db = await database;
-    return await db.delete(transactionTable, where: '$id = ?', whereArgs: [id]);
+    return await db
+        .rawDelete('DELETE FROM $transactionTable WHERE $id = $tid ');
+  }
+
+  Future<dynamic> getTotalDeposit() async {
+    Database db = await database;
+    List tdep = await db.rawQuery('''
+    SELECT SUM($amount) FROM $transactionTable
+    WHERE $type = 1 or $type = '1';
+    ''');
+    print('Is the ${tdep[0]['SUM(amount)']} tdep in calling transaxtion db ');
+    return tdep[0]['SUM(amount)'];
+  }
+
+  Future<dynamic> getTotalWithdrawal() async {
+    Database db = await database;
+    List twith = await db.rawQuery('''
+    SELECT SUM($amount) FROM $transactionTable
+    WHERE $type = 0 or $type = '0';
+    ''');
+    debugPrint(
+        '${twith[0]['SUM(amount)']} is the twthrd  when called from the transaxtion db');
+    return twith[0]['SUM(amount)'];
   }
 }

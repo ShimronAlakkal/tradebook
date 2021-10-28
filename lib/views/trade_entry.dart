@@ -2,15 +2,65 @@
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 
+// ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
-  const TradeEntry({Key key}) : super(key: key);
+  TradeEntry(
+      {Key key,
+      @required this.ab,
+      this.id,
+      this.entry,
+      this.sl,
+      this.bs,
+      this.scrip,
+      this.position,
+      this.qty,
+      this.edit})
+      : super(key: key);
 
+  String scrip;
+  String qty;
+  String sl;
+  String entry;
+  int bs;
+  int position;
+  int edit;
+  int id;
+  double ab;
   @override
-  _TradeEntryState createState() => _TradeEntryState();
+  // ignore: no_logic_in_create_state
+  _TradeEntryState createState() => _TradeEntryState(
+      ab: ab,
+      edit: edit,
+      id: id,
+      bs: bs,
+      entry: entry,
+      sl: sl,
+      qty: qty,
+      position: position,
+      scrip: scrip);
 }
 
 class _TradeEntryState extends State<TradeEntry> {
-  _TradeEntryState();
+  _TradeEntryState(
+      {@required this.ab,
+      this.entry,
+      this.id,
+      this.sl,
+      this.bs,
+      this.scrip,
+      this.position,
+      this.qty,
+      this.edit});
+  int edit;
+  String scrip;
+  String qty;
+  String sl;
+  String entry;
+  int bs;
+  int position;
+  int id;
+
+  double ab;
 
   TextEditingController scripController = TextEditingController();
   TextEditingController entryController = TextEditingController();
@@ -26,8 +76,44 @@ class _TradeEntryState extends State<TradeEntry> {
   @override
   void initState() {
     super.initState();
+
+    if (bs == 0) {
+      setState(() {
+        isSelectedForBS[0] = false;
+        isSelectedForBS[1] = true;
+      });
+    } else {
+      isSelectedForBS[0] = true;
+      isSelectedForBS[1] = false;
+    }
+
+    if (position == 0) {
+      setState(() {
+        isSelectedForPosition[0] = true;
+        isSelectedForPosition[1] = false;
+        isSelectedForPosition[2] = false;
+      });
+    } else if (position == 1) {
+      setState(() {
+        isSelectedForPosition[0] = false;
+        isSelectedForPosition[1] = true;
+        isSelectedForPosition[2] = false;
+      });
+    } else {
+      setState(() {
+        isSelectedForPosition[0] = false;
+        isSelectedForPosition[1] = false;
+        isSelectedForPosition[2] = true;
+      });
+    }
+
     setState(() {
       _helper = Dbase.instance;
+      ab == null ? ab = 0.0 : ab = ab;
+      scripController.text = scrip;
+      qtyController.text = qty;
+      entryController.text = entry;
+      sl == 'null' ? slController.clear() : slController.text = sl;
     });
   }
 
@@ -39,9 +125,10 @@ class _TradeEntryState extends State<TradeEntry> {
     return Scaffold(
       // appbar
       appBar: AppBar(
+        title: edit == 0 ? const Text('Add a trade') : const Text('Edit trade'),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -54,7 +141,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
           Container(
             margin:
-                const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
+                const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: Colors.amber.shade500),
@@ -63,132 +150,129 @@ class _TradeEntryState extends State<TradeEntry> {
           ),
 
           // Main UI
-          Theme(
-            data: ThemeData(
-              colorScheme: Theme.of(context)
-                  .colorScheme
-                  .copyWith(primary: Colors.amber, secondary: Colors.red),
-            ),
-            child: Stepper(
-              currentStep: step,
-              controlsBuilder: (context, details) {
-                return Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.deepPurple.shade400),
-                        ),
-                        onPressed: () async {
-                          details.onStepContinue();
-                        },
-                        child: Text(
-                          step == _getSteps(height, width).length - 1
-                              ? '       SAVE       '
-                              : '       Next       ',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    OutlinedButton(
+          Stepper(
+            currentStep: step,
+            controlsBuilder: (context, details) {
+              return Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
                       style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.cyan.shade50),
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.deepPurple.shade400),
                       ),
-                      onPressed: () {
-                        details.onStepCancel();
+                      onPressed: () async {
+                        details.onStepContinue();
                       },
                       child: Text(
                         step == _getSteps(height, width).length - 1
-                            ? '       Edit       '
-                            : '       Back       ',
-                        style: TextStyle(
-                          color: Colors.grey.shade900,
+                            ? edit == 1
+                                ? '       UPDATE       '
+                                : '       SAVE       '
+                            : '       Next       ',
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
-                );
-              },
-              onStepTapped: (nstep) {
-                if (nstep != _getSteps(height, width).length - 1) {
-                  setState(
-                    () {
-                      step = nstep;
+                  ),
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.cyan.shade50),
+                    ),
+                    onPressed: () {
+                      details.onStepCancel();
                     },
-                  );
-                }
-              },
-
-              onStepCancel: step == 0
-                  ? null
-                  : () => setState(
-                        () {
-                          step--;
-                        },
+                    child: Text(
+                      step == _getSteps(height, width).length - 1
+                          ? '       Edit       '
+                          : '       Back       ',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w900,
                       ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            onStepTapped: (nstep) {
+              if (nstep != _getSteps(height, width).length - 1) {
+                setState(
+                  () {
+                    step = nstep;
+                  },
+                );
+              }
+            },
 
-              onStepContinue: () {
-                if (step != _getSteps(height, width).length - 1) {
-                  // The first page
-                  if (step == 0) {
-                    // IS the stock name input by the user?
-                    if (scripController.text.isNotEmpty && date != null) {
-                      setState(() {
-                        step++;
-                      });
-                    } else if (scripController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(seconds: 3),
-                          content: Text('Please complete the above field'),
-                        ),
-                      );
-                    } else if (date == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(seconds: 3),
-                          content: Text('Please set a date'),
-                        ),
-                      );
-                    }
+            onStepCancel: step == 0
+                ? null
+                : () => setState(
+                      () {
+                        step--;
+                      },
+                    ),
 
-                    // The third page
-                  } else if (step == 2) {
-                    if (entryController.text.isNotEmpty &&
-                        qtyController.text.isNotEmpty &&
-                        slController.text.isNotEmpty) {
-                      _logicOfEntrySL(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(seconds: 3),
-                          content: Text('Please complete the above fields'),
-                        ),
-                      );
-                    }
-                  } else {
+            onStepContinue: () {
+              if (step != _getSteps(height, width).length - 1) {
+                // The first page
+                if (step == 0) {
+                  // IS the stock name input by the user?
+                  if (scripController.text.isNotEmpty && date != null) {
                     setState(() {
                       step++;
                     });
+                  } else if (scripController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 3),
+                        content: Text('Please complete the above field'),
+                      ),
+                    );
+                  } else if (date == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 3),
+                        content: Text('Please set a date'),
+                      ),
+                    );
                   }
-                } else if (step == _getSteps(height, width).length - 1) {
-                  _addToDB();
-                  Navigator.pop(context, true);
-                }
-              },
 
-              // Steps
-              steps: _getSteps(height, width),
-            ),
+                  // The third page
+                }
+                // The third page
+                else if (step == 2) {
+                  if (entryController.text.isNotEmpty &&
+                      qtyController.text.isNotEmpty &&
+                      date != null &&
+                      scripController.text.isNotEmpty) {
+                    _logicOfEntrySL(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 3),
+                        content: Text('Please complete the above fields'),
+                      ),
+                    );
+                  }
+                } else {
+                  setState(() {
+                    step++;
+                  });
+                }
+              } else if (step == _getSteps(height, width).length - 1) {
+                edit == 0 ? _addToDB() : _updateDB();
+              }
+            },
+
+            // Steps
+            steps: _getSteps(height, width),
           ),
         ],
       ),
@@ -227,16 +311,22 @@ class _TradeEntryState extends State<TradeEntry> {
                   ),
                 ),
 
-                maxLength: 15,
+                maxLength: 7,
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(
                 height: 20,
               ),
               ListTile(
-                title: Text(date == null
-                    ? 'Date'
-                    : 'Selected Date :  ${date.year} - ${date.month} - ${date.day}'),
+                title: Text(
+                  date == null
+                      ? 'Date'
+                      : 'Selected date : ${date.year} - ${date.month} - ${date.day}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 subtitle: Text(date == null
                     ? 'The date on which you tool this trade'
                     : 'Long press to reset date'),
@@ -271,16 +361,15 @@ class _TradeEntryState extends State<TradeEntry> {
         content: Container(
           height: height * 0.25,
           padding: const EdgeInsets.symmetric(vertical: 10),
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Buys of sell
-              Text(
+              const Text(
                 'Order type',
                 style: TextStyle(
-                    color: Colors.grey.shade900,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.4),
@@ -302,7 +391,6 @@ class _TradeEntryState extends State<TradeEntry> {
                 },
                 fillColor:
                     isSelectedForBS[0] == true ? Colors.green : Colors.red,
-                color: Colors.black,
                 disabledColor: Colors.grey,
                 selectedColor: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -362,7 +450,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 },
                 children: const [
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Intraday',
                       style: TextStyle(
@@ -372,7 +460,7 @@ class _TradeEntryState extends State<TradeEntry> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Swing',
                       style: TextStyle(
@@ -382,7 +470,7 @@ class _TradeEntryState extends State<TradeEntry> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(17),
+                    padding: EdgeInsets.all(15),
                     child: Text(
                       'Delivery',
                       style: TextStyle(
@@ -407,13 +495,13 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.3,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          height: height * 0.35,
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
             children: [
               // The entry price
               TextFormField(
+                maxLength: 10,
                 controller: entryController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.next,
@@ -435,6 +523,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
               // The stop loss field
               TextFormField(
+                maxLength: 10,
                 controller: slController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.next,
@@ -442,7 +531,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
-                  hintText: ' Stop Loss',
+                  hintText: ' Stop Loss (Optional)',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -457,6 +546,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
               // Qty Field
               TextFormField(
+                maxLength: 8,
                 controller: qtyController,
                 // ignore: missing_return
                 textInputAction: TextInputAction.done,
@@ -496,6 +586,7 @@ class _TradeEntryState extends State<TradeEntry> {
       firstDate: DateTime(DateTime.now().year - 50),
       lastDate: DateTime.now(),
     );
+
     setState(
       () {
         date = pickedDate;
@@ -530,16 +621,24 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _logicOfEntrySL(BuildContext context) {
-    if (isSelectedForBS[0] &&
-        double.parse(entryController.text) <= double.parse(slController.text)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text('Entry should be greater than SL for BUY')));
-    } else if (isSelectedForBS[1] &&
-        double.parse(entryController.text) >= double.parse(slController.text)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text('Entry should be smaller than SL for SELL')));
+    if (slController.text.isNotEmpty) {
+      if (isSelectedForBS[0] &&
+          double.parse(entryController.text) <=
+              double.parse(slController.text)) {
+        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(seconds: 3),
+            content: Text('Entry should be greater than SL for BUY')));
+      } else if (isSelectedForBS[1] &&
+          double.parse(entryController.text) >=
+              double.parse(slController.text)) {
+        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(seconds: 3),
+            content: Text('Entry should be smaller than SL for SELL')));
+      } else {
+        setState(() {
+          step++;
+        });
+      }
     } else {
       setState(() {
         step++;
@@ -548,13 +647,49 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _addToDB() async {
-    await _helper.insertToTrades(
-      {
+    if (ab >
+        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
+      //account balance is greater than trade worth
+
+      await _helper.insertToTrades(
+        {
+          Dbase.entry: double.parse(
+              double.parse(entryController.text).toStringAsFixed(2)),
+          Dbase.date: '${date.year}/${date.month}/${date.day}',
+          Dbase.sl: slController.text.isNotEmpty
+              ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+              : null,
+          Dbase.scrip: scripController.text,
+          Dbase.qty:
+              double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+          Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+          Dbase.ls: isSelectedForPosition[0]
+              ? 0
+              : isSelectedForPosition[1]
+                  ? 1
+                  : 2,
+        },
+      );
+      Navigator.pop(context, true);
+    } else {
+      _showMsg('Not enough account balance to execute this trade');
+    }
+  }
+
+  _updateDB() async {
+    if (ab >
+        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
+      //account balance is greater than trade worth
+
+      await _helper.updateTrade({
         Dbase.entry:
             double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-        Dbase.date: '${date.year}/${date.month}/${date.day}',
-        Dbase.sl:
-            double.parse(double.parse(slController.text).toStringAsFixed(2)),
+        Dbase.date: '"${date.year}/${date.month}/${date.day}"',
+        Dbase.sl: slController.text.isNotEmpty
+            ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+            : null,
         Dbase.scrip: scripController.text,
         Dbase.qty:
             double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
@@ -564,7 +699,19 @@ class _TradeEntryState extends State<TradeEntry> {
             : isSelectedForPosition[1]
                 ? 1
                 : 2,
-      },
+      }, id);
+      Navigator.pop(context, true);
+    } else {
+      _showMsg('Not enough account balance to execute this trade');
+    }
+  }
+
+  _showMsg(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: Text(msg),
+      ),
     );
   }
 }
