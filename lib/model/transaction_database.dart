@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -79,7 +80,7 @@ class Tdbase {
     SELECT SUM($amount) FROM $transactionTable
     WHERE $type = 1 or $type = '1';
     ''');
-    return tdep[0]['SUM(amount)'] == 'null' ? 0.0 : tdep[0]['SUM(amount)'];
+    return tdep[0]['SUM(amount)'];
   }
 
   Future<dynamic> getTotalWithdrawal() async {
@@ -88,18 +89,6 @@ class Tdbase {
     SELECT SUM($amount) FROM $transactionTable
     WHERE $type = 0 or $type = '0';
     ''');
-    return twith[0]['SUM(amount)'] == 'null' ? 0.0 : twith[0]['SUM(amount)'];
+    return twith[0]['SUM(amount)'];
   }
-
-  // Future<double> getFormattedDifferenceBetweenDepositAndWithdraw() async {
-  //   dynamic dep = await getTotalDeposit();
-
-  //   dynamic withd = await getTotalWithdrawal();
-  //   print('${dep[0]['SUM(amount)']} and ${withd[0]['SUM(amount)']}');
-  //   return dep[0]['SUM(amount)'] == 'null'
-  //       ? 0.0
-  //       : withd[0]['SUM(amount)'] == 'null'
-  //           ? dep[0]['SUM(amount)']
-  //           : dep[0]['SUM(amount)'] - withd[0]['SUM(amount)'];
-  // }
 }

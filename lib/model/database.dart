@@ -94,11 +94,6 @@ class Dbase {
     var data = await db.rawQuery('''
   SELECT SUM(entry*qty) FROM $tradesTable WHERE buyorsell = 1;
   ''');
-    if (data[0]['SUM(entry*qty)'] != 'null' ||
-        data[0]['SUM(entry*qty)'] != null) {
-      return data[0]['SUM(entry*qty)'];
-    } else {
-      return 0.0;
-    }
+    return data[0]['SUM(entry*qty)'];
   }
 }

@@ -114,6 +114,10 @@ class _EditState extends State<Edit> {
     double tdep = await _helper.getTotalDeposit();
     double twdrw = await _helper.getTotalWithdrawal();
     double ti = await _dbaseHelper.getTotalInvestment();
+    ti == null ? ti = 0 : ti = ti;
+    tdep == null ? tdep = 0 : tdep = tdep;
+    twdrw == null ? twdrw = 0.0 : twdrw = twdrw;
+
     setState(() {
       transacts = x;
       ab = tdep - twdrw - ti;

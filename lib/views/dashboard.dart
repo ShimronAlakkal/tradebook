@@ -142,6 +142,7 @@ class _DashboardState extends State<Dashboard> {
       // The trade cards that are shown in the main screen
       itemBuilder: (context, index) {
         return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: const Color(0xff6C61B8),
@@ -438,8 +439,9 @@ class _DashboardState extends State<Dashboard> {
   }
 
   _refreshStorageData() async {
-    _setAccountDetails();
     List<Map<String, dynamic>> item = await _helper.fetchTrades();
+    _setAccountDetails();
+
     setState(() {
       trades = item;
     });
@@ -515,9 +517,14 @@ class _DashboardState extends State<Dashboard> {
     double ti = await _helper.getTotalInvestment();
     double tdep = await _tdbaseHelper.getTotalDeposit();
     double twdrw = await _tdbaseHelper.getTotalWithdrawal();
+    ti == null ? ti = 0 : ti = ti;
+    twdrw == null ? twdrw = 0.0 : twdrw = twdrw;
+    // debugPrint(
+    //     'printing $tdep tdep: in dashboard , $twdrw twdrw in dashboard $ti total inv ');
+
     setState(() {
       totalInvestment = ti;
-      accountBalance = tdep - twdrw - ti;
+      accountBalance = tdep - ti - twdrw;
     });
   }
 }
