@@ -111,7 +111,7 @@ class _DashboardState extends State<Dashboard> {
                 height: height * 0.3,
                 width: width,
                 margin: const EdgeInsets.only(
-                    top: 10, left: 12, right: 12, bottom: 8),
+                    top: 10, left: 10, right: 10, bottom: 8),
                 decoration: BoxDecoration(
                   color: const Color(0xff272727),
                   borderRadius: BorderRadius.circular(14),
@@ -516,10 +516,15 @@ class _DashboardState extends State<Dashboard> {
   _setAccountDetails() async {
     double ti = await _helper.getTotalInvestment();
     double tdep = await _tdbaseHelper.getTotalDeposit();
-    // double twdrw = await _tdbaseHelper.getTotalWithdrawal();
+    double twdrw = await _tdbaseHelper.getTotalWithdrawal();
+    ti == null ? ti = 0 : ti = ti;
+    twdrw == null ? twdrw = 0.0 : twdrw = twdrw;
+    // debugPrint(
+    //     'printing $tdep tdep: in dashboard , $twdrw twdrw in dashboard $ti total inv ');
+
     setState(() {
       totalInvestment = ti;
-      accountBalance = tdep;
+      accountBalance = tdep - ti - twdrw;
     });
   }
 }

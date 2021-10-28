@@ -647,7 +647,7 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _addToDB() async {
-    if (ab >
+    if (ab >=
         double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
             double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
       //account balance is greater than trade worth

@@ -178,9 +178,11 @@ class _TransactionsState extends State<Transactions> {
   }
 
   _validateAndAddToDatabase(context) async {
-    if (amountController.text.isNotEmpty && _date != null) {
+    if (amountController.text.isNotEmpty &&
+        _date != null &&
+        accountBalance != 0) {
       if (dwButtons[1] &&
-          accountBalance <= double.parse(amountController.text)) {
+          accountBalance < double.parse(amountController.text)) {
         _showMsg('Cannot withdraw more than $accountBalance');
       } else {
         await _helper.insertTransaction(
@@ -195,6 +197,8 @@ class _TransactionsState extends State<Transactions> {
       }
     } else if (amountController.text.isEmpty) {
       _showMsg('Please add an amount');
+    } else if (accountBalance == 0) {
+      _showMsg('Deposit something first. GOODDD...');
     } else {
       _showMsg('Pick a date');
     }

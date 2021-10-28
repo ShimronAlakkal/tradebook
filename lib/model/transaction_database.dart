@@ -80,7 +80,6 @@ class Tdbase {
     SELECT SUM($amount) FROM $transactionTable
     WHERE $type = 1 or $type = '1';
     ''');
-    print('Is the ${tdep[0]['SUM(amount)']} tdep in calling transaxtion db ');
     return tdep[0]['SUM(amount)'];
   }
 
@@ -90,8 +89,6 @@ class Tdbase {
     SELECT SUM($amount) FROM $transactionTable
     WHERE $type = 0 or $type = '0';
     ''');
-    debugPrint(
-        '${twith[0]['SUM(amount)']} is the twthrd  when called from the transaxtion db');
     return twith[0]['SUM(amount)'];
   }
 }
