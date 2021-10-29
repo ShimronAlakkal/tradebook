@@ -50,13 +50,6 @@ class _CalculatorsState extends State<Calculators> {
                   Colors.amber.shade400,
                   0),
 
-              // PS for the futures buddies
-              // tileItem(
-              //     'futures',
-              //     Icon(Icons.query_stats_outlined, color: Colors.white),
-              //     Colors.indigo.shade300,
-              //     1),
-
               // Label for the TA tools
               const Align(
                 alignment: Alignment.centerLeft,

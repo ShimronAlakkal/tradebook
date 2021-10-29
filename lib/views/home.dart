@@ -31,15 +31,9 @@ class HomeState extends State<Home> {
 
       // appbar
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey.shade900,
         elevation: 1,
         title: const Text('fraction'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.wb_sunny_outlined),
-          )
-        ],
         centerTitle: true,
       ),
 

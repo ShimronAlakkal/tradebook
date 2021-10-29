@@ -1,4 +1,6 @@
 // @dart=2.9
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 
@@ -251,6 +253,7 @@ class _TradeEntryState extends State<TradeEntry> {
                   if (entryController.text.isNotEmpty &&
                       qtyController.text.isNotEmpty &&
                       date != null &&
+                      slController.text.isNotEmpty &&
                       scripController.text.isNotEmpty) {
                     _logicOfEntrySL(context);
                   } else {
@@ -525,18 +528,15 @@ class _TradeEntryState extends State<TradeEntry> {
               TextFormField(
                 maxLength: 10,
                 controller: slController,
-                // ignore: missing_return
                 textInputAction: TextInputAction.next,
-
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
-                  hintText: ' Stop Loss (Optional)',
+                  hintText: ' Stop Loss ',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-
                 keyboardType: TextInputType.number,
               ),
 
@@ -621,24 +621,16 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _logicOfEntrySL(BuildContext context) {
-    if (slController.text.isNotEmpty) {
-      if (isSelectedForBS[0] &&
-          double.parse(entryController.text) <=
-              double.parse(slController.text)) {
-        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            duration: Duration(seconds: 3),
-            content: Text('Entry should be greater than SL for BUY')));
-      } else if (isSelectedForBS[1] &&
-          double.parse(entryController.text) >=
-              double.parse(slController.text)) {
-        return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            duration: Duration(seconds: 3),
-            content: Text('Entry should be smaller than SL for SELL')));
-      } else {
-        setState(() {
-          step++;
-        });
-      }
+    if (isSelectedForBS[0] &&
+        double.parse(entryController.text) <= double.parse(slController.text)) {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(seconds: 3),
+          content: Text('Entry should be greater than SL for BUY')));
+    } else if (isSelectedForBS[1] &&
+        double.parse(entryController.text) >= double.parse(slController.text)) {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(seconds: 3),
+          content: Text('Entry should be smaller than SL for SELL')));
     } else {
       setState(() {
         step++;
@@ -678,7 +670,7 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _updateDB() async {
-    if (ab >
+    if (ab >=
         double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
             double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
       //account balance is greater than trade worth
@@ -701,6 +693,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 : 2,
       }, id);
       Navigator.pop(context, true);
+      Navigator.pop(context);
     } else {
       _showMsg('Not enough account balance to execute this trade');
     }

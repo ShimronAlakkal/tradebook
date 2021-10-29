@@ -89,7 +89,7 @@ class _DashboardState extends State<Dashboard> {
               dashLists(
                   height * 0.09,
                   width,
-                  'Account balance  - ',
+                  'Account balance  ',
                   accountBalance == null
                       ? '0.0'
                       : kmbGenerator(accountBalance)),
@@ -98,7 +98,7 @@ class _DashboardState extends State<Dashboard> {
               dashLists(
                   height * 0.09,
                   width,
-                  'Total Investment - ',
+                  'Total Investment ',
                   totalInvestment == null
                       ? '0.0'
                       : kmbGenerator(totalInvestment)),
@@ -541,13 +541,13 @@ class _DashboardState extends State<Dashboard> {
 
   String kmbGenerator(amount) {
     if (amount > 999 && amount < 99999) {
-      return "${(amount / 1000).toStringAsFixed(1)} K";
+      return "${(amount / 1000).toStringAsFixed(2)} K";
     } else if (amount > 99999 && amount < 999999) {
-      return "${(amount / 1000).toStringAsFixed(0)} K";
+      return "${(amount / 1000).toStringAsFixed(2)} K";
     } else if (amount > 999999 && amount < 999999999) {
-      return "${(amount / 1000000).toStringAsFixed(1)} M";
+      return "${(amount / 1000000).toStringAsFixed(2)} M";
     } else if (amount > 999999999) {
-      return "${(amount / 1000000000).toStringAsFixed(1)} B";
+      return "${(amount / 1000000000).toStringAsFixed()} B";
     } else {
       return amount.toString();
     }

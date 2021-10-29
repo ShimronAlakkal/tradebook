@@ -12,7 +12,7 @@ class Palette {
   );
 
   static final darkTheme = ThemeData(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: const Color(0xff10002b),
     colorScheme: const ColorScheme.dark(),
     iconTheme: const IconThemeData(
       color: Colors.white,

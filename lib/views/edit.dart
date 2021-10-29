@@ -168,13 +168,13 @@ class _EditState extends State<Edit> {
 
   String kmbGenerator(amount) {
     if (amount > 999 && amount < 99999) {
-      return "${(amount / 1000).toStringAsFixed(1)} K";
+      return "${(amount / 1000).toStringAsFixed(2)} K";
     } else if (amount > 99999 && amount < 999999) {
-      return "${(amount / 1000).toStringAsFixed(0)} K";
+      return "${(amount / 1000).toStringAsFixed(2)} K";
     } else if (amount > 999999 && amount < 999999999) {
-      return "${(amount / 1000000).toStringAsFixed(1)} M";
+      return "${(amount / 1000000).toStringAsFixed(2)} M";
     } else if (amount > 999999999) {
-      return "${(amount / 1000000000).toStringAsFixed(1)} B";
+      return "${(amount / 1000000000).toStringAsFixed(2)} B";
     } else {
       return amount.toString();
     }
