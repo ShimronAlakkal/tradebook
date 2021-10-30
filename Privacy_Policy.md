@@ -1,5 +1,5 @@
-# Fraction
-**Privacy Policy**
+#  Privacy Policy
+**Fraction**
 
 Shimron Alakkal built the fraction. app as a Free app. This SERVICE is provided by Shimron Alakkal at no cost and is intended for use as is.
 
