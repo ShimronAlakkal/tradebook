@@ -1,5 +1,4 @@
 // @dart=2.9
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
@@ -639,16 +638,52 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _addToDB() async {
-    if (ab >=
-        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
-            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
-      //account balance is greater than trade worth
+    if (isSelectedForBS[0]) {
+      if (ab >=
+          double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+              double.parse(
+                  double.parse(qtyController.text).toStringAsFixed(2))) {
+        //account balance is greater than trade worth
 
-      await _helper.insertToTrades(
-        {
+        await _helper.insertToTrades(
+          {
+            Dbase.entry: double.parse(
+                double.parse(entryController.text).toStringAsFixed(2)),
+            Dbase.date: '${date.year}/${date.month}/${date.day}',
+            Dbase.sl: slController.text.isNotEmpty
+                ? double.parse(
+                    double.parse(slController.text).toStringAsFixed(2))
+                : null,
+            Dbase.scrip: scripController.text,
+            Dbase.qty: double.parse(
+                double.parse(qtyController.text).toStringAsFixed(2)),
+            Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+            Dbase.ls: isSelectedForPosition[0]
+                ? 0
+                : isSelectedForPosition[1]
+                    ? 1
+                    : 2,
+          },
+        );
+        Navigator.pop(context, true);
+      } else {
+        _showMsg('Not enough account balance to execute this trade');
+      }
+    }
+  }
+
+  _updateDB() async {
+    if (isSelectedForBS[0]) {
+      if (ab >=
+          double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
+              double.parse(
+                  double.parse(qtyController.text).toStringAsFixed(2))) {
+        //account balance is greater than trade worth
+
+        await _helper.updateTrade({
           Dbase.entry: double.parse(
               double.parse(entryController.text).toStringAsFixed(2)),
-          Dbase.date: '${date.year}/${date.month}/${date.day}',
+          Dbase.date: '"${date.year}/${date.month}/${date.day}"',
           Dbase.sl: slController.text.isNotEmpty
               ? double.parse(double.parse(slController.text).toStringAsFixed(2))
               : null,
@@ -661,41 +696,12 @@ class _TradeEntryState extends State<TradeEntry> {
               : isSelectedForPosition[1]
                   ? 1
                   : 2,
-        },
-      );
-      Navigator.pop(context, true);
-    } else {
-      _showMsg('Not enough account balance to execute this trade');
-    }
-  }
-
-  _updateDB() async {
-    if (ab >=
-        double.parse(double.parse(entryController.text).toStringAsFixed(2)) *
-            double.parse(double.parse(qtyController.text).toStringAsFixed(2))) {
-      //account balance is greater than trade worth
-
-      await _helper.updateTrade({
-        Dbase.entry:
-            double.parse(double.parse(entryController.text).toStringAsFixed(2)),
-        Dbase.date: '"${date.year}/${date.month}/${date.day}"',
-        Dbase.sl: slController.text.isNotEmpty
-            ? double.parse(double.parse(slController.text).toStringAsFixed(2))
-            : null,
-        Dbase.scrip: scripController.text,
-        Dbase.qty:
-            double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
-        Dbase.bs: isSelectedForBS[0] ? 1 : 0,
-        Dbase.ls: isSelectedForPosition[0]
-            ? 0
-            : isSelectedForPosition[1]
-                ? 1
-                : 2,
-      }, id);
-      Navigator.pop(context, true);
-      Navigator.pop(context);
-    } else {
-      _showMsg('Not enough account balance to execute this trade');
+        }, id);
+        Navigator.pop(context, true);
+        Navigator.pop(context);
+      } else {
+        _showMsg('Not enough account balance to execute this trade');
+      }
     }
   }
 

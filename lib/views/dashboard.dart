@@ -505,7 +505,7 @@ class _DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         builder: (context) {
           return TradeEntry(
-            ab: accountBalance,
+            ab: accountBalance + trades[index]['entry'] * trades[index]['qty'],
             edit: 1,
             id: trades[index]['id'],
             scrip: trades[index]['scrip'],

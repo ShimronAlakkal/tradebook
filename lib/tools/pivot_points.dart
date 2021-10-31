@@ -314,7 +314,7 @@ class _PivotPointsState extends State<PivotPoints> {
         'r2': p + high - low,
         'r3': high + 2 * (p - low),
         's1': (2 * p) - high,
-        's2': p - ((2 * p) - low) - ((2 * p) - high),
+        's2': p - (((2 * p) - low) - ((2 * p) - high)),
         's3': low - 2 * (high - p),
       };
     }

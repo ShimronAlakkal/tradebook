@@ -15,6 +15,11 @@ class _EditState extends State<Edit> {
   Tdbase _helper;
   double ab;
   Dbase _dbaseHelper;
+
+  double mainTdep;
+  double maintWithdraw;
+  double mainTi;
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +42,9 @@ class _EditState extends State<Edit> {
             context,
             MaterialPageRoute(
               builder: (context) {
-                return Transactions(accountBalance: ab);
+                return Transactions(
+                  accountBalance: ab,
+                );
               },
             ),
           );
@@ -74,7 +81,6 @@ class _EditState extends State<Edit> {
                   child: ListTile(
                     isThreeLine: false,
                     onLongPress: () {
-                      // delete the item here
                       _deleteTransaction(index);
                     },
                     leading: transacts[index]['type'] == 1
@@ -113,15 +119,15 @@ class _EditState extends State<Edit> {
   _refreshTransactions() async {
     List<Map<String, dynamic>> x = await _helper.fetchTransactions();
     double tdep = await _helper.getTotalDeposit();
-    double twdrw = await _helper.getTotalWithdrawal();
+    double tWithdraw = await _helper.getTotalWithdrawal();
     double ti = await _dbaseHelper.getTotalInvestment();
-    ti == null ? ti = 0 : ti = ti;
-    tdep == null ? tdep = 0 : tdep = tdep;
-    twdrw == null ? twdrw = 0.0 : twdrw = twdrw;
 
     setState(() {
+      ti == null ? mainTi = 0 : mainTi = ti;
+      tdep == null ? mainTdep = 0 : mainTdep = tdep;
+      tWithdraw == null ? maintWithdraw = 0.0 : maintWithdraw = tWithdraw;
       transacts = x;
-      ab = tdep - twdrw - ti;
+      ab = mainTdep - maintWithdraw - mainTi;
     });
   }
 
@@ -139,7 +145,7 @@ class _EditState extends State<Edit> {
                 },
                 child: const Text(
                   'cancel',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
 
@@ -149,16 +155,24 @@ class _EditState extends State<Edit> {
                     backgroundColor:
                         MaterialStateProperty.all(Colors.deepPurple.shade400)),
                 onPressed: () {
-                  _helper.deleteTransaction(transacts[index]['id']);
-                  _refreshTransactions();
-                  Navigator.pop(context);
+                  // if total deposit - total investment is greater or equals to the deletion, then execute else msg
+                  if (mainTdep - mainTi >= transacts[index]['amount']) {
+                    _helper.deleteTransaction(transacts[index]['id']);
+                    _refreshTransactions();
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Cannot delete this trade'),
+                        duration: Duration(seconds: 3)));
+                  }
                 },
                 child: const Text(
                   'Delete',
                   style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700),
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

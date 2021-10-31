@@ -40,7 +40,7 @@ class _TransactionsState extends State<Transactions> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
       ),
@@ -51,6 +51,18 @@ class _TransactionsState extends State<Transactions> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // The text saying transaction details
+            const Padding(
+              padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(
+                'Amount',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+
             // The amount field
             TextField(
               maxLength: 10,
@@ -102,12 +114,12 @@ class _TransactionsState extends State<Transactions> {
 
             // The text saying transaction
             const Padding(
-              padding: EdgeInsets.only(left: 10, top: 20, bottom: 10),
+              padding: EdgeInsets.only(left: 10, top: 30, bottom: 10),
               child: Text(
                 'Transaction type ',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -157,7 +169,7 @@ class _TransactionsState extends State<Transactions> {
 
             // The add to db button
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 10),
+              padding: const EdgeInsets.only(top: 15.0, left: 5),
               child: ElevatedButton(
                 onPressed: () {
                   _validateAndAddToDatabase(context);
