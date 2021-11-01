@@ -4,20 +4,19 @@
 
 ### Present Situation
 ```
-1. changing the UI.
+1. Preview of trade remain in UI changes.
 2. over with the cacl page.
 3. models are all in use. 
-4. Integrations done in tradelog. UI changes remain.
-5. Linked Local databases.
-6. Major UI tweeks comin up
-7. Drawer needs to be done 
-8. "Export and Import notes" are to be decided for the first version (probably not going to be given for the free version)
-9. Transactions' page logic implemented. UI changes on the way.
+4. Integrations done in tradelog.UI changes done.
+5. Finance logic implemented.
+6. Ads implemented.
+7. Drawer are done. A special dynamic image "touch" for drawer is also included.
+8. "Export and Import notes" are to be implemented only after 1st update.
+9. DashLists are modified. and finalised.
 10. The total and investment panels are done.
-11. Ads integrations plugin set. (implementation after all clean-up only)
-12. Android/app/build.gradle updated to fit for specific version.
-13. AndroidManifest.xml update incoming
-14. Temp app icon set.
+11. build.gradle module level update.
+13. AndroidManifest.xml updated. internet permissions only.
+14. Icon Chnage to something else.
 ```
 Wireframe :
 <table>
@@ -28,7 +27,6 @@ Wireframe :
     
   </tr>
   <tr>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png" width=270 height=480></td>
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s1.png" width=270 height=480></td>
     <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s2.png" width=270 height=480></td>
    
