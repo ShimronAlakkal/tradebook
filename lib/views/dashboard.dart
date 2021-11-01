@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 import 'package:pron/views/trade_entry.dart';
 import 'package:pron/model/transaction_database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -10,7 +11,14 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
+// ca-app-pub-3116546426328898/4903242318
+
 class _DashboardState extends State<Dashboard> {
+  bool isAdLoaded = false;
+  BannerAd _bannerAd;
+  InterstitialAd _intersitialAd;
+  bool _isInterstitialAdLoaded = false;
+
   List<Map<String, dynamic>> trades = [];
   Dbase _helper;
   Tdbase _tdbaseHelper;
@@ -19,11 +27,48 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
+        isAdLoaded = false;
+        ad.dispose();
+      }, onAdLoaded: (_) {
+        setState(() {
+          isAdLoaded = true;
+        });
+      }),
+    )..load();
+
+// ca-app-pub-3116546426328898/7382367314
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(onAdFailedToLoad: (error) {
+        setState(() {
+          _isInterstitialAdLoaded = false;
+        });
+      }, onAdLoaded: (ad) {
+        setState(() {
+          _isInterstitialAdLoaded = true;
+          _intersitialAd = ad;
+        });
+      }),
+    );
+
     setState(() {
       _helper = Dbase.instance;
       _tdbaseHelper = Tdbase.instance;
     });
     _refreshStorageData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bannerAd.dispose();
+    _intersitialAd.dispose();
   }
 
   @override
@@ -56,6 +101,10 @@ class _DashboardState extends State<Dashboard> {
           );
 
           if (res) {
+            if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
+              _refreshStorageData();
+              _intersitialAd.show();
+            }
             _refreshStorageData();
           }
         },
@@ -75,14 +124,35 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //  Ad banner
-              Container(
-                height: height * 0.1,
-                width: width,
-                margin: const EdgeInsets.only(
-                    left: 10, right: 10, top: 10, bottom: 4),
-                color: const Color(0xff4E60FF),
+              isAdLoaded
+                  ? Center(
+                      child: Container(
+                        child: AdWidget(
+                          ad: _bannerAd,
+                        ),
+                        height: _bannerAd.size.height.toDouble(),
+                        width: _bannerAd.size.width.toDouble(),
+                        color: Colors.transparent,
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
+
+              // The text stating stats
+              const Padding(
+                padding: EdgeInsets.only(top: 15, left: 20, bottom: 10),
+                child: Text(
+                  'Stats',
+                  style: TextStyle(
+                    letterSpacing: 1.2,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
 
               //  Total investment
@@ -90,9 +160,8 @@ class _DashboardState extends State<Dashboard> {
                   height * 0.09,
                   width,
                   'Account balance  ',
-                  accountBalance == null
-                      ? '0.0'
-                      : kmbGenerator(accountBalance)),
+                  accountBalance == null ? '0.0' : kmbGenerator(accountBalance),
+                  const Icon(Icons.cases_rounded)),
 
               //  Total asset under management
               dashLists(
@@ -101,11 +170,12 @@ class _DashboardState extends State<Dashboard> {
                   'Total Investment ',
                   totalInvestment == null
                       ? '0.0'
-                      : kmbGenerator(totalInvestment)),
+                      : kmbGenerator(totalInvestment),
+                  const Icon(Icons.book)),
 
               // Position final
               const Padding(
-                padding: EdgeInsets.only(top: 30, left: 20, bottom: 20),
+                padding: EdgeInsets.only(top: 30, left: 20, bottom: 10),
                 child: Text(
                   'Trades',
                   style: TextStyle(
@@ -123,7 +193,9 @@ class _DashboardState extends State<Dashboard> {
                 margin: const EdgeInsets.only(
                     top: 10, left: 10, right: 10, bottom: 8),
                 decoration: BoxDecoration(
-                  color: const Color(0xff272727),
+                  color: trades.isNotEmpty
+                      ? Colors.transparent
+                      : const Color(0xff272727),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: trades.isEmpty
@@ -417,12 +489,12 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget dashLists(height, width, String t1, String t2) {
+  Widget dashLists(height, width, String t1, String t2, Icon icon) {
     return Container(
       height: height,
       width: width,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      padding: const EdgeInsets.only(left: 15, right: 25, top: 5, bottom: 5),
+      padding: const EdgeInsets.only(left: 8, right: 25, top: 5, bottom: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: const Color(0xff272727),
@@ -430,17 +502,35 @@ class _DashboardState extends State<Dashboard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            t1,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0xff212121),
+                ),
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width * 0.15,
+                child: icon,
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
+                t1,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
           Text(
             t2,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              color: t2 != '0.0' ? Colors.greenAccent.shade200 : Colors.white,
             ),
           ),
         ],
@@ -471,7 +561,10 @@ class _DashboardState extends State<Dashboard> {
               },
               child: const Text(
                 'cancel',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700),
               ),
             ),
 
@@ -519,6 +612,10 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
     if (res) {
+      if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
+        _refreshStorageData();
+        _intersitialAd.show();
+      }
       _refreshStorageData();
     }
   }
@@ -547,7 +644,7 @@ class _DashboardState extends State<Dashboard> {
     } else if (amount > 999999 && amount < 999999999) {
       return "${(amount / 1000000).toStringAsFixed(2)} M";
     } else if (amount > 999999999) {
-      return "${(amount / 1000000000).toStringAsFixed()} B";
+      return "${(amount / 1000000000).toStringAsFixed(2)} B";
     } else {
       return amount.toString();
     }

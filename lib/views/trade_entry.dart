@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
@@ -74,9 +75,26 @@ class _TradeEntryState extends State<TradeEntry> {
   List<bool> isSelectedForPosition = [true, false, false]; // [In,Sw,Dl]
 
   Dbase _helper;
+
+  bool _isAdLoaded = false;
+  BannerAd _ad;
+
   @override
   void initState() {
     super.initState();
+    _ad = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
+        _isAdLoaded = false;
+        ad.dispose();
+      }, onAdLoaded: (_) {
+        setState(() {
+          _isAdLoaded = true;
+        });
+      }),
+    )..load();
 
     if (bs == 0) {
       setState(() {
@@ -119,6 +137,16 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    entryController.clear();
+    qtyController.clear();
+    slController.clear();
+    scripController.clear();
+    _ad.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -138,17 +166,21 @@ class _TradeEntryState extends State<TradeEntry> {
       // body
       body: ListView(
         children: [
-          // Ad Unit
-
-          Container(
-            margin:
-                const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: Colors.amber.shade500),
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width,
-          ),
+          //  Ad banner
+          _isAdLoaded
+              ? Center(
+                  child: Container(
+                    child: AdWidget(
+                      ad: _ad,
+                    ),
+                    height: _ad.size.height.toDouble(),
+                    width: _ad.size.width.toDouble(),
+                    color: Colors.transparent,
+                  ),
+                )
+              : const SizedBox(
+                  height: 0,
+                ),
 
           // Main UI
           Stepper(
@@ -598,24 +630,46 @@ class _TradeEntryState extends State<TradeEntry> {
       height: height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('Stock  :  ${scripController.text}'),
-          Text(date == null
-              ? ''
-              : 'Entry date : ${date.year} - ${date.month} - ${date.day}'),
-          Text('Entry Price  :  ${entryController.text}'),
-          Text('Stop Loss  :  ${slController.text}'),
-          Text('Quantity  :  ${qtyController.text}'),
-          Text(isSelectedForBS[0] ? 'Side :  Buy' : 'Side : Sell'),
-          Text(isSelectedForPosition[0]
-              ? 'Type : Intraday'
-              : isSelectedForPosition[1]
-                  ? 'Type : Swing'
-                  : 'Type : Delivery'),
+          _previewRows('Stock  :', scripController.text),
+          _previewRows(date == null ? '' : 'Entry date :',
+              date == null ? '' : '${date.day} - ${date.month} - ${date.year}'),
+          _previewRows('Entry Price :', entryController.text),
+          _previewRows('Stop Loss : ', slController.text),
+          _previewRows('Quantity : ', qtyController.text),
+          _previewRows('Side : ', isSelectedForBS[0] ? 'Buys' : 'Sell'),
+          _previewRows(
+              'Type : ',
+              isSelectedForPosition[0]
+                  ? 'Intraday'
+                  : isSelectedForPosition[1]
+                      ? 'Swing'
+                      : 'Delivery'),
         ],
       ),
+    );
+  }
+
+  _previewRows(String txt, String data) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          txt,
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        Text(
+          data,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 
@@ -669,6 +723,27 @@ class _TradeEntryState extends State<TradeEntry> {
       } else {
         _showMsg('Not enough account balance to execute this trade');
       }
+    } else {
+      await _helper.insertToTrades(
+        {
+          Dbase.entry: double.parse(
+              double.parse(entryController.text).toStringAsFixed(2)),
+          Dbase.date: '${date.year}/${date.month}/${date.day}',
+          Dbase.sl: slController.text.isNotEmpty
+              ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+              : null,
+          Dbase.scrip: scripController.text,
+          Dbase.qty:
+              double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+          Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+          Dbase.ls: isSelectedForPosition[0]
+              ? 0
+              : isSelectedForPosition[1]
+                  ? 1
+                  : 2,
+        },
+      );
+      Navigator.pop(context, true);
     }
   }
 
@@ -698,10 +773,28 @@ class _TradeEntryState extends State<TradeEntry> {
                   : 2,
         }, id);
         Navigator.pop(context, true);
-        Navigator.pop(context);
       } else {
         _showMsg('Not enough account balance to execute this trade');
       }
+    } else {
+      await _helper.updateTrade({
+        Dbase.entry:
+            double.parse(double.parse(entryController.text).toStringAsFixed(2)),
+        Dbase.date: '"${date.year}/${date.month}/${date.day}"',
+        Dbase.sl: slController.text.isNotEmpty
+            ? double.parse(double.parse(slController.text).toStringAsFixed(2))
+            : null,
+        Dbase.scrip: scripController.text,
+        Dbase.qty:
+            double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
+        Dbase.bs: isSelectedForBS[0] ? 1 : 0,
+        Dbase.ls: isSelectedForPosition[0]
+            ? 0
+            : isSelectedForPosition[1]
+                ? 1
+                : 2,
+      }, id);
+      Navigator.pop(context, true);
     }
   }
 

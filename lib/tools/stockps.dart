@@ -386,17 +386,6 @@ class _StockPSState extends State<StockPS> {
                       ),
                     ),
                   ),
-
-                  // Ad Unit
-
-                  Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.amber.shade500),
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    width: MediaQuery.of(context).size.width,
-                  ),
                 ],
               ),
             ),

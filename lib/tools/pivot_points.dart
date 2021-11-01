@@ -1,5 +1,4 @@
-// ignore_for_file: file_names
-//
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 
 class PivotPoints extends StatefulWidget {
@@ -15,12 +14,32 @@ class PivotPoints extends StatefulWidget {
 }
 
 class _PivotPointsState extends State<PivotPoints> {
+  bool isAdLoaded = false;
+  BannerAd _ad;
+
+  @override
+  void initState() {
+    super.initState();
+    _ad = BannerAd(
+      adUnitId: 'ca-app-pub-3116546426328898/4903242318',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
+        isAdLoaded = false;
+        ad.dispose();
+      }, onAdLoaded: (_) {
+        isAdLoaded = true;
+      }),
+    )..load();
+  }
+
   @override
   void dispose() {
     highController.dispose();
     lowController.dispose();
     closeController.dispose();
     openController.dispose();
+    _ad.dispose();
     super.dispose();
   }
 
@@ -50,10 +69,31 @@ class _PivotPointsState extends State<PivotPoints> {
       ),
       body: Form(
         key: _formKey,
-        child: Padding(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             children: [
+// Ads here
+              isAdLoaded
+                  ? Center(
+                      child: SizedBox(
+                        height: _ad.size.height.toDouble(),
+                        width: _ad.size.width.toDouble(),
+                        child: AdWidget(
+                          ad: _ad,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
+
+              // const sized box
+              const SizedBox(
+                height: 10,
+              ),
+
               // High Field
               TextFormField(
                 textInputAction: TextInputAction.next,

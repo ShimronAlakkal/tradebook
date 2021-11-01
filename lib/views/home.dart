@@ -84,8 +84,9 @@ class HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade900,
         elevation: 1,
-        title: const Text('fraction'),
-        centerTitle: true,
+        title: const Text('fraction',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        centerTitle: false,
       ),
 
       //    Bottom nav bar location here

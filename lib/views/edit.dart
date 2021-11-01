@@ -23,6 +23,7 @@ class _EditState extends State<Edit> {
   @override
   void initState() {
     super.initState();
+
     setState(() {
       _helper = Tdbase.instance;
       _dbaseHelper = Dbase.instance;
@@ -65,54 +66,60 @@ class _EditState extends State<Edit> {
       ),
 
       // ListView builder here
-      body: transacts.isNotEmpty
-          ? ListView.builder(
-              itemCount: transacts.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  padding: const EdgeInsets.all(10),
-                  child: ListTile(
-                    isThreeLine: false,
-                    onLongPress: () {
-                      _deleteTransaction(index);
-                    },
-                    leading: transacts[index]['type'] == 1
-                        ? Icon(
-                            Icons.upload_rounded,
-                            color: Colors.green.shade400,
-                            size: 26,
-                          )
-                        : Icon(
-                            Icons.download_rounded,
-                            size: 26,
-                            color: Colors.red.shade400,
-                          ),
-                    title: Text(
-                      transacts[index]['type'] == 1 ? 'Deposit' : 'Withdrew',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+      body: //  The main transactions ui part
+          transacts.isNotEmpty
+              ? ListView.builder(
+                  itemCount: transacts.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    subtitle: Text('${transacts[index]['date']}'),
-                    trailing: Text(
-                      kmbGenerator(transacts[index]['amount']),
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                );
-              },
-            )
-          : const Center(
-              child: Text('Add your first deposit to keep track of trading')),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      padding: const EdgeInsets.all(10),
+                      child: ListTile(
+                        isThreeLine: false,
+                        onLongPress: () {
+                          _deleteTransaction(index);
+                        },
+                        leading: transacts[index]['type'] == 1
+                            ? Icon(
+                                Icons.upload_rounded,
+                                color: Colors.green.shade400,
+                                size: 26,
+                              )
+                            : Icon(
+                                Icons.download_rounded,
+                                size: 26,
+                                color: Colors.red.shade400,
+                              ),
+                        title: Text(
+                          transacts[index]['type'] == 1
+                              ? 'Deposit'
+                              : 'Withdrew',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        subtitle: Text('${transacts[index]['date']}'),
+                        trailing: Text(
+                          kmbGenerator(transacts[index]['amount']),
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text(
+                  'Add your first deposit to make a new trade',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                )),
     );
   }
 
