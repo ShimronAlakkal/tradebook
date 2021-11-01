@@ -11,7 +11,6 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-// ca-app-pub-3116546426328898/4903242318
 
 class _DashboardState extends State<Dashboard> {
   bool isAdLoaded = false;
@@ -41,7 +40,6 @@ class _DashboardState extends State<Dashboard> {
       }),
     )..load();
 
-// ca-app-pub-3116546426328898/7382367314
     InterstitialAd.load(
       adUnitId: 'ca-app-pub-3940256099942544/1033173712',
       request: const AdRequest(),
