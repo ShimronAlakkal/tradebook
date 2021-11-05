@@ -34,7 +34,6 @@ Wireframe :
   </tr>
   <td>Trade Log</td>
   <tr>
-     
      <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/s4.png" width=270 height=480></td>
     </tr>
  </table>
