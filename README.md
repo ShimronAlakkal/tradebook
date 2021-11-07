@@ -11,16 +11,14 @@ version ^1.0.0 of fraction is now ready.
 <table>
   
   <tr>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/awesome.png" width=1920 height=1080></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/awesome.png"></td>
    </tr>
   <tr>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/mockup.png" width=1920 height=1080></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/mockup.png"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/dark-iphone-mockup.png" width=1920 height=1080></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/dark-iphone-mockup.png" ></td>
   </tr>
-  <td>Trade Log</td>
-  
  </table>
 
 
