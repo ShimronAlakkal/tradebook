@@ -9,16 +9,15 @@ version ^1.0.0 of fraction is now ready.
 ```
 ### Mockups
 <table>
+  
   <tr>
-    <td>Dashboard</td>
-     <td>Calculators</td>
-     <td>Edit</td>
-    
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/awesome.png" width=1920 height=1080></td>
+   </tr>
+  <tr>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/mockup.png" width=1920 height=1080></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/awesome.png" width=270 height=480></td>
-    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/mockup.png" width=270 height=480></td>
-   <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/dark-iphone-mockup.png" width=270 height=480></td>
+    <td><img src="https://github.com/ShimronAlakkal/tradebook/blob/main/mockups/dark-iphone-mockup.png" width=1920 height=1080></td>
   </tr>
   <td>Trade Log</td>
   
