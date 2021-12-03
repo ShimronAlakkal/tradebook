@@ -1,7 +1,7 @@
 # Fraction 
 
 ## Download the app for android <a id="raw-url" href="https://raw.githubusercontent.com/ShimronAlakkal/Stellar-Basics-Paperclip/master/Paperclip vi.apk">    here</a>
-[visit website](https://shimronalakkal.github.io/fraction_web/)   [Help](https://www.instagram.com/shimron.alakkal)
+[visit website](https://shimronalakkal.github.io/fraction_web/)   |   [Help](https://www.instagram.com/shimron.alakkal)
 > an app to keep track of your stock trades and to use some technical tools to help you to take profitable trades.
 
 ### Mockups
