@@ -1,4 +1,4 @@
-# Fraction 
+# Fraction ( This version of the app is found to have trouble in UI. Fixes are being made. Please wait till further information before you download )
 
 ## Download the android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-release.apk">    here   </a>
 [visit website](https://shimronalakkal.github.io/fraction_web/)   |   [help](https://www.instagram.com/shimron.alakkal)
