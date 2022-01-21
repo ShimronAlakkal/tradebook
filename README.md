@@ -1,4 +1,4 @@
-# Fraction ( This version of the app is found to have trouble in UI. Fixes are being made. Please wait till further information before you download )
+# Fraction ( This version of the app is found to have a trouble with the UI. Fixes are being made. Please wait till further information before you download or if you want to download and check it out, please, feel free to do so. Thanks)
 
 ## Download the android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-release.apk">    here   </a>
 [visit website](https://shimronalakkal.github.io/fraction_web/)   |   [help](https://www.instagram.com/shimron.alakkal)
