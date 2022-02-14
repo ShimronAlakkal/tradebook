@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
 import 'package:pron/views/trade_entry.dart';
 import 'package:pron/model/transaction_database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -14,9 +13,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   bool isAdLoaded = false;
-  BannerAd _bannerAd;
-  InterstitialAd _intersitialAd;
-  bool _isInterstitialAdLoaded = false;
+  final bool _isInterstitialAdLoaded = false;
 
   List<Map<String, dynamic>> trades = [];
   Dbase _helper;
@@ -26,34 +23,8 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
-        isAdLoaded = false;
-        ad.dispose();
-      }, onAdLoaded: (_) {
-        setState(() {
-          isAdLoaded = true;
-        });
-      }),
-    )..load();
-
-    InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(onAdFailedToLoad: (error) {
-        setState(() {
-          _isInterstitialAdLoaded = false;
-        });
-      }, onAdLoaded: (ad) {
-        setState(() {
-          _isInterstitialAdLoaded = true;
-          _intersitialAd = ad;
-        });
-      }),
-    );
+   
+    
 
     setState(() {
       _helper = Dbase.instance;
@@ -65,8 +36,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void dispose() {
     super.dispose();
-    _bannerAd.dispose();
-    _intersitialAd.dispose();
+    
   }
 
   @override
@@ -101,7 +71,6 @@ class _DashboardState extends State<Dashboard> {
           if (res) {
             if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
               _refreshStorageData();
-              _intersitialAd.show();
             }
             _refreshStorageData();
           }
@@ -125,18 +94,7 @@ class _DashboardState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //  Ad banner
-              isAdLoaded
-                  ? Center(
-                      child: Container(
-                        child: AdWidget(
-                          ad: _bannerAd,
-                        ),
-                        height: _bannerAd.size.height.toDouble(),
-                        width: _bannerAd.size.width.toDouble(),
-                        color: Colors.transparent,
-                      ),
-                    )
-                  : const SizedBox(
+             const SizedBox(
                       height: 0,
                     ),
 
@@ -428,7 +386,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           Text(
                             trades[index]['longorshort'] == 0
-                                ? 'Intraday'
+                                ? 'Day'
                                 : trades[index]['longorshort'] == 1
                                     ? 'Swing'
                                     : 'Delivery',
@@ -612,7 +570,6 @@ class _DashboardState extends State<Dashboard> {
     if (res) {
       if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
         _refreshStorageData();
-        _intersitialAd.show();
       }
       _refreshStorageData();
     }

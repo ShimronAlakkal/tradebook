@@ -1,4 +1,3 @@
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 
 class PivotPoints extends StatefulWidget {
@@ -15,22 +14,11 @@ class PivotPoints extends StatefulWidget {
 
 class _PivotPointsState extends State<PivotPoints> {
   bool isAdLoaded = false;
-  BannerAd _ad;
 
   @override
   void initState() {
     super.initState();
-    _ad = BannerAd(
-      adUnitId: 'ca-app-pub-3116546426328898/4903242318',
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
-        isAdLoaded = false;
-        ad.dispose();
-      }, onAdLoaded: (_) {
-        isAdLoaded = true;
-      }),
-    )..load();
+    
   }
 
   @override
@@ -39,7 +27,6 @@ class _PivotPointsState extends State<PivotPoints> {
     lowController.dispose();
     closeController.dispose();
     openController.dispose();
-    _ad.dispose();
     super.dispose();
   }
 
@@ -75,17 +62,7 @@ class _PivotPointsState extends State<PivotPoints> {
           child: Column(
             children: [
 // Ads here
-              isAdLoaded
-                  ? Center(
-                      child: SizedBox(
-                        height: _ad.size.height.toDouble(),
-                        width: _ad.size.width.toDouble(),
-                        child: AdWidget(
-                          ad: _ad,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(
+              const SizedBox(
                       height: 0,
                     ),
 
@@ -409,7 +386,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r2']}',
+                result['r2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -422,7 +399,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r1']}',
+                result['r1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -435,7 +412,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['p']}',
+                result['p'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -448,7 +425,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s1']}',
+                result['s1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -461,7 +438,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s2']}',
+                result['s2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -482,7 +459,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r3']}',
+                result['r3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -495,7 +472,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r2']}',
+                result['r2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -508,7 +485,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r1']}',
+                result['r1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -521,7 +498,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['p']}',
+                result['p'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -534,7 +511,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s1']}',
+                result['s1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -547,7 +524,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s2']}',
+                result['s2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -560,7 +537,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r3']}',
+                result['r3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -580,7 +557,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r4']}',
+                result['r4'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -593,7 +570,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r3']}',
+                result['r3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -606,7 +583,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r2']}',
+                result['r2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -619,7 +596,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r1']}',
+                result['r1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -632,7 +609,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s1']}',
+                result['s1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -645,7 +622,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s2']}',
+                result['s2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -658,7 +635,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r3']}',
+                result['r3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -671,7 +648,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s4']}',
+                result['s4'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -692,7 +669,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r1']}',
+                result['r1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -705,7 +682,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['p']}',
+                result['p'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -718,7 +695,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s1']}',
+                result['s1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -740,7 +717,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r3']}',
+                result['r3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -753,7 +730,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r2']}',
+                result['r2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -766,7 +743,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['r1']}',
+                result['r1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -779,7 +756,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['p']}',
+               result['p'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -792,7 +769,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s1']}',
+                result['s1'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -805,7 +782,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s2']}',
+                result['s2'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -818,7 +795,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 style: TextStyle(fontSize: 20),
               ),
               title: Text(
-                '${result['s3']}',
+                result['s3'].toStringAsPrecision(3),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,

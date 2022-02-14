@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pron/tools/stockps.dart';
 import 'package:pron/tools/pivot_points.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);
@@ -12,31 +11,17 @@ class Calculators extends StatefulWidget {
 
 class _CalculatorsState extends State<Calculators> {
   bool isAdLoaded = false;
-  BannerAd _ad;
 
   @override
   void initState() {
     super.initState();
 
-    _ad = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
-        isAdLoaded = false;
-        ad.dispose();
-      }, onAdLoaded: (_) {
-        setState(() {
-          isAdLoaded = true;
-        });
-      }),
-    )..load();
+  
   }
 
   @override
   void dispose() {
     super.dispose();
-    _ad.dispose();
   }
 
   @override
@@ -49,18 +34,7 @@ class _CalculatorsState extends State<Calculators> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //  Ad banner
-              isAdLoaded
-                  ? Center(
-                      child: Container(
-                        child: AdWidget(
-                          ad: _ad,
-                        ),
-                        height: _ad.size.height.toDouble(),
-                        width: _ad.size.width.toDouble(),
-                        color: Colors.transparent,
-                      ),
-                    )
-                  : const SizedBox(
+             const SizedBox(
                       height: 0,
                     ),
 

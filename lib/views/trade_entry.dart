@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:pron/model/database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
@@ -76,25 +75,10 @@ class _TradeEntryState extends State<TradeEntry> {
 
   Dbase _helper;
 
-  bool _isAdLoaded = false;
-  BannerAd _ad;
-
   @override
   void initState() {
     super.initState();
-    _ad = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
-        _isAdLoaded = false;
-        ad.dispose();
-      }, onAdLoaded: (_) {
-        setState(() {
-          _isAdLoaded = true;
-        });
-      }),
-    )..load();
+   
 
     if (bs == 0) {
       setState(() {
@@ -143,7 +127,6 @@ class _TradeEntryState extends State<TradeEntry> {
     qtyController.clear();
     slController.clear();
     scripController.clear();
-    _ad.dispose();
   }
 
   @override
@@ -167,18 +150,7 @@ class _TradeEntryState extends State<TradeEntry> {
       body: ListView(
         children: [
           //  Ad banner
-          _isAdLoaded
-              ? Center(
-                  child: Container(
-                    child: AdWidget(
-                      ad: _ad,
-                    ),
-                    height: _ad.size.height.toDouble(),
-                    width: _ad.size.width.toDouble(),
-                    color: Colors.transparent,
-                  ),
-                )
-              : const SizedBox(
+           const SizedBox(
                   height: 0,
                 ),
 
@@ -410,112 +382,115 @@ class _TradeEntryState extends State<TradeEntry> {
               ),
               const SizedBox(
                 height: 10,
+                
               ),
-              ToggleButtons(
-                onPressed: (index) {
-                  setState(() {
-                    if (index == 0) {
-                      isSelectedForBS[0] = true;
-                      isSelectedForBS[1] = false;
-                    } else {
-                      isSelectedForBS[1] = true;
-                      isSelectedForBS[0] = false;
-                    }
-                  });
-                },
-                fillColor:
-                    isSelectedForBS[0] == true ? Colors.green : Colors.red,
-                disabledColor: Colors.grey,
-                selectedColor: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                borderWidth: 3,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(17.0),
-                    child: Text(
-                      'Buy',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.4),
+               ToggleButtons(
+                  onPressed: (index) {
+                    setState(() {
+                      if (index == 0) {
+                        isSelectedForBS[0] = true;
+                        isSelectedForBS[1] = false;
+                      } else {
+                        isSelectedForBS[1] = true;
+                        isSelectedForBS[0] = false;
+                      }
+                    });
+                  },
+                  fillColor:
+                      isSelectedForBS[0] == true ? Colors.green : Colors.red,
+                  disabledColor: Colors.grey,
+                  selectedColor: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  borderWidth: 3,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(17.0),
+                      child: Text(
+                        'Buy',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.4),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(17.0),
-                    child: Text(
-                      'Sell',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.4),
-                    ),
-                  )
-                ],
-                isSelected: isSelectedForBS,
-              ),
+                    Padding(
+                      padding: EdgeInsets.all(17.0),
+                      child: Text(
+                        'Sell',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.4),
+                      ),
+                    )
+                  ],
+                  isSelected: isSelectedForBS,
+                ),
+              
 
               // Trade positon type
 
-              ToggleButtons(
-                disabledColor: Colors.grey,
-                selectedColor: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                borderWidth: 3,
-                fillColor: Colors.indigo.shade300,
-                onPressed: (index) {
-                  setState(() {
-                    switch (index) {
-                      case 0:
-                        isSelectedForPosition[0] = true;
-                        isSelectedForPosition[1] = false;
-                        isSelectedForPosition[2] = false;
-                        break;
-                      case 1:
-                        isSelectedForPosition[0] = false;
-                        isSelectedForPosition[1] = true;
-                        isSelectedForPosition[2] = false;
-                        break;
-                      case 2:
-                        isSelectedForPosition[0] = false;
-                        isSelectedForPosition[1] = false;
-                        isSelectedForPosition[2] = true;
-                    }
-                  });
-                },
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      'Intraday',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.4),
+              
+                 ToggleButtons(
+                  disabledColor: Colors.grey,
+                  selectedColor: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  fillColor: Colors.indigo.shade300,
+                  onPressed: (index) {
+                    setState(() {
+                      switch (index) {
+                        case 0:
+                          isSelectedForPosition[0] = true;
+                          isSelectedForPosition[1] = false;
+                          isSelectedForPosition[2] = false;
+                          break;
+                        case 1:
+                          isSelectedForPosition[0] = false;
+                          isSelectedForPosition[1] = true;
+                          isSelectedForPosition[2] = false;
+                          break;
+                        case 2:
+                          isSelectedForPosition[0] = false;
+                          isSelectedForPosition[1] = false;
+                          isSelectedForPosition[2] = true;
+                      }
+                    });
+                  },
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        'Day',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      'Swing',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.4),
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        'Swing',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      'Delivery',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.4),
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        'Hold',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                      ),
                     ),
-                  ),
-                ],
-                isSelected: isSelectedForPosition,
-              ),
+                    ),],
+                  isSelected: isSelectedForPosition,
+                ),
+              
             ],
           ),
         ),

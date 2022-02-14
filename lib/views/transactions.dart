@@ -1,7 +1,6 @@
 // ignore_for_file: no_logic_in_create_state
 import 'package:flutter/material.dart';
 import 'package:pron/model/transaction_database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // ignore: must_be_immutable
 class Transactions extends StatefulWidget {
@@ -21,24 +20,13 @@ class _TransactionsState extends State<Transactions> {
   DateTime _date;
   // [deposit , withdraw]
   List<bool> dwButtons = [true, false];
-  BannerAd _ad;
   bool isAdLoaded = false;
   Tdbase _helper;
   double accountBalance;
   @override
   void initState() {
     super.initState();
-    _ad = BannerAd(
-      adUnitId: 'ca-app-pub-3116546426328898/4903242318',
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(onAdFailedToLoad: (ad, error) {
-        isAdLoaded = false;
-        ad.dispose();
-      }, onAdLoaded: (_) {
-        isAdLoaded = true;
-      }),
-    )..load();
+   
     setState(() {
       _helper = Tdbase.instance;
     });
@@ -47,7 +35,6 @@ class _TransactionsState extends State<Transactions> {
   @override
   void dispose() {
     super.dispose();
-    _ad.dispose();
   }
 
   @override
@@ -69,15 +56,7 @@ class _TransactionsState extends State<Transactions> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // The ads unit
-            Center(
-              child: SizedBox(
-                child: AdWidget(
-                  ad: _ad,
-                ),
-                height: _ad.size.height.toDouble(),
-                width: _ad.size.width.toDouble(),
-              ),
-            ),
+           
 
             // The text saying transaction details
             const Padding(
