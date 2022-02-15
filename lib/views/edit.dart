@@ -115,11 +115,14 @@ class _EditState extends State<Edit> {
                     );
                   },
                 )
-              : const Center(
-                  child: Text(
-                  'Add your first deposit to make a new trade',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                )),
+              :const Padding(
+                padding:  EdgeInsets.all(8.0),
+                child:  Center(
+                    child: Text(
+                    'Add your first deposit to make a new trade',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  )),
+              ),
     );
   }
 

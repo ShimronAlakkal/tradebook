@@ -152,7 +152,7 @@ class _CalculatorsState extends State<Calculators> {
         },
         title: Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: Container(
           decoration: BoxDecoration(

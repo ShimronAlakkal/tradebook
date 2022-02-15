@@ -86,7 +86,7 @@ class HomeState extends State<Home> {
         elevation: 1,
         title: const Text('fraction',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        centerTitle: false,
+        centerTitle: true
       ),
 
       //    Bottom nav bar location here

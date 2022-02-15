@@ -26,7 +26,7 @@ class _TransactionsState extends State<Transactions> {
   @override
   void initState() {
     super.initState();
-   
+
     setState(() {
       _helper = Tdbase.instance;
     });
@@ -56,7 +56,6 @@ class _TransactionsState extends State<Transactions> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // The ads unit
-           
 
             // The text saying transaction details
             const Padding(
@@ -151,7 +150,7 @@ class _TransactionsState extends State<Transactions> {
               borderWidth: 3,
               children: const [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 17, horizontal: 40),
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 20),
                   child: Text(
                     'Deposit',
                     style: TextStyle(
@@ -161,7 +160,7 @@ class _TransactionsState extends State<Transactions> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 17, horizontal: 40),
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 20),
                   child: Text(
                     'withdraw',
                     style: TextStyle(
@@ -176,17 +175,19 @@ class _TransactionsState extends State<Transactions> {
 
             // The add to db button
             Padding(
-              padding: const EdgeInsets.only(top: 15.0, left: 5),
-              child: ElevatedButton(
-                onPressed: () {
-                  _validateAndAddToDatabase(context);
-                },
-                child: Text(
-                  dwButtons[0] ? 'make deposit' : 'make withdrawal',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    fontSize: 20,
+              padding: const EdgeInsets.symmetric(vertical: 30.0 ),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    _validateAndAddToDatabase(context);
+                  },
+                  child: Text(
+                    dwButtons[0] ? 'make deposit' : 'make withdrawal',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),

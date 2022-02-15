@@ -476,7 +476,8 @@ class _DashboardState extends State<Dashboard> {
                 t1,
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 16,
+                    letterSpacing: 1.2,
                     fontWeight: FontWeight.w600),
               ),
             ],

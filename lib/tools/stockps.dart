@@ -333,12 +333,14 @@ class _StockPSState extends State<StockPS> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
                                           'Leveraged Capital : $leverageBasedCapital'),
+                                          
                                       Text(
                                           'Number of shares : $numberOfShares'),
                                       Text(

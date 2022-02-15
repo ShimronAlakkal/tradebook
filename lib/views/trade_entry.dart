@@ -504,7 +504,8 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.35,
+          height: height * 0.4,
+          width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
             children: [
@@ -610,15 +611,15 @@ class _TradeEntryState extends State<TradeEntry> {
         children: [
           _previewRows('Stock  :', scripController.text),
           _previewRows(date == null ? '' : 'Entry date :',
-              date == null ? '' : '${date.day} - ${date.month} - ${date.year}'),
+              date == null ? '' : '${date.day}/${date.month}/${date.year}'),
           _previewRows('Entry Price :', entryController.text),
           _previewRows('Stop Loss : ', slController.text),
           _previewRows('Quantity : ', qtyController.text),
-          _previewRows('Side : ', isSelectedForBS[0] ? 'Buys' : 'Sell'),
+          _previewRows('Side : ', isSelectedForBS[0] ? 'Buy' : 'Sell'),
           _previewRows(
               'Type : ',
               isSelectedForPosition[0]
-                  ? 'Intraday'
+                  ? 'Day'
                   : isSelectedForPosition[1]
                       ? 'Swing'
                       : 'Delivery'),
