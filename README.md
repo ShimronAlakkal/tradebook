@@ -14,8 +14,12 @@ Clicking the download link above takes you to another page where you'd be able t
 >  > 1. Pixesl overflow in trade_entry_page buttons ✅
 >  > 2. Pixel overflow due to container dimensions ✅
 >  > 3. Font size on dashboard, trade_entry and calculators ✅
->  > 4. Ads integration 🧑‍💻
->  > 5. Contact support in nav-drawer 🧑‍💻
+
+> Functions
+>  > 1. Contact support in nav-drawer 🧑‍💻
+>  > 2. Ads integration 🧑‍💻
+
+
 
 ### Mockups
 <table>
