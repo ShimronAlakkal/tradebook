@@ -18,7 +18,8 @@ Clicking the download link above takes you to another page where you'd be able t
 > Functions
 >  > 1. Contact support in nav-drawer 🧑‍💻
 >  > 2. Ads integration 🧑‍💻
-
+> Logic
+>  > 1. Found a bug in `trade_entry.dart`
 
 
 ### Mockups
