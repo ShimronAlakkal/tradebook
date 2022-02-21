@@ -5,6 +5,8 @@
 ## download the android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-release.apk">    here   </a> (v1.0.0)
 [visit website](https://shimronalakkal.github.io/fraction_web/)   |   [help](https://www.instagram.com/shimron.alakkal)
 
+## download the debug-android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-debug.apk">    here   </a> (pre v1.0.1)
+
 Clicking the download link above takes you to another page where you'd be able to see a download button which upon clicking lets you download the .apk file called `app-release.apk`
 
 > an app to keep track of your stock trades and to use some technical tools to help you to take profitable trades.
