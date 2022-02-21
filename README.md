@@ -2,7 +2,7 @@
 
 > 🛑( This version of the app is found to have a trouble with the UI. Fixes are being made (status down below). Please wait till further information before you download or if you want to download and check it out, please, feel free to do so. Thanks)
 
-## download the android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-release.apk">    here   </a> (v1.0.0)
+<!-- ## download the android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-release.apk">    here   </a> (v1.0.0) -->
 [visit website](https://shimronalakkal.github.io/fraction_web/)   |   [help](https://www.instagram.com/shimron.alakkal)
 
 ## download the debug-android app <a href="https://github.com/ShimronAlakkal/tradebook/blob/main/app-debug.apk">    here   </a> (pre v1.0.1)
