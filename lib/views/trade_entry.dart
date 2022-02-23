@@ -79,7 +79,6 @@ class _TradeEntryState extends State<TradeEntry> {
   void initState() {
     super.initState();
    
-
     if (bs == 0) {
       setState(() {
         isSelectedForBS[0] = false;
@@ -150,9 +149,7 @@ class _TradeEntryState extends State<TradeEntry> {
       body: ListView(
         children: [
           //  Ad banner
-           const SizedBox(
-                  height: 0,
-                ),
+         
 
           // Main UI
           Stepper(
@@ -296,7 +293,7 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.25,
+          height: height * 0.3,
           padding: const EdgeInsets.symmetric(vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
@@ -309,7 +306,7 @@ class _TradeEntryState extends State<TradeEntry> {
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
-                  labelText: 'Stock',
+                  labelText: 'Scrip',
                   labelStyle: const TextStyle(fontSize: 18),
                   hintText: ' Example : AAPL',
                   border: OutlineInputBorder(
@@ -365,7 +362,7 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.25,
+          height: height * 0.3,
           padding: const EdgeInsets.symmetric(vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Column(
@@ -504,7 +501,7 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.4,
+          height: height * 0.45,
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(

@@ -62,14 +62,7 @@ class _PivotPointsState extends State<PivotPoints> {
           child: Column(
             children: [
 // Ads here
-              const SizedBox(
-                      height: 0,
-                    ),
-
-              // const sized box
-              const SizedBox(
-                height: 10,
-              ),
+              
 
               // High Field
               TextFormField(
@@ -87,7 +80,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 decoration: InputDecoration(
                   hintText: ' High Price',
                   hintStyle: const TextStyle(
-                    letterSpacing: 1.4,
+                    letterSpacing: 1.1,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -98,7 +91,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 cursorColor: Colors.deepPurple.shade300,
                 cursorHeight: 28,
                 style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
 
               const SizedBox(
@@ -116,7 +109,7 @@ class _PivotPointsState extends State<PivotPoints> {
                   } else if (double.parse(value) >
                       double.parse(highController.text)) {
                     return 'Low should always be smaller than high';
-                  }
+                  } 
                 },
                 maxLines: 1,
                 cursorWidth: 3, autofocus: true,
@@ -124,7 +117,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 decoration: InputDecoration(
                   hintText: ' Low Price',
                   hintStyle: const TextStyle(
-                    letterSpacing: 1.4,
+                    letterSpacing: 1.1,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -135,7 +128,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 cursorColor: Colors.deepPurple.shade300,
                 cursorHeight: 28,
                 style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(
@@ -159,7 +152,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 decoration: InputDecoration(
                   hintText: ' Close Price',
                   hintStyle: const TextStyle(
-                    letterSpacing: 1.4,
+                    letterSpacing: 1.1,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -170,7 +163,7 @@ class _PivotPointsState extends State<PivotPoints> {
                 cursorColor: Colors.deepPurple.shade300,
                 cursorHeight: 28,
                 style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(
@@ -353,7 +346,7 @@ class _PivotPointsState extends State<PivotPoints> {
         decoration: InputDecoration(
           hintText: ' Open Price',
           hintStyle: const TextStyle(
-            letterSpacing: 1.4,
+            letterSpacing: 1.1,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -363,7 +356,7 @@ class _PivotPointsState extends State<PivotPoints> {
         keyboardType: TextInputType.number,
         cursorColor: Colors.deepPurple.shade300,
         cursorHeight: 28,
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       );
     } else {
       return const SizedBox(

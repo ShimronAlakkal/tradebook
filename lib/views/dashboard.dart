@@ -144,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
 
               // The trades panel
               Container(
-                height: height * 0.3,
+                height: height * 0.35,
                 width: width,
                 margin: const EdgeInsets.only(
                     top: 10, left: 10, right: 10, bottom: 8),
@@ -159,7 +159,7 @@ class _DashboardState extends State<Dashboard> {
                         child: Text(
                           'Add your first trade',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+                              fontSize: 18, fontWeight: FontWeight.w700),
                         ),
                       )
                     : _pageview(height, width),
@@ -185,7 +185,7 @@ class _DashboardState extends State<Dashboard> {
             borderRadius: BorderRadius.circular(12),
             color: const Color(0xff6C61B8),
           ),
-          height: height * 0.3,
+          height: height * 0.35,
           width: width,
           child: InkWell(
             onLongPress: () {
@@ -203,7 +203,7 @@ class _DashboardState extends State<Dashboard> {
                     color: Colors.black54,
                   ),
                   padding: const EdgeInsets.only(
-                      top: 7, bottom: 7, right: 15.0, left: 30.0),
+                      top: 5, bottom:5, right: 15.0, left: 30.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
@@ -216,7 +216,8 @@ class _DashboardState extends State<Dashboard> {
                           Text(
                             '${trades[index]['scrip']} ',
                             style: const TextStyle(
-                                fontSize: 24,
+                                fontSize: 22,
+                                letterSpacing: 1.1,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
@@ -555,7 +556,8 @@ class _DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         builder: (context) {
           return TradeEntry(
-            ab: accountBalance + trades[index]['entry'] * trades[index]['qty'],
+            ab: accountBalance ,
+            // + trades[index]['entry'] * trades[index]['qty'],
             edit: 1,
             id: trades[index]['id'],
             scrip: trades[index]['scrip'],

@@ -84,7 +84,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
 
                   const SizedBox(
@@ -117,7 +117,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28, textInputAction: TextInputAction.next,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 20,
@@ -149,7 +149,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
@@ -184,7 +184,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
@@ -221,7 +221,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 20,
@@ -253,7 +253,7 @@ class _StockPSState extends State<StockPS> {
                     cursorColor: Colors.deepPurple.shade300,
                     cursorHeight: 28,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
 
                   //  fa button

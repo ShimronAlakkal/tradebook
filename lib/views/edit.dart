@@ -173,7 +173,7 @@ class _EditState extends State<Edit> {
                   } else {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Cannot delete this trade'),
+                        content: Text('Cannot delete this transaction'),
                         duration: Duration(seconds: 3)));
                   }
                 },

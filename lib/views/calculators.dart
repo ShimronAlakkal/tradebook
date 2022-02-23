@@ -40,7 +40,7 @@ class _CalculatorsState extends State<Calculators> {
 
               // Label for the PS
               const Padding(
-                padding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                padding: EdgeInsets.only(top: 15, bottom: 10, left: 20),
                 child: Text(
                   'Position Sizing Calculators',
                   style: TextStyle(
@@ -60,7 +60,7 @@ class _CalculatorsState extends State<Calculators> {
 
               // Label for the TA tools
               const Padding(
-                padding: EdgeInsets.only(top: 25, bottom: 10, left: 10),
+                padding: EdgeInsets.only(top: 25, bottom: 10, left: 20),
                 child: Text(
                   'Technical Analysis Tools',
                   style: TextStyle(
