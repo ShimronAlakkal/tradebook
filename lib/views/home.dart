@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pron/views/dashboard.dart';
-import 'package:pron/views/edit.dart';
+import 'package:fraction/views/dashboard.dart';
+import 'package:fraction/views/edit.dart';
 import 'calculators.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -76,18 +77,23 @@ class HomeState extends State<Home> {
 
             // Privacy Policy
             _drawerItem('Privacy Policy', const Icon(Icons.policy_rounded), 5),
+            
+            _drawerItem('Terms & Conditions', const Icon(Icons.book_rounded), 6),
           ],
         ),
       ),
 
       // appbar
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade900,
-        elevation: 1,
-        title: const Text('fraction',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        centerTitle: true
-      ),
+          backgroundColor: Colors.grey.shade900,
+          elevation: 1,
+          title: Text(
+            'fraction',
+            style: GoogleFonts.notoSans(
+                textStyle:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          ),
+          centerTitle: true),
 
       //    Bottom nav bar location here
       bottomNavigationBar: NavigationBarTheme(
@@ -117,7 +123,7 @@ class HomeState extends State<Home> {
             NavigationDestination(
                 selectedIcon: Icon(Icons.pie_chart_rounded),
                 icon: Icon(Icons.pie_chart_outline),
-                label: 'calculator'),
+                label: 'calculators'),
 
 // Reminders screen
             NavigationDestination(
@@ -135,13 +141,9 @@ class HomeState extends State<Home> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Could not open link.'),
-        action: SnackBarAction(
-            label: 'try again',
-            onPressed: () {
-              _launchItemInPhone(url);
-            }),
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not open link.'),
       ));
     }
   }
@@ -173,6 +175,9 @@ class HomeState extends State<Home> {
           case 5:
             _launchItemInPhone(
                 'https://github.com/ShimronAlakkal/tradebook/blob/main/Privacy_Policy.md');
+            break;
+          case 6:
+            _launchItemInPhone('https://github.com/ShimronAlakkal/tradebook/blob/main/TNC.md');
             break;
         }
       },

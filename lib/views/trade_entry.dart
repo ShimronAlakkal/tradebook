@@ -1,7 +1,7 @@
 // @dart=2.9
 
 import 'package:flutter/material.dart';
-import 'package:pron/model/database.dart';
+import 'package:fraction/model/database.dart';
 
 // ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
@@ -78,7 +78,7 @@ class _TradeEntryState extends State<TradeEntry> {
   @override
   void initState() {
     super.initState();
-   
+
     if (bs == 0) {
       setState(() {
         isSelectedForBS[0] = false;
@@ -149,7 +149,6 @@ class _TradeEntryState extends State<TradeEntry> {
       body: ListView(
         children: [
           //  Ad banner
-         
 
           // Main UI
           Stepper(
@@ -157,6 +156,8 @@ class _TradeEntryState extends State<TradeEntry> {
             controlsBuilder: (context, details) {
               return Row(
                 children: [
+// The button in on continue
+
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextButton(
@@ -181,6 +182,9 @@ class _TradeEntryState extends State<TradeEntry> {
                       ),
                     ),
                   ),
+
+//  The button stating back or edit
+
                   OutlinedButton(
                     style: ButtonStyle(
                       overlayColor:
@@ -195,7 +199,7 @@ class _TradeEntryState extends State<TradeEntry> {
                           : '       Back       ',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.grey.shade600,
+                        color: Colors.white.withOpacity(1),
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -289,11 +293,11 @@ class _TradeEntryState extends State<TradeEntry> {
       Step(
         state: step > 0 ? StepState.complete : StepState.indexed,
         title: const Text(
-          'Stock and date',
+          'name and date',
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.3,
+          height: height * 0.27,
           padding: const EdgeInsets.symmetric(vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
@@ -306,8 +310,6 @@ class _TradeEntryState extends State<TradeEntry> {
                 maxLines: 1,
                 cursorWidth: 3,
                 decoration: InputDecoration(
-                  labelText: 'Scrip',
-                  labelStyle: const TextStyle(fontSize: 18),
                   hintText: ' Example : AAPL',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -362,12 +364,11 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
+          width: double.infinity,
           height: height * 0.3,
           padding: const EdgeInsets.symmetric(vertical: 10),
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Buys of sell
               const Text(
@@ -378,116 +379,118 @@ class _TradeEntryState extends State<TradeEntry> {
                     letterSpacing: 1.4),
               ),
               const SizedBox(
-                height: 10,
-                
+                height: 20,
               ),
-               ToggleButtons(
-                  onPressed: (index) {
-                    setState(() {
-                      if (index == 0) {
-                        isSelectedForBS[0] = true;
-                        isSelectedForBS[1] = false;
-                      } else {
-                        isSelectedForBS[1] = true;
-                        isSelectedForBS[0] = false;
-                      }
-                    });
-                  },
-                  fillColor:
-                      isSelectedForBS[0] == true ? Colors.green : Colors.red,
-                  disabledColor: Colors.grey,
-                  selectedColor: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  borderWidth: 3,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(17.0),
-                      child: Text(
-                        'Buy',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.4),
-                      ),
+
+              ToggleButtons(
+                onPressed: (index) {
+                  setState(() {
+                    if (index == 0) {
+                      isSelectedForBS[0] = true;
+                      isSelectedForBS[1] = false;
+                    } else {
+                      isSelectedForBS[1] = true;
+                      isSelectedForBS[0] = false;
+                    }
+                  });
+                },
+                fillColor:
+                    isSelectedForBS[0] == true ? Colors.green : Colors.red,
+                disabledColor: Colors.grey,
+                selectedColor: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                borderWidth: 3,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(17.0),
+                    child: Text(
+                      'Buy',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.4),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(17.0),
-                      child: Text(
-                        'Sell',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.4),
-                      ),
-                    )
-                  ],
-                  isSelected: isSelectedForBS,
-                ),
-              
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(17.0),
+                    child: Text(
+                      'Sell',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.4),
+                    ),
+                  )
+                ],
+                isSelected: isSelectedForBS,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
 
               // Trade positon type
 
-              
-                 ToggleButtons(
-                  disabledColor: Colors.grey,
-                  selectedColor: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  fillColor: Colors.indigo.shade300,
-                  onPressed: (index) {
-                    setState(() {
-                      switch (index) {
-                        case 0:
-                          isSelectedForPosition[0] = true;
-                          isSelectedForPosition[1] = false;
-                          isSelectedForPosition[2] = false;
-                          break;
-                        case 1:
-                          isSelectedForPosition[0] = false;
-                          isSelectedForPosition[1] = true;
-                          isSelectedForPosition[2] = false;
-                          break;
-                        case 2:
-                          isSelectedForPosition[0] = false;
-                          isSelectedForPosition[1] = false;
-                          isSelectedForPosition[2] = true;
-                      }
-                    });
-                  },
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Text(
-                        'Day',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1),
+              ToggleButtons(
+                disabledColor: Colors.grey,
+                selectedColor: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                fillColor: Colors.indigo.shade300,
+                onPressed: (index) {
+                  setState(() {
+                    switch (index) {
+                      case 0:
+                        isSelectedForPosition[0] = true;
+                        isSelectedForPosition[1] = false;
+                        isSelectedForPosition[2] = false;
+                        break;
+                      case 1:
+                        isSelectedForPosition[0] = false;
+                        isSelectedForPosition[1] = true;
+                        isSelectedForPosition[2] = false;
+                        break;
+                      case 2:
+                        isSelectedForPosition[0] = false;
+                        isSelectedForPosition[1] = false;
+                        isSelectedForPosition[2] = true;
+                    }
+                  });
+                },
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      'Day',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      'Swing',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      'Hold',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Text(
-                        'Swing',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Text(
-                        'Hold',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1,
-                      ),
-                    ),
-                    ),],
-                  isSelected: isSelectedForPosition,
-                ),
-              
+                  ),
+                ],
+                isSelected: isSelectedForPosition,
+              ),
             ],
           ),
         ),
@@ -501,10 +504,11 @@ class _TradeEntryState extends State<TradeEntry> {
           style: TextStyle(fontSize: 18),
         ),
         content: Container(
-          height: height * 0.45,
+          height: height * 0.35,
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // The entry price
               TextFormField(
@@ -524,9 +528,6 @@ class _TradeEntryState extends State<TradeEntry> {
 
                 keyboardType: TextInputType.number,
               ),
-              const SizedBox(
-                height: 20,
-              ),
 
               // The stop loss field
               TextFormField(
@@ -542,10 +543,6 @@ class _TradeEntryState extends State<TradeEntry> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
-              ),
-
-              const SizedBox(
-                height: 20,
               ),
 
               // Qty Field
@@ -694,29 +691,8 @@ class _TradeEntryState extends State<TradeEntry> {
         );
         Navigator.pop(context, true);
       } else {
-        _showMsg('Not enough account balance to execute this trade');
+        _showMsg('Not enough account balance to execute trade.');
       }
-    } else {
-      await _helper.insertToTrades(
-        {
-          Dbase.entry: double.parse(
-              double.parse(entryController.text).toStringAsFixed(2)),
-          Dbase.date: '${date.year}/${date.month}/${date.day}',
-          Dbase.sl: slController.text.isNotEmpty
-              ? double.parse(double.parse(slController.text).toStringAsFixed(2))
-              : null,
-          Dbase.scrip: scripController.text,
-          Dbase.qty:
-              double.parse(double.parse(qtyController.text).toStringAsFixed(2)),
-          Dbase.bs: isSelectedForBS[0] ? 1 : 0,
-          Dbase.ls: isSelectedForPosition[0]
-              ? 0
-              : isSelectedForPosition[1]
-                  ? 1
-                  : 2,
-        },
-      );
-      Navigator.pop(context, true);
     }
   }
 
@@ -772,11 +748,9 @@ class _TradeEntryState extends State<TradeEntry> {
   }
 
   _showMsg(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Text(msg),
-      ),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text(msg),
+    ));
   }
 }

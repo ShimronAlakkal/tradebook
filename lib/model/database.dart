@@ -96,4 +96,5 @@ class Dbase {
   ''');
     return data[0]['SUM(entry*qty)'];
   }
+
 }
