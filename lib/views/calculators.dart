@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pron/tools/stockps.dart';
-import 'package:pron/tools/pivot_points.dart';
+import 'package:fraction/tools/stockps.dart';
+import 'package:fraction/tools/pivot_points.dart';
 
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);

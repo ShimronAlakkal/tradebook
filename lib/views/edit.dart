@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pron/model/database.dart';
-import 'package:pron/model/transaction_database.dart';
-import 'package:pron/views/transactions.dart';
+import 'package:fraction/model/database.dart';
+import 'package:fraction/model/transaction_database.dart';
+import 'package:fraction/views/transactions.dart';
 
 class Edit extends StatefulWidget {
   const Edit({Key key}) : super(key: key);
@@ -54,7 +54,7 @@ class _EditState extends State<Edit> {
           }
         },
         label: const Text(
-          'deposit / withdraw',
+          'add / withdraw',
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 19, color: Colors.white),
         ),
@@ -72,14 +72,13 @@ class _EditState extends State<Edit> {
                   itemCount: transacts.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.white.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(6),
                       child: ListTile(
                         isThreeLine: false,
                         onLongPress: () {
