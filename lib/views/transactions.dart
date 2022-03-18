@@ -94,7 +94,7 @@ class _TransactionsState extends State<Transactions> {
                   title: Text(
                     _date == null
                         ? 'Date'
-                        : 'Selected date : ${_date.year} - ${_date.month} - ${_date.day}',
+                        : 'Selected date : ${_date.day} - ${_date.month} - ${_date.year}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -212,7 +212,7 @@ class _TransactionsState extends State<Transactions> {
           {
             Tdbase.amount: double.parse(
                 double.parse(amountController.text).toStringAsFixed(2)),
-            Tdbase.date: '${_date.year}/${_date.month}/${_date.day}',
+            Tdbase.date: '${_date.day}/${_date.month}/${_date.year}',
             Tdbase.type: dwButtons[0] == true ? 1 : 0
           },
         );
