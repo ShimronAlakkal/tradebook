@@ -15,7 +15,7 @@ description: A simple app that enables traders to keep track of their trades -- 
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3
+version: 1.1.0
 
 environment:
   sdk: ">=2.11.0 <3.0.0"
@@ -38,6 +38,7 @@ dependencies:
   path_provider:
   url_launcher:
   google_fonts: ^2.3.1
+  google_mobile_ads: ^1.1.0
 
 dev_dependencies:
   flutter_test:
