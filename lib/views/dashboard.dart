@@ -28,7 +28,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-  _loadInterstitialAd();
     _bannerAd = BannerAd(
       adUnitId: AdServices().androidBannerId,
       request: const AdRequest(
@@ -48,6 +47,22 @@ class _DashboardState extends State<Dashboard> {
       ),
     )..load();
 
+    InterstitialAd.load(
+      adUnitId: AdServices().androidInterstitialId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _isInterstitialAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          _isInterstitialAdReady = false;
+        },
+      ),
+    );
+
     setState(() {
       _helper = Dbase.instance;
       _tdbaseHelper = Tdbase.instance;
@@ -58,6 +73,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void dispose() {
     _bannerAd.dispose();
+    _interstitialAd.dispose();
     super.dispose();
   }
 
@@ -634,27 +650,6 @@ class _DashboardState extends State<Dashboard> {
       accountBalance = tdep - ti - twdrw;
       // totalShortPosition = tshort;
     });
-  }
-
-  void _loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: AdServices().androidInterstitialId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          setState(() {
-            _interstitialAd = ad;
-            _isInterstitialAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          _isInterstitialAdReady = false;
-          _interstitialAd = null;
-          _interstitialAd.dispose();
-
-        },
-      ),
-    );
   }
 
   String kmbGenerator(amount) {
