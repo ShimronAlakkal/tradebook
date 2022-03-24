@@ -14,3 +14,5 @@ Here are the answers to a few questions that you might have. But, first off, tha
 ### 4. What can I use this app for?
 > You can use this app if you're a trader in either crypto or stock or commodities. You could use this app: to find the ideal position size, to calculate pivot points in an asset's chart using technical analysis tools provided, to keep track of every transaction that you've made into the field of investing, and also to keep track of every trade that you've taken so far.
 
+
+Visit the official website of fraction [here](https://shimronalakkal.github.io/fraction_web/)
