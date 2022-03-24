@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 // ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
@@ -63,6 +65,10 @@ class _TradeEntryState extends State<TradeEntry> {
 
   double ab;
 
+  BannerAd _bannerAd;
+
+  bool _isBannerAdReady = false;
+
   TextEditingController scripController = TextEditingController();
   TextEditingController entryController = TextEditingController();
   TextEditingController slController = TextEditingController();
@@ -78,6 +84,22 @@ class _TradeEntryState extends State<TradeEntry> {
   @override
   void initState() {
     super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: AdServices().androidBannerId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    )..load();
 
     if (bs == 0) {
       setState(() {
@@ -121,11 +143,13 @@ class _TradeEntryState extends State<TradeEntry> {
 
   @override
   void dispose() {
-    super.dispose();
+    _bannerAd.dispose();
+
     entryController.clear();
     qtyController.clear();
     slController.clear();
     scripController.clear();
+    super.dispose();
   }
 
   @override
@@ -149,6 +173,19 @@ class _TradeEntryState extends State<TradeEntry> {
       body: ListView(
         children: [
           //  Ad banner
+          _isBannerAdReady
+              ? Center(
+                  child: SizedBox(
+                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  ),
+                )
+              : const SizedBox(),
+
+          const SizedBox(
+            height: 25,
+          ),
 
           // Main UI
           Stepper(
@@ -171,9 +208,9 @@ class _TradeEntryState extends State<TradeEntry> {
                       child: Text(
                         step == _getSteps(height, width).length - 1
                             ? edit == 1
-                                ? '       UPDATE       '
-                                : '       SAVE       '
-                            : '       Next       ',
+                                ? '   UPDATE   '
+                                : '   SAVE   '
+                            : '   Next   ',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
@@ -195,8 +232,8 @@ class _TradeEntryState extends State<TradeEntry> {
                     },
                     child: Text(
                       step == _getSteps(height, width).length - 1
-                          ? '       Edit       '
-                          : '       Back       ',
+                          ? '   Edit   '
+                          : '   Back   ',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white.withOpacity(1),
@@ -693,7 +730,7 @@ class _TradeEntryState extends State<TradeEntry> {
       } else {
         _showMsg('Not enough account balance to execute trade.');
       }
-    }else {
+    } else {
       await _helper.insertToTrades(
         {
           Dbase.entry: double.parse(

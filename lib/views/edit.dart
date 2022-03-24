@@ -20,6 +20,8 @@ class _EditState extends State<Edit> {
   double maintWithdraw;
   double mainTi;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,7 @@ class _EditState extends State<Edit> {
     _refreshTransactions();
   }
 
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

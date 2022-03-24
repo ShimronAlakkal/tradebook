@@ -1,6 +1,8 @@
 // ignore_for_file: no_logic_in_create_state
 import 'package:flutter/material.dart';
 import 'package:fraction/model/transaction_database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 // ignore: must_be_immutable
 class Transactions extends StatefulWidget {
@@ -23,10 +25,28 @@ class _TransactionsState extends State<Transactions> {
   bool isAdLoaded = false;
   Tdbase _helper;
   double accountBalance;
+  bool _isBannerAdReady = false;
+  BannerAd _bannerAd;
+
   @override
   void initState() {
     super.initState();
-
+    _bannerAd = BannerAd(
+      adUnitId: AdServices().androidBannerId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    )..load();
     setState(() {
       _helper = Tdbase.instance;
     });
@@ -34,6 +54,8 @@ class _TransactionsState extends State<Transactions> {
 
   @override
   void dispose() {
+    amountController.dispose();
+    _bannerAd.dispose();
     super.dispose();
   }
 
@@ -52,6 +74,18 @@ class _TransactionsState extends State<Transactions> {
       ),
       body: ListView(
         children: [
+          _isBannerAdReady
+              ? Center(
+                  child: SizedBox(
+                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  ),
+                )
+              : const SizedBox(),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Column(
@@ -120,64 +154,73 @@ class _TransactionsState extends State<Transactions> {
                   },
                 ),
 
-                // The text saying transaction
-                const Padding(
-                  padding: EdgeInsets.only(left: 10, top: 30, bottom: 10),
-                  child: Text(
-                    'Transaction type ',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
 
-                // The deposit or withdrawal
-                ToggleButtons(
-                  onPressed: (index) {
-                    setState(() {
-                      if (index == 0) {
-                        dwButtons[0] = true;
-                        dwButtons[1] = false;
-                      } else {
-                        dwButtons[1] = true;
-                        dwButtons[0] = false;
-                      }
-                    });
-                  },
-                  fillColor: dwButtons[0] == true ? Colors.green : Colors.red,
-                  disabledColor: Colors.grey,
-                  selectedColor: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  borderWidth: 3,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-                      child: Text(
-                        'Deposit',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.4),
+              const SizedBox(height: 15,),
+
+
+                // the row of thibgs
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // The text saying transaction
+                    const Text(
+                      'Type',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-                      child: Text(
-                        'withdraw',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.4),
-                      ),
-                    )
+                    // The deposit or withdrawal
+                    ToggleButtons(
+                      onPressed: (index) {
+                        setState(() {
+                          if (index == 0) {
+                            dwButtons[0] = true;
+                            dwButtons[1] = false;
+                          } else {
+                            dwButtons[1] = true;
+                            dwButtons[0] = false;
+                          }
+                        });
+                      },
+                      fillColor:
+                          dwButtons[0] == true ? Colors.green : Colors.red,
+                      disabledColor: Colors.grey,
+                      selectedColor: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      borderWidth: 3,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 13, horizontal: 20),
+                          child: Text(
+                            'Deposit',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1.4),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 13, horizontal: 20),
+                          child: Text(
+                            'withdraw',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1.4),
+                          ),
+                        )
+                      ],
+                      isSelected: dwButtons,
+                    ),
                   ],
-                  isSelected: dwButtons,
                 ),
 
                 // The add to db button
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0 ),
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {

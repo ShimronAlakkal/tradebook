@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
 import 'package:fraction/views/trade_entry.dart';
 import 'package:fraction/model/transaction_database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -10,23 +12,41 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-
 class _DashboardState extends State<Dashboard> {
-  bool isAdLoaded = false;
-  final bool _isInterstitialAdLoaded = false;
-
   List<Map<String, dynamic>> trades = [];
   Dbase _helper;
   Tdbase _tdbaseHelper;
   double totalInvestment = 0.0;
   double accountBalance = 0.0;
-
+  
+  BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
+  
+  InterstitialAd _interstitialAd;
+  bool _isInterstitialAdReady = false;
 
   @override
   void initState() {
     super.initState();
-   
-    
+  _loadInterstitialAd();
+    _bannerAd = BannerAd(
+      adUnitId: AdServices().androidBannerId,
+      request: const AdRequest(
+        keywords: ["finance","jobs","money","business","trading","stocks","crypto","market","coins","currency","cryptocurrency"]
+      ),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    )..load();
 
     setState(() {
       _helper = Dbase.instance;
@@ -37,8 +57,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void dispose() {
+    _bannerAd.dispose();
     super.dispose();
-    
   }
 
   @override
@@ -71,7 +91,8 @@ class _DashboardState extends State<Dashboard> {
           );
 
           if (res) {
-            if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
+            if (trades.length % 3 == 0 && _isInterstitialAdReady) {
+              _interstitialAd.show();
               _refreshStorageData();
             }
             _refreshStorageData();
@@ -96,9 +117,20 @@ class _DashboardState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //  Ad banner
-             const SizedBox(
-                      height: 0,
-                    ),
+
+              _isBannerAdReady
+                  ? Center(
+                      child: SizedBox(
+                        width: _bannerAd.size.width.toDouble(),
+                        height: _bannerAd.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd),
+                      ),
+                    )
+                  : const SizedBox(),
+
+              const SizedBox(
+                height: 10,
+              ),
 
               // The text stating stats
               const Padding(
@@ -131,7 +163,6 @@ class _DashboardState extends State<Dashboard> {
                       : kmbGenerator(totalInvestment),
                   const Icon(Icons.monetization_on)),
 
-                
               // dsah list of short positions
               // dashLists(height * 0.09, width, 'Short Position',  totalShortPosition.toString() ,const Icon(Icons.border_top_rounded)),
 
@@ -150,7 +181,7 @@ class _DashboardState extends State<Dashboard> {
 
               // The trades panel
               Container(
-                height: height * 0.3,
+                height: height * 0.33,
                 width: width,
                 margin: const EdgeInsets.only(
                     top: 10, left: 10, right: 10, bottom: 8),
@@ -191,7 +222,7 @@ class _DashboardState extends State<Dashboard> {
             borderRadius: BorderRadius.circular(12),
             color: const Color(0xff6C61B8),
           ),
-          height: height * 0.35,
+          height: height * 0.4,
           width: width,
           child: InkWell(
             onLongPress: () {
@@ -200,6 +231,7 @@ class _DashboardState extends State<Dashboard> {
             child: ListView(
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // The  scrip date , positoin and icon button to delete
@@ -211,7 +243,7 @@ class _DashboardState extends State<Dashboard> {
                         color: Colors.black54,
                       ),
                       padding: const EdgeInsets.only(
-                          top: 5, bottom:5, right: 15.0, left: 30.0),
+                          top: 5, bottom: 5, right: 15.0, left: 30.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -474,7 +506,7 @@ class _DashboardState extends State<Dashboard> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.white.withOpacity(0.08) ,
+                  color: Colors.white.withOpacity(0.08),
                 ),
                 height: MediaQuery.of(context).size.height * 0.07,
                 width: MediaQuery.of(context).size.width * 0.15,
@@ -501,7 +533,6 @@ class _DashboardState extends State<Dashboard> {
               color: t2 != '0.0' ? Colors.greenAccent.shade200 : Colors.white,
             ),
           ),
-
         ],
       ),
     );
@@ -567,7 +598,7 @@ class _DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         builder: (context) {
           return TradeEntry(
-            ab: accountBalance ,
+            ab: accountBalance,
             // + trades[index]['entry'] * trades[index]['qty'],
             edit: 1,
             id: trades[index]['id'],
@@ -582,7 +613,8 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
     if (res) {
-      if (trades.length % 5 == 0 && _isInterstitialAdLoaded) {
+      if (trades.length % 3 == 0 && _isInterstitialAdReady) {
+        _interstitialAd.show();
         _refreshStorageData();
       }
       _refreshStorageData();
@@ -602,6 +634,27 @@ class _DashboardState extends State<Dashboard> {
       accountBalance = tdep - ti - twdrw;
       // totalShortPosition = tshort;
     });
+  }
+
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdServices().androidInterstitialId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _isInterstitialAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          _isInterstitialAdReady = false;
+          _interstitialAd = null;
+          _interstitialAd.dispose();
+
+        },
+      ),
+    );
   }
 
   String kmbGenerator(amount) {
