@@ -47,6 +47,7 @@ class Dbase {
   Future _populateDB(Database db, int version) async {
     // Creating a database for the main notes
     return await db.execute('''
+    IF  NOT EXISTS 
     CREATE TABLE $tradesTable (
       $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
