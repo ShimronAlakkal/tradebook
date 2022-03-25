@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 class StockPS extends StatefulWidget {
   const StockPS({Key key}) : super(key: key);
@@ -15,9 +17,35 @@ class _StockPSState extends State<StockPS> {
   TextEditingController slController = TextEditingController();
   TextEditingController targetController = TextEditingController();
   TextEditingController leverageController = TextEditingController();
+  BannerAd _bannerAd;
+
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: AdServices().androidBannerId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
 
   @override
   void dispose() {
+    _bannerAd.dispose();
+
     capitalContorller.dispose();
     riskController.dispose();
     entryController.dispose();
@@ -57,6 +85,20 @@ class _StockPSState extends State<StockPS> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
               child: Column(
                 children: [
+                  _isBannerAdReady
+                      ? Center(
+                          child: SizedBox(
+                            width: _bannerAd.size.width.toDouble(),
+                            height: _bannerAd.size.height.toDouble(),
+                            child: AdWidget(ad: _bannerAd),
+                          ),
+                        )
+                      : const SizedBox(),
+
+                  const SizedBox(
+                    height: 25,
+                  ),
+
                   // Capital Field
                   TextFormField(
                     autofocus: true,
@@ -333,14 +375,14 @@ class _StockPSState extends State<StockPS> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
                                           'Leveraged Capital : $leverageBasedCapital'),
-                                          
                                       Text(
                                           'Number of shares : $numberOfShares'),
                                       Text(

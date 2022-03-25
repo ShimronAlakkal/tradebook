@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
 import 'package:fraction/model/transaction_database.dart';
 import 'package:fraction/views/transactions.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 class Edit extends StatefulWidget {
   const Edit({Key key}) : super(key: key);
@@ -20,9 +22,27 @@ class _EditState extends State<Edit> {
   double maintWithdraw;
   double mainTi;
 
+  InterstitialAd _interstitialAd;
+  bool _isInterstitialAdReady = false;
+
   @override
   void initState() {
     super.initState();
+    InterstitialAd.load(
+      adUnitId: AdServices().androidInterstitialId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _isInterstitialAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          _isInterstitialAdReady = false;
+        },
+      ),
+    );
 
     setState(() {
       _helper = Tdbase.instance;
@@ -30,6 +50,12 @@ class _EditState extends State<Edit> {
     });
 
     _refreshTransactions();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _interstitialAd.dispose();
   }
 
   @override
@@ -50,6 +76,10 @@ class _EditState extends State<Edit> {
             ),
           );
           if (res) {
+            if(_isInterstitialAdReady){
+              _interstitialAd.show();
+              _refreshTransactions();
+            }
             _refreshTransactions();
           }
         },
@@ -114,14 +144,14 @@ class _EditState extends State<Edit> {
                     );
                   },
                 )
-              :const Padding(
-                padding:  EdgeInsets.all(8.0),
-                child:  Center(
-                    child: Text(
+              : const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
                     'Add your first deposit to make a new trade',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   )),
-              ),
+                ),
     );
   }
 

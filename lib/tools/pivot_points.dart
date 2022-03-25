@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 class PivotPoints extends StatefulWidget {
   final int index;
@@ -13,16 +15,34 @@ class PivotPoints extends StatefulWidget {
 }
 
 class _PivotPointsState extends State<PivotPoints> {
-  bool isAdLoaded = false;
+  BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
-    
+    _bannerAd = BannerAd(
+      adUnitId: AdServices().androidBannerId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    )..load();
   }
 
   @override
   void dispose() {
+    _bannerAd.dispose();
+
     highController.dispose();
     lowController.dispose();
     closeController.dispose();
@@ -40,6 +60,8 @@ class _PivotPointsState extends State<PivotPoints> {
 
   int index;
   String title;
+
+  ListView resultList;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +84,19 @@ class _PivotPointsState extends State<PivotPoints> {
           child: Column(
             children: [
 // Ads here
-              
+              _isBannerAdReady
+                  ? Center(
+                      child: SizedBox(
+                        width: _bannerAd.size.width.toDouble(),
+                        height: _bannerAd.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd),
+                      ),
+                    )
+                  : const SizedBox(),
+
+              const SizedBox(
+                height: 25,
+              ),
 
               // High Field
               TextFormField(
@@ -109,7 +143,7 @@ class _PivotPointsState extends State<PivotPoints> {
                   } else if (double.parse(value) >
                       double.parse(highController.text)) {
                     return 'Low should always be smaller than high';
-                  } 
+                  }
                 },
                 maxLines: 1,
                 cursorWidth: 3, autofocus: true,
@@ -172,10 +206,11 @@ class _PivotPointsState extends State<PivotPoints> {
 
               // If the index  == 5, there oughta be another field called open
               _isDenmark(index),
+
               // FAB
 
               Padding(
-                padding: const EdgeInsets.only(top: 30.0),
+                padding: const EdgeInsets.only(top: 30.0, bottom: 40),
                 child: FloatingActionButton.extended(
                   backgroundColor: Colors.deepPurple.shade400,
                   elevation: 1,
@@ -232,11 +267,11 @@ class _PivotPointsState extends State<PivotPoints> {
                               ),
                             ),
                             content: Container(
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
-                              child: _formatDialog(result, index),
+                              child: _formResultList(result, index),
                             ),
                           );
                         },
@@ -366,7 +401,7 @@ class _PivotPointsState extends State<PivotPoints> {
     }
   }
 
-  _formatDialog(Map<String, double> result, int index) {
+  _formResultList(Map<String, double> result, int index) {
     switch (index) {
       case 2:
         //  results for spp
@@ -376,12 +411,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 2  : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r2'].toStringAsPrecision(3),
+                result['r2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -389,12 +424,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r1'].toStringAsPrecision(3),
+                result['r1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -402,12 +437,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Pivot Point : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['p'].toStringAsPrecision(3),
+                result['p'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -415,12 +450,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s1'].toStringAsPrecision(3),
+                result['s1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -428,12 +463,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s2'].toStringAsPrecision(3),
+                result['s2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -449,12 +484,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r3'].toStringAsPrecision(3),
+                result['r3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -462,12 +497,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r2'].toStringAsPrecision(3),
+                result['r2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -475,12 +510,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r1'].toStringAsPrecision(3),
+                result['r1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -488,12 +523,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Pivot Point : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['p'].toStringAsPrecision(3),
+                result['p'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -501,12 +536,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s1'].toStringAsPrecision(3),
+                result['s1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -514,12 +549,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s2'].toStringAsPrecision(3),
+                result['s2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -527,12 +562,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r3'].toStringAsPrecision(3),
+                result['r3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -547,12 +582,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 4 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r4'].toStringAsPrecision(3),
+                result['r4'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -560,12 +595,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r3'].toStringAsPrecision(3),
+                result['r3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -573,12 +608,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r2'].toStringAsPrecision(3),
+                result['r2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -586,12 +621,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r1'].toStringAsPrecision(3),
+                result['r1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -599,12 +634,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s1'].toStringAsPrecision(3),
+                result['s1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -612,12 +647,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s2'].toStringAsPrecision(3),
+                result['s2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -625,12 +660,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r3'].toStringAsPrecision(3),
+                result['r3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -638,12 +673,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 4 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s4'].toStringAsPrecision(3),
+                result['s4'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -659,12 +694,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r1'].toStringAsPrecision(3),
+                result['r1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -672,12 +707,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Pivot Point : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['p'].toStringAsPrecision(3),
+                result['p'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -685,12 +720,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s1'].toStringAsPrecision(3),
+                result['s1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -707,12 +742,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r3'].toStringAsPrecision(3),
+                result['r3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -720,12 +755,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r2'].toStringAsPrecision(3),
+                result['r2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -733,12 +768,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Resistance 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['r1'].toStringAsPrecision(3),
+                result['r1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -746,12 +781,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Pivot Point : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-               result['p'].toStringAsPrecision(3),
+                result['p'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -759,12 +794,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 1 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s1'].toStringAsPrecision(3),
+                result['s1'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -772,12 +807,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 2 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s2'].toStringAsPrecision(3),
+                result['s2'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -785,12 +820,12 @@ class _PivotPointsState extends State<PivotPoints> {
             ListTile(
               leading: const Text(
                 'Support 3 : ',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16),
               ),
               title: Text(
-                result['s3'].toStringAsPrecision(3),
+                result['s3'].toStringAsFixed(2),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),

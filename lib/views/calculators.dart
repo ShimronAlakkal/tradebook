@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fraction/tools/stockps.dart';
 import 'package:fraction/tools/pivot_points.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:fraction/services/ad_services.dart';
 
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);
@@ -10,17 +12,37 @@ class Calculators extends StatefulWidget {
 }
 
 class _CalculatorsState extends State<Calculators> {
-  bool isAdLoaded = false;
+ 
+   BannerAd _bannerAd;
+
+  bool _isBannerAdReady = false;
+
 
   @override
   void initState() {
     super.initState();
-
+_bannerAd = BannerAd(
+    adUnitId: AdServices().androidBannerId,
+    request: const AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (_) {
+        setState(() {
+          _isBannerAdReady = true;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        _isBannerAdReady = false;
+        ad.dispose();
+      },
+    ),
+  )..load();
   
   }
 
   @override
   void dispose() {
+    _bannerAd.dispose();
     super.dispose();
   }
 
@@ -33,9 +55,19 @@ class _CalculatorsState extends State<Calculators> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+
+              _isBannerAdReady ? Center(
+                      child: SizedBox(
+                        width: _bannerAd.size.width.toDouble(),
+                        height: _bannerAd.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd),
+                      ),
+                    )
+                  : const SizedBox(),
               //  Ad banner
              const SizedBox(
-                      height: 0,
+                      height: 10,
                     ),
 
               // Label for the PS
