@@ -76,7 +76,10 @@ class _EditState extends State<Edit> {
             ),
           );
           if (res) {
-            _interstitialAd.show();
+            if(_isInterstitialAdReady){
+              _interstitialAd.show();
+              _refreshTransactions();
+            }
             _refreshTransactions();
           }
         },
