@@ -13,6 +13,8 @@ pubspec.lock/
 android/
 ios/
 
+
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -34,6 +36,8 @@ ios/
 .pub-cache/
 .pub/
 /build/
+services/
+ad_servides.dart/
 
 # Web related
 lib/generated_plugin_registrant.dart
