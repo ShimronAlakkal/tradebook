@@ -4,6 +4,16 @@ import 'package:fraction/tools/pivot_points.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:fraction/services/ad_services.dart';
 
+
+// Changes or features that could be made/added
+/* 
+New technical analysis tools.
+Prime susbcription for no ads.
+Better UI.
+Automatically sizing texts to fit the screen.
+*/
+
+
 class Calculators extends StatefulWidget {
   const Calculators({Key key}) : super(key: key);
 
