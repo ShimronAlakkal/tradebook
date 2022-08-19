@@ -40,8 +40,8 @@ class Tdbase {
   Future _populateDB(Database db, int version) async {
     // Creating a database for the main notes
     return await db.execute('''
-      IF  NOT EXISTS 
-      CREATE TABLE $transactionTable (
+
+      CREATE TABLE IF NOT EXISTS $transactionTable (
         $id  INTEGER PRIMARY KEY  AUTOINCREMENT ,
         $amount DOUBLE,
         $date TEXT NOT NULL,

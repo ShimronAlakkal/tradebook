@@ -55,7 +55,7 @@ class _EditState extends State<Edit> {
   @override
   void dispose() {
     super.dispose();
-    _interstitialAd.dispose();
+    // _interstitialAd.dispose();
   }
 
   @override

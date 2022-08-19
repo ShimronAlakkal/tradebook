@@ -47,8 +47,7 @@ class Dbase {
   Future _populateDB(Database db, int version) async {
     // Creating a database for the main notes
     return await db.execute('''
-    IF  NOT EXISTS 
-    CREATE TABLE $tradesTable (
+    CREATE TABLE IF NOT EXISTS  $tradesTable (
       $id INTEGER PRIMARY KEY AUTOINCREMENT ,
       $entry DOUBLE NOT NULL,
       $date TEXT NOT NULL,
@@ -56,7 +55,7 @@ class Dbase {
       $scrip TEXT NOT NULL,
       $qty DOUBLE NOT NULL,
       $bs INTEGER NOT NULL,
-      $ls INTEGER NOT NULL )
+      $ls INTEGER NOT NULL );
     ''');
   }
 
@@ -97,5 +96,4 @@ class Dbase {
   ''');
     return data[0]['SUM(entry*qty)'];
   }
-
 }

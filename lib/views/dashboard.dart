@@ -18,10 +18,10 @@ class _DashboardState extends State<Dashboard> {
   Tdbase _tdbaseHelper;
   double totalInvestment = 0.0;
   double accountBalance = 0.0;
-  
+
   BannerAd _bannerAd;
   bool _isBannerAdReady = false;
-  
+
   InterstitialAd _interstitialAd;
   bool _isInterstitialAdReady = false;
 
@@ -30,9 +30,19 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     _bannerAd = BannerAd(
       adUnitId: AdServices().androidBannerId,
-      request: const AdRequest(
-        keywords: ["finance","jobs","money","business","trading","stocks","crypto","market","coins","currency","cryptocurrency"]
-      ),
+      request: const AdRequest(keywords: [
+        "finance",
+        "jobs",
+        "money",
+        "business",
+        "trading",
+        "stocks",
+        "crypto",
+        "market",
+        "coins",
+        "currency",
+        "cryptocurrency"
+      ]),
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
@@ -73,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void dispose() {
     _bannerAd.dispose();
-    _interstitialAd.dispose();
+// _interstitialAd.dispose();
     super.dispose();
   }
 
