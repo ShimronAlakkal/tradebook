@@ -22,8 +22,8 @@ class _DashboardState extends State<Dashboard> {
   BannerAd _bannerAd;
   bool _isBannerAdReady = false;
 
-  InterstitialAd _interstitialAd;
-  bool _isInterstitialAdReady = false;
+  // InterstitialAd _interstitialAd;
+  // bool _isInterstitialAdReady = false;
 
   @override
   void initState() {
@@ -117,10 +117,10 @@ class _DashboardState extends State<Dashboard> {
           );
 
           if (res) {
-            if (trades.length % 3 == 0 && _isInterstitialAdReady) {
-              _interstitialAd.show();
-              _refreshStorageData();
-            }
+            // if (trades.length % 3 == 0 && _isInterstitialAdReady) {
+            //   _interstitialAd.show();
+            //   _refreshStorageData();
+            // }
             _refreshStorageData();
           }
         },
@@ -639,10 +639,10 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
     if (res) {
-      if (trades.length % 3 == 0 && _isInterstitialAdReady) {
-        _interstitialAd.show();
-        _refreshStorageData();
-      }
+      // if (trades.length % 3 == 0 && _isInterstitialAdReady) {
+      //   _interstitialAd.show();
+      //   _refreshStorageData();
+      // }
       _refreshStorageData();
     }
   }
