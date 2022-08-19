@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
 import 'package:fraction/model/transaction_database.dart';
 import 'package:fraction/views/transactions.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:fraction/services/ad_services.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:fraction/services/ad_services.dart';
 
 class Edit extends StatefulWidget {
   const Edit({Key key}) : super(key: key);
@@ -22,27 +22,27 @@ class _EditState extends State<Edit> {
   double maintWithdraw;
   double mainTi;
 
-  InterstitialAd _interstitialAd;
-  bool _isInterstitialAdReady = false;
+  // InterstitialAd _interstitialAd;
+  // bool _isInterstitialAdReady = false;
 
   @override
   void initState() {
     super.initState();
-    InterstitialAd.load(
-      adUnitId: AdServices().androidInterstitialId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          setState(() {
-            _interstitialAd = ad;
-            _isInterstitialAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          _isInterstitialAdReady = false;
-        },
-      ),
-    );
+    // InterstitialAd.load(
+    //   adUnitId: AdServices().androidInterstitialId,
+    //   request: const AdRequest(),
+    //   adLoadCallback: InterstitialAdLoadCallback(
+    //     onAdLoaded: (ad) {
+    //       setState(() {
+    //         _interstitialAd = ad;
+    //         _isInterstitialAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (err) {
+    //       _isInterstitialAdReady = false;
+    //     },
+    //   ),
+    // );
 
     setState(() {
       _helper = Tdbase.instance;
@@ -76,10 +76,10 @@ class _EditState extends State<Edit> {
             ),
           );
           if (res) {
-            if(_isInterstitialAdReady){
-              _interstitialAd.show();
-              _refreshTransactions();
-            }
+            // if(_isInterstitialAdReady){
+            //   _interstitialAd.show();
+            //   _refreshTransactions();
+            // }
             _refreshTransactions();
           }
         },

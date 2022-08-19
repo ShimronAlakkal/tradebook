@@ -57,21 +57,21 @@ class _DashboardState extends State<Dashboard> {
       ),
     )..load();
 
-    InterstitialAd.load(
-      adUnitId: AdServices().androidInterstitialId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          setState(() {
-            _interstitialAd = ad;
-            _isInterstitialAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          _isInterstitialAdReady = false;
-        },
-      ),
-    );
+    // InterstitialAd.load(
+    //   adUnitId: AdServices().androidInterstitialId,
+    //   request: const AdRequest(),
+    //   adLoadCallback: InterstitialAdLoadCallback(
+    //     onAdLoaded: (ad) {
+    //       setState(() {
+    //         _interstitialAd = ad;
+    //         _isInterstitialAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (err) {
+    //       _isInterstitialAdReady = false;
+    //     },
+    //   ),
+    // );
 
     setState(() {
       _helper = Dbase.instance;
