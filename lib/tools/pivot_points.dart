@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:fraction/services/ad_services.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:fraction/services/ad_services.dart';
 
 class PivotPoints extends StatefulWidget {
   final int index;
@@ -15,33 +15,33 @@ class PivotPoints extends StatefulWidget {
 }
 
 class _PivotPointsState extends State<PivotPoints> {
-  BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
+  // BannerAd _bannerAd;
+  // bool _isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: AdServices().androidBannerId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    )..load();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdServices().androidBannerId,
+    //   request: const AdRequest(),
+    //   size: AdSize.banner,
+    //   listener: BannerAdListener(
+    //     onAdLoaded: (_) {
+    //       setState(() {
+    //         _isBannerAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (ad, err) {
+    //       _isBannerAdReady = false;
+    //       ad.dispose();
+    //     },
+    //   ),
+    // )..load();
   }
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    // _bannerAd.dispose();
 
     highController.dispose();
     lowController.dispose();
@@ -84,15 +84,15 @@ class _PivotPointsState extends State<PivotPoints> {
           child: Column(
             children: [
 // Ads here
-              _isBannerAdReady
-                  ? Center(
-                      child: SizedBox(
-                        width: _bannerAd.size.width.toDouble(),
-                        height: _bannerAd.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd),
-                      ),
-                    )
-                  : const SizedBox(),
+              // _isBannerAdReady
+              //     ? Center(
+              //         child: SizedBox(
+              //           width: _bannerAd.size.width.toDouble(),
+              //           height: _bannerAd.size.height.toDouble(),
+              // //           child: AdWidget(ad: _bannerAd),
+              //         ),
+              //       )
+                  // : const SizedBox(),
 
               const SizedBox(
                 height: 25,

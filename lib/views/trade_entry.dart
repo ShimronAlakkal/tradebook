@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:fraction/services/ad_services.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:fraction/services/ad_services.dart';
 
 // ignore: must_be_immutable
 class TradeEntry extends StatefulWidget {
@@ -65,9 +65,9 @@ class _TradeEntryState extends State<TradeEntry> {
 
   double ab;
 
-  BannerAd _bannerAd;
+  // BannerAd _bannerAd;
 
-  bool _isBannerAdReady = false;
+  // bool _isBannerAdReady = false;
 
   TextEditingController scripController = TextEditingController();
   TextEditingController entryController = TextEditingController();
@@ -84,22 +84,22 @@ class _TradeEntryState extends State<TradeEntry> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: AdServices().androidBannerId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    )..load();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdServices().androidBannerId,
+    //   request: const AdRequest(),
+    //   size: AdSize.banner,
+    //   listener: BannerAdListener(
+    //     onAdLoaded: (_) {
+    //       setState(() {
+    //         _isBannerAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (ad, err) {
+    //       _isBannerAdReady = false;
+    //       ad.dispose();
+    //     },
+    //   ),
+    // )..load();
 
     if (bs == 0) {
       setState(() {
@@ -143,7 +143,7 @@ class _TradeEntryState extends State<TradeEntry> {
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    // _bannerAd.dispose();
 
     entryController.clear();
     qtyController.clear();
@@ -173,15 +173,15 @@ class _TradeEntryState extends State<TradeEntry> {
       body: ListView(
         children: [
           //  Ad banner
-          _isBannerAdReady
-              ? Center(
-                  child: SizedBox(
-                    width: _bannerAd.size.width.toDouble(),
-                    height: _bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd),
-                  ),
-                )
-              : const SizedBox(),
+          // _isBannerAdReady
+          //     ? Center(
+          //         child: SizedBox(
+          //           width: _bannerAd.size.width.toDouble(),
+          //           height: _bannerAd.size.height.toDouble(),
+          //           child: AdWidget(ad: _bannerAd),
+          //         ),
+          //       )
+          //     : const SizedBox(),
 
           const SizedBox(
             height: 25,

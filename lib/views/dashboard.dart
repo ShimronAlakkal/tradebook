@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fraction/model/database.dart';
 import 'package:fraction/views/trade_entry.dart';
 import 'package:fraction/model/transaction_database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:fraction/services/ad_services.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:fraction/services/ad_services.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key key}) : super(key: key);
@@ -19,8 +19,8 @@ class _DashboardState extends State<Dashboard> {
   double totalInvestment = 0.0;
   double accountBalance = 0.0;
 
-  BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
+  // BannerAd _bannerAd;
+  // bool _isBannerAdReady = false;
 
   // InterstitialAd _interstitialAd;
   // bool _isInterstitialAdReady = false;
@@ -28,34 +28,34 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: AdServices().androidBannerId,
-      request: const AdRequest(keywords: [
-        "finance",
-        "jobs",
-        "money",
-        "business",
-        "trading",
-        "stocks",
-        "crypto",
-        "market",
-        "coins",
-        "currency",
-        "cryptocurrency"
-      ]),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    )..load();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdServices().androidBannerId,
+    //   request: const AdRequest(keywords: [
+    //     "finance",
+    //     "jobs",
+    //     "money",
+    //     "business",
+    //     "trading",
+    //     "stocks",
+    //     "crypto",
+    //     "market",
+    //     "coins",
+    //     "currency",
+    //     "cryptocurrency"
+    //   ]),
+    //   size: AdSize.banner,
+    //   listener: BannerAdListener(
+    //     onAdLoaded: (_) {
+    //       setState(() {
+    //         _isBannerAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (ad, err) {
+    //       _isBannerAdReady = false;
+    //       ad.dispose();
+    //     },
+    //   ),
+    // )..load();
 
     // InterstitialAd.load(
     //   adUnitId: AdServices().androidInterstitialId,
@@ -82,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    // _bannerAd.dispose();
 // _interstitialAd.dispose();
     super.dispose();
   }
@@ -144,15 +144,15 @@ class _DashboardState extends State<Dashboard> {
             children: [
               //  Ad banner
 
-              _isBannerAdReady
-                  ? Center(
-                      child: SizedBox(
-                        width: _bannerAd.size.width.toDouble(),
-                        height: _bannerAd.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd),
-                      ),
-                    )
-                  : const SizedBox(),
+              // _isBannerAdReady
+              //     ? Center(
+              //         child: SizedBox(
+              //           width: _bannerAd.size.width.toDouble(),
+              //           height: _bannerAd.size.height.toDouble(),
+              //           child: AdWidget(ad: _bannerAd),
+              //         ),
+              //       )
+              //     : const SizedBox(),
 
               const SizedBox(
                 height: 10,

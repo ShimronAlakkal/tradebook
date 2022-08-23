@@ -37,7 +37,7 @@ dependencies:
   path_provider: any
   url_launcher: any
   google_fonts: any
-  google_mobile_ads: any 
+  # google_mobile_ads: any 
 
 dev_dependencies:
   flutter_test:

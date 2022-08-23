@@ -1,8 +1,8 @@
 // ignore_for_file: no_logic_in_create_state
 import 'package:flutter/material.dart';
 import 'package:fraction/model/transaction_database.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:fraction/services/ad_services.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:fraction/services/ad_services.dart';
 
 // ignore: must_be_immutable
 class Transactions extends StatefulWidget {
@@ -25,28 +25,28 @@ class _TransactionsState extends State<Transactions> {
   bool isAdLoaded = false;
   Tdbase _helper;
   double accountBalance;
-  bool _isBannerAdReady = false;
-  BannerAd _bannerAd;
+  // bool _isBannerAdReady = false;
+  // BannerAd _bannerAd;
 
   @override
   void initState() {
     super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: AdServices().androidBannerId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    )..load();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdServices().androidBannerId,
+    //   request: const AdRequest(),
+    //   size: AdSize.banner,
+    //   listener: BannerAdListener(
+    //     onAdLoaded: (_) {
+    //       setState(() {
+    //         _isBannerAdReady = true;
+    //       });
+    //     },
+    //     onAdFailedToLoad: (ad, err) {
+    //       _isBannerAdReady = false;
+    //       ad.dispose();
+    //     },
+    //   ),
+    // )..load();
     setState(() {
       _helper = Tdbase.instance;
     });
@@ -55,7 +55,7 @@ class _TransactionsState extends State<Transactions> {
   @override
   void dispose() {
     amountController.dispose();
-    _bannerAd.dispose();
+    // _bannerAd.dispose();
     super.dispose();
   }
 
@@ -74,15 +74,15 @@ class _TransactionsState extends State<Transactions> {
       ),
       body: ListView(
         children: [
-          _isBannerAdReady
-              ? Center(
-                  child: SizedBox(
-                    width: _bannerAd.size.width.toDouble(),
-                    height: _bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd),
-                  ),
-                )
-              : const SizedBox(),
+          // _isBannerAdReady
+          //     ? Center(
+          //         child: SizedBox(
+          //           width: _bannerAd.size.width.toDouble(),
+          //           height: _bannerAd.size.height.toDouble(),
+          //           child: AdWidget(ad: _bannerAd),
+          //         ),
+          //       )
+          //     : const SizedBox(),
           const SizedBox(
             height: 10,
           ),
